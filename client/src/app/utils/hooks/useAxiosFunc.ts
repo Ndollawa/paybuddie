@@ -1,14 +1,15 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosInstance, AxiosRequestConfig, Method } from "axios";
 import { useState, useEffect } from "react";
+import { URL } from "url";
 const useAxiosFunc = () =>{
     
 
     const [response, setResponse] = useState([]);   
     const [error, setError] = useState('');  
     const [loading, setLoading] = useState(false);
-    const [controller, setContronller] = useState<any>();
+    const [controller, setController] = useState<AbortController>();
     
-const axiosFetch:Function | any = async (configObj:any) =>{
+const axiosFetch:Function | any = async (configObj:{axiosInstance:any,method:Method,url:URL,requestConfig:AxiosRequestConfig}) =>{
 const {
         axiosInstance,
         method,
@@ -19,7 +20,7 @@ const {
     try{
         setLoading(true);
         const ctrl = new AbortController();
-        setContronller(ctrl)
+        setController(ctrl)
         const res = await axiosInstance[method.toLowerCase()](url,{...requestConfig, signal:ctrl.signal});
         setResponse(res.data);
         console.log(res)

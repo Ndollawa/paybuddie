@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{FormEvent, FormEventHandler} from "react";
 import useInput from "../../../../../app/utils/hooks/useInput";
 
 const GeneralSettings = () => {
@@ -7,6 +7,7 @@ const [companyName, setCompanyName, companyNameAttr] = useInput("")
 const [companyEmail, setCompanyEmail, companyEmailAttr] = useInput("")
 const [companyAddress, setCompanyAddress, companyAddressAttr] = useInput("")
 const [companyContact, setCompanyContact, companyContactAttr] = useInput("")
+const [companyActiveHours, setCompanyActiveHours, companyActiveHoursAttr] = useInput("")
 const [companyZipCode, setCompanyZipCode, companyZipCodeAttr] = useInput("")
 const [companyCountry, setCompanyCountry, companyCountryAttr] = useInput("")
 const [companyState, setCompanyState, companyStateAttr] = useInput("")
@@ -16,9 +17,17 @@ const [companyTwitterHandle, setCompanyTwitterHandle, companyTwitterHandleAttr] 
 const [companyInstagramHandle, setCompanyInstagramHandle, companyInstagramHandleAttr] = useInput("")
 const [companyWhatsapp, setCompanyWhatsapp, companyWhatsappAttr] = useInput("")
 const [companyDescription, setCompanyDescription, companyDescriptionAttr] = useInput("")
-useEffect(()=>{
-console.log(companyName)
-}, [companyName])
+
+const handleSubmit:FormEventHandler = async(e:FormEvent)=>{
+e.preventDefault();
+try{
+  
+}catch(error){
+  
+}
+
+}
+
   return (
     <>
       <div className="card">
@@ -27,7 +36,7 @@ console.log(companyName)
         </div>
         <div className="card-body">
           <div className="basic-form">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="mb-3 col-md-6">
                   <label className="form-label"><strong>Company Name</strong></label>
@@ -123,6 +132,17 @@ console.log(companyName)
                     value={companyCountry}
                     onChange={setCompanyCountry}
                     {...companyCountryAttr}
+                  />
+                </div>
+                <div className="mb-3 col-md-6">
+                  <label className="form-label"><strong>Active Hours</strong></label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    value={companyActiveHours}
+                    onChange={setCompanyActiveHours}
+                    {...companyActiveHoursAttr}
                   />
                 </div>
                  <div className="mb-3 col-md-6">

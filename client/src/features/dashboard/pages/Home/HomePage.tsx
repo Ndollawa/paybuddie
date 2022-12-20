@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import MainBody from '../../components/MainBody';
 
 const HomePage = () => {
   return (
     <>
-    
+    <MainBody>
 				<div className="row">
 					<div className="col-xl-3 col-sm-6 m-t35">
 						<div className="card card-coin">
@@ -1186,7 +1187,7 @@ const HomePage = () => {
 						</div>
                     </div>
                 </div>
-                    
+             </MainBody>       
     </>
   )
 }

@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
   return (
     <div className="card">
     <div className="card-header">
-      <h4 className="card-title">About Us</h4>
+      <h4 className="card-title">Privacy  and Policy</h4>
     </div>
     <div className="card-body">
       <div className="basic-form">
@@ -19,10 +19,13 @@ const PrivacyPolicy = () => {
                </div>
               <div className="col-md-12">
 
-                  <label><strong>About Us</strong></label>
+                  <label><strong>Privacy and Policy</strong></label>
                
                   <Tinymce/>
               </div>
+              <div className="card-footer">
+                  <button type="submit" className="btn btn-primary btn-sm">Save</button>
+                </div>
           </div>
           </form>
         </div>

@@ -9,5 +9,5 @@ import AuthController from '../../Http/Controllers/AuthController';
 
 
 router.route('/')
-.get((req:Request, res:Response, next:NextFunction) => AuthController.refreshTokenHandler(req, res))
+.get((req:Request, res:Response, next:NextFunction) => AuthController.refreshTokenHandler)
 export default router; 

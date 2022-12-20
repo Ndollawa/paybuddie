@@ -21,7 +21,7 @@
     "axios": "^1.2.0",
     "bootstrap": "^5.2.2",
     "fs-extra": "^10.1.0",
-    "jquery": "^3.6.1",
+    "jquery": "^3.6.2",
     "jwt-decode": "^3.1.2",
     "lightgallery": "^2.7.0",
     "react": "^18.2.0",
@@ -32,7 +32,7 @@
     "react-scripts": "5.0.1",
     "react-simple-animate": "^3.5.2",
     "redux-thunk": "^2.4.2",
-    "tinymce": "^6.2.0",
+    "tinymce": "^6.3.1",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },

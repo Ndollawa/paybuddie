@@ -7,7 +7,7 @@ import {useCompanyDetails} from '../../app/appConfigSlice';
 const Head:React.FC<pageProps> = ({pageData}:pageProps) => {
   
 const {pageTitle} = pageData!;
-const {siteName,description} = useSelector(useCompanyDetails); 
+const {siteName,favicon,description} = useSelector(useCompanyDetails); 
   return (
     <head>
     <meta charSet="UTF-8" />
@@ -19,10 +19,10 @@ const {siteName,description} = useSelector(useCompanyDetails);
     <link rel="manifest" href="/manifest.json" />
     <title>{pageTitle+" - "+siteName}</title>
    
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicons/favicon-16x16.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/assets/images/favicons/site.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href={favicon}/>
+    <link rel="icon" type="image/png" sizes="32x32" href={favicon} />
+    <link rel="icon" type="image/png" sizes="16x16" href={favicon} />
+    {/* <link rel="manifest" href={favicon} /> */}
     <meta name="description" content={description} />
 
 

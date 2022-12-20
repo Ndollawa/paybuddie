@@ -1,10 +1,10 @@
-import { NextFunction } from 'express';
+import {Response,Request, NextFunction } from 'express';
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
 
 import {MRequest, MResponse } from "../../../interfaces/interfaces";
 // require('dotenv').config();
 
-export interface decoded{
+export interface decoded {
     userInfo:{
         user:string,
         username:string,
@@ -12,8 +12,10 @@ export interface decoded{
         roles:number[]
     }
 }
+
+ 
 const key:Secret =process.env.ACCESS_TOKEN_SECRET!;
-const verifyJWT:JwtPayload = (req:MRequest, res:MResponse, next:NextFunction)=>{
+const verifyJWT= (req: Request, res:Response, next:NextFunction)=>{
     const authHeader = req.headers.authorization! || req.headers.Authorization!;
     if(typeof authHeader === 'string'){
     if(!authHeader.startsWith('Bearer ')) return res.sendStatus (401);
@@ -21,13 +23,13 @@ const verifyJWT:JwtPayload = (req:MRequest, res:MResponse, next:NextFunction)=>{
       jwt.verify(
         token,
         key,
-        (err:any, options:any)=>{
+        (err, options:any)=>{
             if(err)return res.sendStatus(403);// invalid token
 
-            req.user = options?.userInfo.user;
-            req.username = options?.userInfo.username;
-            req.userEmail = options?.userInfo.userEmail;
-            req.roles = options?.userInfo.roles;
+            req.user = options?.userInfo?.user;
+            req.username = options?.userInfo?.username;
+            req.userEmail = options?.userInfo?.userEmail;
+            req.roles = options?.userInfo?.roles;
             next();
         }
     );

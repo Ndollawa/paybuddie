@@ -12,7 +12,7 @@ const userApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-//  export const {useGetUsersQuery} = userApiSlice.actions;
+ export const {useGetUsersQuery} = userApiSlice;
 
  export default userApiSlice.reducer;
 

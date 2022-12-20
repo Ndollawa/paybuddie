@@ -1,32 +1,51 @@
-import React from 'react';
-import { Outlet,Link } from 'react-router-dom';
-import Head from './components/Head';
-import Header from './components/Header';
-import SideBar from './components/SideBar';
-import Chatbox from './components/ChatBox';
-import Footer from './components/Footer';
-import Js from './components/Js';
-import Preloader from './components/Preloader';
-import pageProps from "../../app/utils/props/pageProps";
+import React,{useState} from "react";
+import { Link } from "react-router-dom";
+import Preloader from "./Preloader";
+import Header from "./Header";
+import SideBar from "./SideBar";
+import Chatbox from "./ChatBox";
+import Footer from "./Footer";
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../app/appConfigSlice'
+import {useCompanyDetails,useDashboardConfig} from '../../app/appConfigSlice'
 
+const MainBody = ({children}:any) => {
+    const [isToggled,setIsToggled] = useState(false);
 
-    
-const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
-  
+  const isPreloading = true;    
+const pageData ={
+    pageTitle: ''
+}
+const {siteName,logo,favicon,logoDark} = useSelector(useCompanyDetails);
+const {layoutOptions} = useSelector(useDashboardConfig);
+const {
+    typography,
+    version,
+    layout,
+    headerBg,
+    primary,
+    navheaderBg,
+    sidebarBg,
+    sidebarStyle,
+    sidebarPosition,
+    headerPosition,
+    containerLayout,
+    direction
+} = layoutOptions;
 
-    const {siteName,logo,logoDark} = useSelector(useCompanyDetails);
+const toggleMenu = ()=>{
+setIsToggled(prev=> !prev);
 
+}
+let  menuWrapperStyle = isPreloading ? "show" : "";
+menuWrapperStyle += isToggled? " menu-toggle" : ""
   return (
-    <>
-    <Head pageData={pageData}/>
-<body>
+   <>
+   <body  data-typography={typography} data-theme-version={version} data-layout={layout} data-nav-headerbg={headerBg} data-headerbg={navheaderBg} data-sidebar-style={sidebarStyle} data-sidebarbg={sidebarBg} data-sidebar-position={sidebarPosition} data-header-position={headerPosition} data-container={containerLayout} data-direction={direction} data-primary={primary}>
 
 {/* <!--*******************
-    Preloader start
+    Preloader startdirection={direction}
 ********************--> */}
-<Preloader/>
+{/* <Preloader/> */}
 {/* <!--*******************
     Preloader end
 ********************-->
@@ -34,18 +53,18 @@ const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
 <!--**********************************
     Main wrapper start
 ***********************************-->className="show menu-toggle" */}
-<div id="main-wrapper" >
+<div id="main-wrapper" className={ menuWrapperStyle} >
 {/* 
     <!--**********************************
         Nav header start
     ***********************************--> */}
            <div className="nav-header">
             <Link to="/dashboard" className="brand-logo">
-               {siteName}
+              {isToggled?<img src={favicon} alt={siteName} width='50'/> :<img src={logo} alt={siteName} width='150'/>} 
             </Link>
 
             <div className="nav-control">
-                <div className="hamburger">
+                <div className={isToggled?"hamburger is-active": "hamburger"} onClick={toggleMenu}>
                     <span className="line"></span><span className="line"></span><span className="line"></span>
                 </div>
             </div>
@@ -80,16 +99,16 @@ const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
 					</div>
 					<a href="javascript:void(0);" className="btn btn-secondary mb-2"><i className="las la-calendar scale5 me-3"></i>Filter Periode</a>
 				</div>
-          <Outlet/>
-
-          </div>
+   {children}
+   
+   </div>
         </div>
         <Footer />
       </div>
-    <Js/>
     </body>
-    </>
+   </>
   )
 }
 
-export default Home
+export default MainBody
+

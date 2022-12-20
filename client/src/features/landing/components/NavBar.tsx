@@ -55,7 +55,7 @@ const {navStyle} = useSelector(useLandingPageConfig);
                     <Link to="#" className="main-menu__search search-toggler">
                         <i className="icon-magnifying-glass"></i>
                     </Link>
-                    <Link to="/register" className="thm-btn main-menu__btn">Sign Up</Link>
+                    <Link to="auth/register" className="thm-btn main-menu__btn">Sign Up</Link>
                     {/* <!-- /.thm-btn --> */}
                     {
                 (((navStyle as Styles) === Styles.STYLE_1) || ((navStyle as Styles) === Styles.STYLE_3)) &&  <a href={`tel:${contact}`} className="main-menu__contact">

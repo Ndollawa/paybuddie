@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import OtherBody from '../dashboard/components/OtherBody'
 
 const LockScreen = () => {
   return (
-    <>
+    <OtherBody>
         <div className="container h-100">
             <div className="row justify-content-center h-100 align-items-center">
                 <div className="col-md-6">
@@ -33,7 +34,7 @@ const LockScreen = () => {
                 </div>
             </div>
         </div>
-    </>
+    </OtherBody>
   )
 }
 

@@ -10,7 +10,7 @@ const useAxios = (configObj:any) =>{
 
     const [response, setResponse] = useState([]);   
     const [error, setError] = useState('');  
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [refresh, setRefresh] = useState(false);
     
     const refetch = () =>setRefresh(prev=> !prev);

@@ -1,9 +1,10 @@
 import React from 'react';
 import pageProps from '../../../../app/utils/props/pageProps';
+import MainBody from '../../components/MainBody';
 
 const Wallet:React.FC<pageProps> = ({pageData}:pageProps) => {
   return (
-    <>
+    <MainBody>
     <div className="row">
 					<div className="col-xl-3 col-xxl-4">
 						<div className="swiper-box">
@@ -863,7 +864,7 @@ const Wallet:React.FC<pageProps> = ({pageData}:pageProps) => {
 						</div>	
 					</div>
 				</div>
-    </>
+    </MainBody>
   )
 }
 

@@ -1,24 +1,27 @@
-import  UserModel from '../../Models/User.js';
-import  bcrypt from 'bcrypt';
-import path from 'path';
-import { MRequest, MResponse } from '../../../interfaces/interfaces.js';
-import {fileURLToPath} from 'url';
+import  UserModel from '../../Models/User';
+import { Request, Response } from 'express';
+// import {fileURLToPath} from 'url';
 // require('dotenv').config()
- const __filename = fileURLToPath(import.meta.url);
+//  const __filename = fileURLToPath(import.meta.url);
 
         // 
-        const __dirname = path.dirname(__filename);
+        // const __dirname = path.dirname(__filename);
 
-const checkDuplicate = async (req:MRequest, res:MResponse)=>{
-    const username = req?.body?.username;
-    const email = req?.body?.email ;
-   if(username) {
+const checkDuplicate = async (req:Request, res:Response)=>{
+    const user = req.body.user;
+ 
     //check for duplicate username in the DB
     try{
-
-        const duplicate = await UserModel.findOne({username:username}).exec();
-            console.log(username)
-            if(duplicate){return res.status(409).json({'message':  "taken"});// conflict
+        const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        const userType = EMAIL_REGEX.test(user);
+        let foundUser;
+    if(userType){
+    foundUser = await UserModel.findOne({email:user}).exec();
+    }else{
+    foundUser = await UserModel.findOne({username:user}).exec();
+    }
+        
+            if(foundUser){return res.status(409).json({'message':  "taken"});// conflict
         }else{
             return res.status(200).json({'message':  "available"})
         }
@@ -26,21 +29,7 @@ const checkDuplicate = async (req:MRequest, res:MResponse)=>{
       return res.status(500).json({'error':  err})  
     }
     
-    
-   }else if(email){
-try{
- //check for duplicate emails in the DB
-            const duplicate = await UserModel.findOne({email}).exec();
-            if(duplicate){return res.status(409).json({'message':  "taken"});// conflict
-        }else{
-            return res.status(200).json({'message':  "available"})
-        }
-    }catch(err){
-        return res.status(500).json({'error':  err})  
-    }
-   
-   }
-    
+  
 }
 
 

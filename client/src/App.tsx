@@ -28,10 +28,8 @@ import Error403 from './features/errorPages/Error403';
 import Error404 from './features/errorPages/Error404';
 import Error500 from './features/errorPages/Error500';
 import Error503 from './features/errorPages/Error503';
-import MainLayout from './features/Layout/Layout'
 
 // dashboar pages
-import DashboardIndex from './features/dashboard/Index'
 import DashboardHomepage from './features/dashboard/pages/Home/HomePage'
 import Profile from './features/dashboard/pages/Profile/Profile';
 import Market from './features/dashboard/pages/Market/Market';
@@ -52,8 +50,10 @@ import SiteSettings from './features/dashboard/pages/Settings/SiteSettings';
 import GeneralSettings from './features/dashboard/pages/Settings/components/GeneralSettings';
 import HomePageSettings from './features/dashboard/pages/Settings/components/HomePageSettings';
 import AboutUs from './features/dashboard/pages/Settings/components/AboutUs';
-import TermsCondition from './features/dashboard/pages/Settings/components/TermsConditions';
-import Privacy_Policy from './features/dashboard/pages/Settings/components/PrivacyPolicy';
+import TermsConditionsSetting from './features/dashboard/pages/Settings/components/TermsConditions';
+import PrivacyPolicySetting from './features/dashboard/pages/Settings/components/PrivacyPolicy';
+import SiteImage from './features/dashboard/pages/Settings/components/SiteImage';
+import Layout from './features/Layout/Layout';
 
 const App= ()=>{
 const [pageTitle, setPageTitle] = React.useState("Home");
@@ -63,71 +63,74 @@ const [pageTitle, setPageTitle] = React.useState("Home");
                     
           <Routes>
             {/* Public Routes */}{/* ^/$|/index(.html)? */}
+             <Route path="error"  element={<Layout pageData={{pageTitle:"Dashboard"}}/> }>
+                      <Route index element={<Error404/>} />
+                      <Route path="400" element={<Error400 />} />
+                      <Route path="403" element={<Error403 />} />
+                      <Route path="404" element={<Error404 />} />
+                      <Route path="500" element={<Error500 />} />
+                      <Route path="503" element={<Error503/>} />
+              </Route>
+                  <Route path="auth" element={<Layout pageData={{pageTitle:"Dashboard"}}/>}  >
+                      <Route index element={<Login/>} />
+                      <Route path="login" element={<Login />} />
+                      <Route path="register" element={<Register/>} />
+                  
+              </Route>
             <Route path="/" element={<Home pageData={{pageTitle:pageTitle,coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} >
                 <Route index element={<HomePage/>} />
-                <Route path="/about" element={<About pageData={{pageTitle:"About",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/contact" element={<Contact pageData={{pageTitle:"Contact",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/careers" element={<Career pageData={{pageTitle:"Careers",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/career/apply-now" element={<Form pageData={{pageTitle:"Apply Now",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/faq" element={<Faq pageData={{pageTitle:"FAQ",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/terms-and-condition" element={<TermsConditions pageData={{pageTitle:"Terms and Conditions",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/our-blog" element={<Blog pageData={{pageTitle:"Blog",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/our-blog/:id" element={<Post pageData={{pageTitle:"Post",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/our-team" element={<Team pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/our-team/:id/member" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="/services/:id/service" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                
+                <Route path="about" element={<About pageData={{pageTitle:"About",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="contact" element={<Contact pageData={{pageTitle:"Contact",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="careers" element={<Career pageData={{pageTitle:"Careers",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="career/apply-now" element={<Form pageData={{pageTitle:"Apply Now",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="faq" element={<Faq pageData={{pageTitle:"FAQ",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="terms-and-condition" element={<TermsConditions pageData={{pageTitle:"Terms and Conditions",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="our-blog" element={<Blog pageData={{pageTitle:"Blog",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="our-blog/:id" element={<Post pageData={{pageTitle:"Post",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="our-team" element={<Team pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="our-team/:id/member" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="services/:id/service" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="login" element={<Navigate to="/auth/login" replace/>} />
+                <Route path="register" element={<Navigate to="/auth/register"/>} />
+                <Route path="lockscreen" element={<Navigate to="/auth/login"/>} />
               </Route>
-              <Route path="/login" element={<Navigate to="/auth/login" replace/>} />
-              <Route path="/register" element={<Navigate to="/auth/register"/>} />
-              <Route path="/lockscreen" element={<Navigate to="/auth/login"/>} />
+            
 
-            <Route path="/auth" element={<MainLayout pageData={{pageTitle:"Auth"}}/>} >
-                      <Route index element={<Login/>} />
-                      <Route path="/auth/login" element={<Login />} />
-                      <Route path="/auth/register" element={<Register />} />
-                  
-            </Route> 
-            <Route path="/error" element={<MainLayout pageData={{pageTitle:"Error"}}/>} >
-                  <Route index element={<Error404/>} />
-                  <Route path="/error/400" element={<Error400 />} />
-                  <Route path="/error/403" element={<Error403 />} />
-                  <Route path="/error/404" element={<Error404 />} />
-                  <Route path="/error/500" element={<Error500 />} />
-                  <Route path="/error/503" element={<Error503/>} />
-            </Route>
+          
+           
              {/* End Public Routes */}
 
               {/* Protected Routes */}
             {/* <Route element={<PersistLogin/>} > */}
             {/* <Route element={<RequireAuth allowedRoles={[1000,10001,1002,10003]} />} > */}
-            <Route path="/dashboard" element={<DashboardIndex pageData={{pageTitle:"Dashboard"}}/>} >
+            <Route path="/dashboard" element={<Layout pageData={{pageTitle:"Dashboard"}}/>} >
                   <Route index element={<DashboardHomepage/>} />
-                  <Route path="/dashboard/profile" element={<Profile pageData={{pageTitle:"Profile"}}/>} />
-                  <Route path="/dashboard/wallet" element={<Wallet pageData={{pageTitle:"Wallet",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/market" element={<Market pageData={{pageTitle:"Market",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/transaction" element={<Transaction pageData={{pageTitle:"Transaction",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/user" element={<Users pageData={{pageTitle:"Users",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/user/:userId" element={<User pageData={{pageTitle:"User",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/messenger" element={<Chat pageData={{pageTitle:"Messenger",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/coin-Detail/:id" element={<CoinDetail pageData={{pageTitle:"Coin Data",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/our-team" element={<Team pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/our-team/:id/member/" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/services/:id/service/" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="/dashboard/settings/" element={<SiteSettings/>} >
-                  <Route index element={<GeneralSettings/>} />
-                  <Route path="/dashboard/settings/general" element={<GeneralSettings/>} />
-                  <Route path="/dashboard/settings/home-page" element={<HomePageSettings/>} />
-                  <Route path="/dashboard/settings/about-us" element={<AboutUs/>} />
-                  <Route path="/dashboard/settings/contact-us" element={<SiteSettings/>} />
-                  <Route path="/dashboard/settings/site-images" element={<SiteSettings/>} />
-                  <Route path="/dashboard/settings/privacy-and-policy" element={<Privacy_Policy/>} />
-                  <Route path="/dashboard/settings/terms-and-conditions" element={<TermsCondition/>} />
-                  </Route>
+                  <Route path="profile" element={<Profile pageData={{pageTitle:"Profile"}}/>} />
+                  <Route path="wallet" element={<Wallet pageData={{pageTitle:"Wallet",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="market" element={<Market pageData={{pageTitle:"Market",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="transaction" element={<Transaction pageData={{pageTitle:"Transaction",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="user" element={<Users pageData={{pageTitle:"Users",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="user/:userId" element={<User pageData={{pageTitle:"User",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="messenger" element={<Chat pageData={{pageTitle:"Messenger",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="coin-Detail/:id" element={<CoinDetail pageData={{pageTitle:"Coin Data",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="our-team" element={<Team pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="our-team/:id/member/" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="services/:id/service/" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="settings/" element={<SiteSettings/>} >
+                      <Route index element={<GeneralSettings/>} />
+                      <Route path="general" element={<GeneralSettings/>} />
+                      <Route path="home-page" element={<HomePageSettings/>} />
+                      <Route path="about-us" element={<AboutUs/>} />
+                      <Route path="privacy-and-policy" element={<PrivacyPolicySetting/>} />
+                      <Route path="contact-us" element={<SiteSettings/>} />
+                      <Route path="site-images" element={<SiteImage/>} />
+                      <Route path="terms-and-conditions" element={<TermsConditionsSetting/>} />
+                  </Route> 
+                 
             </Route> 
              {/* End Protected Routes */}
 
@@ -135,7 +138,7 @@ const [pageTitle, setPageTitle] = React.useState("Home");
             {/* </Route> */}
             {/* </Route> */}
            
-            <Route path='*'  element={<Navigate to="/error/404"/>}/>
+            <Route path='*'  element={<Navigate to="error/404"/>}/>
           </Routes>
 
   );

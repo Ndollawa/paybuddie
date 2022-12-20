@@ -1,9 +1,10 @@
 import React from 'react';
 import pageProps from '../../../../app/utils/props/pageProps';
+import MainBody from '../../components/MainBody';
 
 const Transaction:React.FC<pageProps> = ({pageData}:pageProps) => {
   return (
-    <>
+    <MainBody>
        <div className="row">
 					<div className="col-xl-12">
 						<div className="table-responsive table-hover fs-14">
@@ -507,7 +508,7 @@ const Transaction:React.FC<pageProps> = ({pageData}:pageProps) => {
 						</div>	
 					</div>
 				</div> 
-    </>
+</MainBody>
   )
 }
 

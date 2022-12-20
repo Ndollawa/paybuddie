@@ -1,7 +1,9 @@
 import React from 'react'
+import OtherBody from '../dashboard/components/OtherBody'
 
 const Error403 = () => {
   return (
+    <OtherBody>
         <div className="container h-100">
             <div className="row justify-content-center h-100 align-items-center">
                 <div className="col-md-5">
@@ -16,6 +18,8 @@ const Error403 = () => {
                 </div>
             </div>
         </div>
+        
+    </OtherBody>
   )
 }
 

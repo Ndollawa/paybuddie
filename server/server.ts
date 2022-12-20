@@ -4,8 +4,8 @@ dotenv.config();
 import express, { Application } from "express";
 import path from 'path';
 import cors from 'cors';
-import {fileURLToPath} from 'url';
-import { logger} from './src/app/Http/Middleware/logEvents';
+// import {fileURLToPath} from 'url';
+import { logger } from './src/app/Http/Middleware/logEvents';
 import errorHandler from './src/app/Http/Middleware/errorHandler';
 import corsOptions from './src/config/corsOptions';
 import verifyJWT from './src/app/Http/Middleware/verifyJWT';
@@ -13,14 +13,14 @@ import cookieParser from 'cookie-parser';
 import credentials from './src/app/Http/Middleware/credentials';
 import mongoose from 'mongoose';
 import connectDB from './src/config/dbConn';
-import PostRoutes from './src/app/Routes/api/post';
-import UserRoutes from './src/app/Routes/api/user';
+// import PostRoutes from './src/app/Routes/api/post';
+// import UserRoutes from './src/app/Routes/api/user';
 import RefreshRoute from './src/app/Routes/api/refresh';
-import RegisterRoutes from './src/app/Routes/api/register';
+// import RegisterRoutes from './src/app/Routes/api/register';
 import AuthRoutes from './src/app/Routes/api/auth';
-import AuthController from './src/app/Http/Controllers/AuthController';
-import RegisterController from './src/app/Http/Controllers/RegisterController';
-import  PostModel from './src/app/Models/Post';
+// import AuthController from './src/app/Http/Controllers/AuthController';
+// import RegisterController from './src/app/Http/Controllers/RegisterController';
+// import  PostModel from './src/app/Models/Post';
 import CheckDuplicateRoutes from './src/app/Http/Controllers/DuplicateController';
 
 // const __filename = fileURLToPath(import.meta.url);
@@ -55,30 +55,28 @@ app.use(express.json());
 //middleware for cookies
 app.use(cookieParser());
 //set view engine to ejs
-app.set("view engine",'ejs');
-app.use(express.static(path.join(__dirname, '/public')));
+// app.set("view engine",'ejs');
+// app.use(express.static(path.join(__dirname, '/public')));
 ///routes
 
 //server static files
-app.get("^/$|/index(.html)?", (req, res, next)=>{
+// app.get("^/$|/index(.html)?", (req, res, next)=>{
 
-    res.render(path.join(__dirname,'views','index'), {posts:PostModel} );
-});
+//     res.render(path.join(__dirname,'views','index'), {posts:PostModel} );
+// });
 
 
-app.use('/register', RegisterRoutes);
+
 app.use('/checkduplicate', CheckDuplicateRoutes);
-app.use('/login',AuthRoutes);
-app.use('/refresh',RefreshRoute);
-app.use('/logout', (req, res, next) =>AuthController.logout(req, res, next));
+app.use('/auth',AuthRoutes);
 
-//post routes
-app.use('/post', PostRoutes);
+// //post routes
+// app.use('/post', PostRoutes);
 
 
 app.use(verifyJWT);
 //user routes
-app.use('/user', UserRoutes);
+// app.use('/user', UserRoutes);
 app.all('*',(req,res)=>{
     res.sendStatus(404);
     ;

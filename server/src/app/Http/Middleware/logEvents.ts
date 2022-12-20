@@ -3,16 +3,15 @@ const fsPromise = fs.promises;
 import path from 'path';
 import { format } from 'date-fns';
 import { v4 as uuid } from 'uuid';
-import {fileURLToPath} from 'url';
-import { NextFunction } from 'express';
-import { MRequest, MResponse } from '../../../interfaces/interfaces';
+// import {fileURLToPath} from 'url';
+import {Request,Response, NextFunction } from 'express';
 // const __filename = fileURLToPath(import.meta.url);
 
 // 
 // const __dirname = path.dirname(__filename);
 
 
-const logEvents = async (message:string, logName:string) =>{
+ const logEvents = async(message:string, logName:string) =>{
     const dateTime = `${format(new Date(), 'yyyy-MM-dd\tHH:mm:ss')}`;
     const logItem = `${dateTime}\t${uuid()}\t${message}\n`;
 
@@ -27,9 +26,9 @@ const logEvents = async (message:string, logName:string) =>{
 
 }
 
-const logger = (req:MRequest,res:MResponse,next:NextFunction)=>{
+const logger = (req:Request,res:Response,next:NextFunction)=>{
     logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'reqLog.txt');
-    console.log(`${req.method}\t${req?.path}`);
+    console.log(`${req.method}\t${req.path}`);
     next();   
   }
 export {logger, logEvents};

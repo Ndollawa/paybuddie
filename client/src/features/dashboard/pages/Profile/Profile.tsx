@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import MainBody from '../../components/MainBody';
 import pageProps from '../../../../app/utils/props/pageProps'
 
 const Profile:React.FC<pageProps> = ({pageData}:pageProps) => {
@@ -6,7 +7,7 @@ const Profile:React.FC<pageProps> = ({pageData}:pageProps) => {
 
 
   return (
-    <>
+    <MainBody>
         <div className="row">
 					<div className="col-xl-9 col-xxl-8">
 						<div className="row">
@@ -780,7 +781,7 @@ const Profile:React.FC<pageProps> = ({pageData}:pageProps) => {
 						</div>
 					</div>
 				</div>
-    </>
+    </MainBody>
   )
 }
 

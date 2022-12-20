@@ -12,13 +12,13 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-   <Router>
     <Provider  store={store} >
+   <Router>
       <Routes>
         <Route path="/*" element={ <App />} />
       </Routes>
-    </Provider>
     </Router>
+    </Provider>
   </React.StrictMode>
 );
 

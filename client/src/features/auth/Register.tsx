@@ -1,13 +1,15 @@
-import { useTransition, useDeferredValue } from 'react';
-import { AxiosError, AxiosResponse } from 'axios';
-import axios from '../../app/api/axios';
-import useAxios from '../../app/utils/hooks/useAxios';
-import useAxiosFunc from '../../app/utils/hooks/useAxiosFunc'; 
+import {useDispatch, useSelector } from 'react-redux';
+import { AxiosError } from 'axios';
 import React, {useRef,useState,useEffect,FormEvent, FormEventHandler } from 'react';
 import { Link } from 'react-router-dom';
 import {GoKey} from 'react-icons/go';
 import {GrMail} from 'react-icons/gr';
 import {FaUser,FaRegUserCircle,FaKeycdn} from 'react-icons/fa';
+import axios from '../../app/api/axios';
+import useAxiosFunc from '../../app/utils/hooks/useAxiosFunc'; 
+import {useCompanyDetails} from '../app/appConfigSlice';
+import {useRegisterMutation} from './authApiSlice'
+import OtherBody from '../dashboard/components/OtherBody';
 
 
 // username regex must start with a lowercase or uppercase laters and must be followed by lower or uppercase or digits,- or _ of 3 to 23 characters
@@ -15,7 +17,7 @@ const USER_REGEX = /^[a-zA-Z][a-zA-z0-9-_]{3,23}$/;
 // requires atleast 0ne uppercase, lowercase,digit, special character and a total of 8 t0 24 characters
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-const REGISTER_URL = '/register';
+
 
 
 
@@ -27,13 +29,18 @@ interface Messages{
 }
 
 const Register:React.FC = () => {
+
+    const {siteName,logo,contact} = useSelector(useCompanyDetails);
+
+
 const userRef = useRef <HTMLInputElement>(null);
 const emailRef = useRef <HTMLInputElement>(null);
 const errRef = useRef <HTMLInputElement>(null);
-const [isPending, startTransition] = useTransition();
-// const [res,error,loading,axiosFetch] = useAxiosFunc();
+const successRef = useRef <HTMLInputElement>(null);
+// const [isPending, startTransition] = useTransition();
+const [res,error,loading,axiosFetch] = useAxiosFunc();
 const [user,setUser] = useState('');
-const deferredUserInput = useDeferredValue(user);
+const [validate, setValidate] = useState('');
 const [validName,setValidName] = useState(false);
 const [userFocus,setUserFocus] = useState(false);
 
@@ -53,7 +60,8 @@ const [msg,setMsg] = useState<Messages>();
 const [success,setSuccess] = useState(false);
 // const [userFocus,setUserFocus] = useState(false);
 
-
+const dispatch = useDispatch()
+const [register,{isLoading}] = useRegisterMutation();
 useEffect(()=>{
     userRef.current?.focus();
 }, [])
@@ -61,53 +69,12 @@ useEffect(()=>{
 useEffect(()=>{
     setMsg(undefined)
 }, [user,email,pwd,matchPwd]);
-const [res, error, loading] = useAxios({
-        axiosInstance:axios,
-        method: 'POST',
-        url: '/checkduplicate',
-        requestConfig: {
-         
-            data: {
-                username:deferredUserInput
-            }
-        }
-});
-console.log(res)
+ 
+
 useEffect(()=>{
     const result = USER_REGEX.test(user);
-    // if(result){ 
-    //         axiosFetch({
-    //             axiosInstance:axios,
-    //             method: 'post',
-    //             url: '/checkduplicate',
-    //             requestConfig: {
-    //                 data: {
-                   
-    //                 }
-    //             }
-    //         }
-    //     )
-    //         if(res === 'available'){
-    //             setMsg({type:'info',msg:'Username Taken'}) 
-    //         }else{
-    //             setMsg({type:'info',msg:'Username Taken'}) 
-    //         }
-    // }else{
-    //     setMsg({type:'error',msg:'Username invalid'})  
-    // }
-
-
-
-        // axios.post('/checkduplicate',{"username":deferredUserInput}).then((res)=>{
-           
-//     if(res.data.message === 'available'){
-       
-// setValidName(result)
-//     }else{
-//         setMsg({type:'info',msg:'Username Taken'})   
-//     }
-    // })
-}, [deferredUserInput]);
+   setValidName(result)
+}, [user]);
 
 useEffect(()=>{
     const result = EMAIL_REGEX.test(email);
@@ -122,43 +89,59 @@ useEffect(()=>{
 }, [pwd,matchPwd]);
 
 
+const checkDuplicates:FormEventHandler = async (e:FormEvent) =>{
+   setValidate(user);
+        axiosFetch({
+            axiosInstance:axios,
+            method: 'POST',
+            url: '/checkduplicate',
+            requestConfig: {
+                data: {
+                    user:validate
+                }
+            }
+        }
+    )
+    if(!error){
+        if(res === 'available'){
+            setMsg({type:'info',msg:'Username Taken'}) 
+        }else if(res === 'taken'){
+            setMsg({type:'info',msg:'Username Taken'}) 
+        }
+    }else{
+        setMsg({type:'error',msg:error})
+    }
+    }
 const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
     e.preventDefault();
-    // if button is enabled with js hack
-    const v1 = USER_REGEX.test(user);
-    const v2 = EMAIL_REGEX.test(email);
-    const v3 = PWD_REGEX.test(pwd);
-    if(!v1 || !v2 || !v3){
-        setMsg({type:'warning', msg:"Invalid Entry"})
-        return;
-    }
     try{
-    const response = await axios.post(REGISTER_URL,
-        JSON.stringify({username:user, password:pwd}),
-        {
-            headers:{'Content-Type': 'application/json'},
-            withCredentials: true
+   
+        // redux-rtkQuery approach
+        await register({username:user,email,password:pwd}).unwrap()
+        
+    }catch(error){
+        const err = error as AxiosError;
+            if(!err?.response){
+                setMsg({type:'danger',msg:'No Server Response'});
+            }else if(err.response?.status === 400){
+                setMsg({type:'warning',msg:'Missing form detail(s)'} )
+            }else{
+                setMsg({type:'danger',msg:'Login Failed'})
+            }
+            errRef.current?.focus();
         }
-        );
-        setMsg({type:'success',msg:'New Account successfully created!'}) 
+      setMsg({type:'success',msg:'New Account successfully created!'}) 
+
+    setSuccess(true);
     setUser('');
     setEmail('');
     setPwd('');
     setMatchPwd('');
-}catch(error){
-    const err = error as AxiosError;
-        if(!err?.response){
-            setMsg({type:'danger',msg:'No Server Response'});
-        }else if(err.response?.status === 409){
-            setMsg({type:'info',msg:'Username Taken'})
-        }else{
-            setMsg({type:'danger',msg:'Registration Failed'})
-        }
-        errRef.current?.focus();
+   
     }
-}
+
   return (
-    <>
+    <OtherBody>
     
         <div className="container h-100">
             <div className="row justify-content-center h-100 align-items-center">
@@ -169,26 +152,33 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                 <div className="auth-form">
 									<div className="text-center mb-3">
 										<Link to="index-2.html" className="brand-logo">
-											
+											<img src={logo} alt={siteName} width='150' />
 										</Link>
 									</div>
                                     <h4 className="text-center mb-4">Sign up your account</h4>
                                     <form action="" onSubmit={handleRegistration}>
-                                    {msg && <div ref={errRef} aria-live='assertive' className={`alert alert-${msg.type} alert-dismissible fade suserhow`}>
-									<>{msg.type === 'warning' 
-                                    ?<><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg><strong>Success!</strong></>
-									:
-								    msg.type === 'success' 
-                                    ?<><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" stroke-linejoin="round" className="me-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><strong>Warning!</strong></>
+                                        {success && <div ref={successRef} aria-live='assertive' className={`alert alert-success alert-dismissible suserhow`}>
+                                        <span className="d-flex"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> <strong>Success!</strong><div> &ensp; Account Registered Successfully!<br/>You can now <strong><Link to='/auth/login'>Login</Link></strong></div></span>
+                                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                        </button>
+                                    
+                                        </div>
+                                        }
+                                    {msg && <div ref={errRef} aria-live='assertive' className={`alert alert-${msg.type} alert-dismissible suserhow`}>
+									<>{
+                                    msg.type === 'warning'
+                                    ?<><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg><strong>Warning!</strong></>
 									:msg.type === 'danger'
-                                    ? <><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                                    ? <>
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
                                     <strong>Error!</strong></>
                                     :msg.type === 'danger'
                                     ? <><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg><strong>Success!</strong></> 
                                     :msg.type === 'info'
                                     ? <><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><strong>Info!</strong></> :null} {msg.msg}.
 									<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-                                    </button></>
+                                    </button>
+                                    </>
                                 </div>} 
                                         <div className="form-group"><label className="mb-1"><strong>Username</strong></label>
                                             <div className={validName? "input-group input-success":"input-group input-default"}>
@@ -204,9 +194,10 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                                 aria-invalid ={validName ? "false": "true"}
                                                 aria-describedby="uidnote"
                                                 onChange={(e)=> setUser(e.target.value)}
-                                                onKeyUp={(e)=> setUser(user)}
+                                                onKeyUp={checkDuplicates}
                                                 onFocus={()=>setUserFocus(true)}
                                                 onBlur={()=>setUserFocus(false)}
+                                                value={user}
                                                 />
                                             </div>
                                         </div>
@@ -228,6 +219,7 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                             onKeyUp={(e)=> setEmail(email)}
                                             onFocus={()=>setEmailFocus(true)}
                                             onBlur={()=>setEmailFocus(false)}
+                                            value={email}
                                              />
                                         </div>
                                         </div>
@@ -246,7 +238,7 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                             onFocus={()=>setPwdFocus(true)}
                                             onBlur={()=>setPwdFocus(false)}
                                             placeholder="password"
-                                            
+                                            value={pwd}
                                             
                                             />
                                             </div>
@@ -265,6 +257,7 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                             onChange={(e)=> setMatchPwd(e.target.value)}
                                             onFocus={()=>setMatchFocus(true)}
                                             onBlur={()=>setMatchFocus(false)}
+                                            value={matchPwd}
                                             placeholder="confirm password"
                                             />
                                             </div>
@@ -272,7 +265,7 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                         {(matchFocus && !validMatch) && <p className='alert alert-danger' id='confirmpwdnote'>Passwords do not match!</p>}
                                         <div className="text-center mt-4">
                                             <button type="submit" 
-                                            disabled={!validName || !validEmail || !validPwd || !validMatch ? true :false} className="btn btn-primary btn-block">Sign me up</button>
+                                            disabled={!validEmail && !validPwd && !validName && !validMatch} className="btn btn-primary btn-block">Sign me up</button>
                                         </div>
                                     </form>
                                     <div className="new-account mt-3">
@@ -286,7 +279,7 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
             </div>
         </div>
    
-    </>
+    </OtherBody>
   )
 }
 

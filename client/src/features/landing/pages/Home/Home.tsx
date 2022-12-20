@@ -510,7 +510,7 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
                 <div className="block-title text-center">
                     <p className="block-title__tagline">What We’re Offering</p>
                     {/* <!-- /.block-title__tagline --> */}
-                    <h2 className="block-title__title">We provide best services <br/> htmlFor your loans </h2>
+                    <h2 className="block-title__title">We provide best services <br/> For your Payments </h2>
                     {/* <!-- /.block-title__title --> */}
                 </div>
                 {/* <!-- /.block-title --> */}
@@ -529,10 +529,10 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
                                     </div>
                                     {/* <!-- /.service-card__icon --> */}
                                     <h3 className="service-card__title">
-                                        <a href="services-details.html">Auto Car Loan</a>
+                                        <a href="services-details.html">Crypto Purchase</a>
                                     </h3>
                                     {/* <!-- /.service-card__title --> */}
-                                    <p className="service-card__text">Car Loan provide low interest many variations of passages of lorem ipsum have
+                                    <p className="service-card__text">We provide low interest many variations of passages of lorem ipsum have
                                         some.</p>
                                         {/* <!-- /.service-card__text --> */}
                                     <a href="services-details.html" className="service-card__link">
@@ -561,10 +561,10 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
                                     </div>
                                     {/* <!-- /.service-card__icon --> */}
                                     <h3 className="service-card__title">
-                                        <a href="services-details.html">Wedding Loan</a>
+                                        <a href="services-details.html">Cash Transfer</a>
                                     </h3>
                                     {/* <!-- /.service-card__title --> */}
-                                    <p className="service-card__text">Car Loan provide low interest many variations of passages of lorem ipsum have
+                                    <p className="service-card__text">We provide low interest many variations of passages of lorem ipsum have
                                         some.</p>
                                         {/* <!-- /.service-card__text --> */}
                                     <a href="services-details.html" className="service-card__link">
@@ -593,10 +593,10 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
                                     </div>
                                     {/* <!-- /.service-card__icon --> */}
                                     <h3 className="service-card__title">
-                                        <a href="services-details.html">Property Loan</a>
+                                        <a href="services-details.html">Bil Payments</a>
                                     </h3>
                                     {/* <!-- /.service-card__title --> */}
-                                    <p className="service-card__text">Car Loan provide low interest many variations of passages of lorem ipsum have
+                                    <p className="service-card__text">we provide low interest many variations of passages of lorem ipsum have
                                         some.</p>
                                         {/* <!-- /.service-card__text --> */}
                                     <a href="services-details.html" className="service-card__link">
@@ -623,9 +623,9 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="block-title text-left">
-                                <p className="block-title__tagline">calculate your rate</p>
+                                <p className="block-title__tagline">Some write ups</p>
                                 {/* <!-- /.block-title__tagline --> */}
-                                <h2 className="block-title__title">How much do you need loan htmlFor you?</h2>
+                                <h2 className="block-title__title">Heading... you?</h2>
                                 {/* <!-- /.block-title__title --> */}
                             </div>
                             {/* <!-- /.block-title --> */}
@@ -646,50 +646,7 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
                 <div className="loan-calculator__box">
                     <div className="row row-gutter-x-0">
                         <div className="col-lg-6">
-                            <form className="loan-calculator__form" action="https://thegenius.co/html/finlon_new1/contact.html" id="loan-calculator" data-interest-rate="15">
-                                <div className="input-box__top">
-                                    <span>$1000</span>
-                                    <span>$40000</span>
-                                </div>
-                                {/* <!-- /.input-box__top --> */}
-                                <div className="input-box">
-                                    <div className="range-slider-count" id="range-slider-count"></div>
-                                    <input type="hidden" value="" id="min-value-rangeslider-count" />
-                                    <input type="hidden" value="" id="max-value-rangeslider-count"/>
-                                </div>
-                                {/* <!-- /.input-box --> */}
-                                <div className="input-box__top">
-                                    <span>1 Month</span>
-                                    <span>12 Months</span>
-                                </div>
-                                {/* <!-- /.input-box__top --> */}
-                                <div className="input-box">
-                                    <div className="range-slider-month" id="range-slider-month"></div>
-                                    <input type="hidden" value="" id="min-value-rangeslider-month"/>
-                                    <input type="hidden" value="" id="max-value-rangeslider-month"/>
-                                </div>
-                                {/* <!-- /.input-box --> */}
-                                <p>
-                                    <span>Pay Monthly</span>
-                                    <b>$<i id="loan-monthly-pay"></i></b>
-                                </p>
-                                <p>
-                                    <span>Term of Use</span>
-                                    <b><i id="loan-month"></i> Months</b>
-                                </p>
-                                <p>
-                                    <span>Total Pay Back</span>
-                                    <b>$<i id="loan-total"></i></b>
-                                </p>
-                                <a href="apply-now.html" className="thm-btn thm-btn--dark-hover">Apply For Loan</a>
-
-                                <div className="loan-calculator__form__terms">*These calculators are provided only as general
-                                    self-help
-                                    Planning
-                                    Tools. Results depend on other factors.</div>
-                                    {/* <!-- /.loan-calculator__terms --> */}
-                            </form>
-                            {/* <!-- /.about-one__from --> */}
+                           and  Image goes here
                         </div>
                         {/* <!-- /.col-lg-6 --> */}
                         <div className="col-lg-6">
@@ -1104,10 +1061,10 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
                                 <li>Secure</li>
                             </ul>
                             {/* <!-- /.call-to-action-two__list --> */}
-                            <h3 className="call-to-action-two__title">Get quick business loans</h3>
+                            <h3 className="call-to-action-two__title">All Payments made easy</h3>
                             
                             {/* <!-- /.call-to-action-two__title --> */}
-                            <a href="apply-now.html" className="thm-btn">Apply For Loan</a>
+                            <a href="auth/register" className="thm-btn">Sign Up Now</a>
                             {/* <!-- /.thm-btn --> */}
                             <span className="call-to-action-two__arrow">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.49 76.07">

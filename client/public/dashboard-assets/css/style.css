@@ -54,11 +54,8 @@
         _page-user-lock
 
 */
-@import url("../../../fonts.googleapis.com/css9425.css?family=Poppins:300,400,500,600,700,800");
-@import url("../../../fonts.googleapis.com/cssda6f.css?family=Open+Sans:400,600,700");
-@import url("../../../fonts.googleapis.com/cssf757.css?family=Montserrat:400,500,600,700");
-@import url("../../../fonts.googleapis.com/css1fd7.css?family=Roboto:400,500,700");
-@import url("../../../fonts.googleapis.com/css33d1.css?family=Nunito:400,600,700");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300&family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap');
+
 @import url("../icons/simple-line-icons/css/simple-line-icons.css");
 @import url("../icons/font-awesome/css/all.min.css");
 @import url("../icons/material-design-iconic-font/css/materialdesignicons.min.css");
@@ -68,10 +65,10 @@
 @import url("../icons/flaticon/flaticon.css");
 @import url("../icons/flaticon-1/flaticon_1.css");
 @import url("../icons/icomoon/icomoon.css");
-@import url("../vendor/animate/animate.min.css");
-@import url("../vendor/aos/css/aos.min.css");
-@import url("../vendor/perfect-scrollbar/css/perfect-scrollbar.css");
-@import url("../vendor/metismenu/css/metisMenu.min.css");
+@import url('../vendor/animate/animate.min.css');
+@import url('../vendor/aos/css/aos.min.css');
+@import url('../vendor/perfect-scrollbar/css/perfect-scrollbar.css');
+@import url('../vendor/metismenu/css/metisMenu.min.css');
 :root {
   --primary: #053894;
   --secondary:  #1c3953;
@@ -28552,7 +28549,7 @@ width:100%;
 div.setting{
 width:100%;
 padding:0.7rem 1.5rem;
-border-bottom: 2px solid slategray;
+/* border-bottom: 2px solid slategray; */
 }
 
 div a.setting-nav.active  { 

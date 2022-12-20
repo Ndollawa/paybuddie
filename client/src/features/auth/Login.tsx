@@ -7,24 +7,24 @@ import { Link, useNavigate, useLocation} from 'react-router-dom';
 // import useLocalStorage from '../../app/utils/hooks/useLocalStorage';
 // import useInput from '../../app/utils/hooks/useInput';
 import useToggle from '../../app/utils/hooks/useToggle';
-import siteInfo from '../../app/utils/data';
-// import useAxios from '../../app/utils/hooks/useAxios';
-import useAxiosFunc from '../../app/utils/hooks/useAxiosFunc'
 
 // react-reduct rtkquery approach
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {useCompanyDetails} from '../app/appConfigSlice'
 import {setCredentials} from './authSlice';
 import {useLoginMutation} from './authApiSlice'
+import OtherBody from '../dashboard/components/OtherBody';
 
 interface errMessages{
     type:string,
     msg:string
 }
-const LOGIN_URL = '/auth';
+
 const Login:React.FC = () => {
 
- // hooks   
-// const { setAuth }:authProps = useAuth();
+    const {siteName,logo,email,contact} = useSelector(useCompanyDetails);
+
+
 const navigate = useNavigate();
 const location = useLocation();
 
@@ -32,27 +32,10 @@ const location = useLocation();
 const [login,{isLoading}] = useLoginMutation();
 const dispatch = useDispatch();
 
-
-// const [login, error, loading] = useAxios({
-//         axiosInstance:axios,
-//         method: 'POST',
-//         url: '',
-//         requestConfig: {
-//             headers: {
-//                 'Content-Language': 'en-us'
-//             },
-//             data: {
-
-//             }
-//         }
-// })
-
-const [res, error, loading, axiosFetch] = useAxiosFunc();
 const from = location.state?.from?.pathname || '/dashboard';
 
 
 const userRef = useRef <HTMLInputElement>(null);
-const emailRef = useRef <HTMLInputElement>(null);
 const errRef = useRef <HTMLInputElement>(null);
 
 const [user,setUser] = useState('');
@@ -74,33 +57,10 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
         e.preventDefault();
 
         try{
-        //     axiosFetch({
-        //         axiosInstance:axios,
-        //         method: 'POST',
-        //         url: LOGIN_URL,
-        //         requestConfig: {
-        //             headers: {
-        //                 'Content-Language': 'en-us'
-        //             },
-        //             data: {
-        //             user:user, 
-        //             password:pwd
-        //             }
-        //         }
-        //     }
-        // );
-            // const response = await axios.post(LOGIN_URL,
-            //     JSON.stringify({user:user, password:pwd}),
-            //     {
-            //         headers:{'Content-Type': 'application/json'},
-            //         withCredentials: true
-            //     }
-            //     );
-            //     const accessToken = response?.data?.accessToken;
-            //     setAuth!({user,accessToken})
+       
             
             // redux-rtkQuery approach
-            const userData =await login({user:user,password:pwd}).unwrap()
+            const userData =await login({email:user,password:pwd}).unwrap()
             dispatch(setCredentials({...userData, user}))
             setUser('');
             setPwd('');
@@ -120,7 +80,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
         }
 
   return (
-    <>
+    <OtherBody>
         <div className="container h-100">
             <div className="row justify-content-center h-100 align-items-center">
                 <div className="col-md-6">
@@ -130,7 +90,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                 <div className="auth-form">
 									<div className="text-center mb-3">
 										<Link to="/" className="brand-logo">
-											{siteInfo.companyData?.siteName}
+											<img src={logo} alt={siteName} width='150'/>
 										</Link>
 									</div>
                                     <h4 className="text-center mb-4">Sign in your account</h4>
@@ -206,7 +166,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                 </div>
             </div>
         </div>
-    </>
+    </OtherBody>
   )
 }
 

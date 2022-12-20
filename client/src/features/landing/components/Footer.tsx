@@ -6,7 +6,7 @@ import {useCompanyDetails} from '../../app/appConfigSlice'
 
 const Footer = () => {
 
-  const {siteName,logo,email,contact,description,activeHours,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
+  const {siteName,logoDark,email,contact,description,activeHours,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
 
 
 
@@ -18,7 +18,7 @@ const Footer = () => {
                     <div className="col-lg-4 col-md-6">
                         <div className="footer-widget footer-widget--about">
                             <a href="/" className="footer-widget__logo">
-                                <img src={logo} alt="finlon" width="140" height="51" />
+                                <img src={logoDark} alt="finlon" width="140" height="51" />
                             </a>
                             <p className="footer-widget__text">{description}</p>
                             <ul className="list-unstyled footer-widget__info">

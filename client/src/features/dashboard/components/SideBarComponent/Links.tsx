@@ -42,12 +42,12 @@ export type sideBarLink ={
     },
     {
         title:'Messenger',
-        icon:<IoIosBrowsers/>,
+        icon:<IoIosBrowsers fontSize={"2rem"}/>,
         path:"/messenger"
     },
     {
         title:'Wallet',
-        icon:<IoIosBrowsers/>,
+        icon:<IoIosBrowsers fontSize={"2rem"}/>,
         path:"/wallet"
     },
     {

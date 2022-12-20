@@ -1,8 +1,24 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+
+
 const Schema = mongoose.Schema;
 
-const UserSchema =  new Schema({
+
+export interface userInterface{
+        first_name: string | undefined;
+        last_name: string | undefined;
+        email: string;
+        password: string;
+        roles: number;
+        refreshToken: string[];
+        username: string | undefined;
+        phone: string | undefined;
+        dob: string | undefined;
+        user_image: string | undefined;
+}
+// :userInterface 
+const UserSchema=  new Schema({
     first_name:{
         type:String,
     },
@@ -33,7 +49,7 @@ const UserSchema =  new Schema({
             values: [1000,1001,1002,1003],
             message: '{VALUE} is not supported'
           },
-        default:10003,
+        default:1003,
         required: true   
     //    :{
     //     type: Number,

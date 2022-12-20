@@ -1,13 +1,13 @@
 import  UserModel from '../../Models/User';
 import  bcrypt from 'bcrypt';
 import path from 'path';
-import {fileURLToPath} from 'url';
-import { MRequest, MResponse } from '../../../interfaces/interfaces';
+// import {fileURLToPath} from 'url';
+import { Request, Response } from 'express';
 // require('dotenv').config()
- const __filename = fileURLToPath(import.meta.url);
+//  const __filename = fileURLToPath(import.meta.url);
 
         // 
-        const __dirname = path.dirname(__filename);
+        // const __dirname = path.dirname(__filename);
 class RegisterController{
     constructor(){
         this.index = this.index.bind(this);
@@ -16,15 +16,15 @@ class RegisterController{
    }
 index = (req:Request, res:Response)=>{
 
-    res.render(path.join(__dirname,'../','views','register.ejs'));
+    // res.render(path.join(__dirname,'../','views','register.ejs'));
 }
     // handles user registration
-register = async (req:MRequest, res:MResponse)=>{
-    const {first_name, last_name, user_email, password, username} = req.body;
-    if(!user_email || !password)return res.status(400).json({'message': 'Email and password are required!'});
+register = async (req:Request, res:Response)=>{
+    const {username, email, password} = req.body;
+    if(!email || !password)return res.status(400).json({'message': 'Email and password are required!'});
 
     //check for duplicate emails in the DB
-    const duplicate = await UserModel.findOne({email:user_email}).exec();
+    const duplicate = await UserModel.findOne({email}||{username}).exec();
     if(duplicate)return res.sendStatus(409);// conflict
     try{
 
@@ -33,33 +33,27 @@ register = async (req:MRequest, res:MResponse)=>{
 
         // create and save new User
         const newUser = await UserModel.create({
-            "first_name":first_name,
-            "last_name":last_name,
-            'email': user_email,
+            'email': email,
             'username' : username,
             // 'roles':{'Registeror':3},
             'password':hashedPassword});
         // userDB.
-        res.status(201).json({'message':   `New user ${user_email} created!`});
+        res.status(201).json({'message':   `New user ${email} created!`});
     }catch(err:any){
         res.status(500).json({'message': err.message});
     }
 }
 
 
-checkDuplicate = async (req, res)=>{
+checkDuplicate = async (req:Request, res: Response)=>{
     const username = req?.body?.username;
     const email = req?.body?.email ;
    if(username) {
     console.log(username)
-    // if(!username)return res.status(400).json({'message': 'Email and password are required!'});
-
-    //check for duplicate username in the DB
+//check for duplicate username in the DB
     const duplicate = await UserModel.findOne({username}).exec();
     if(duplicate)return res.status(409).json({'message':  "taken"});// conflict
    }else if(email){
-    if(!email)return res.status(400).json({'message': 'E!'});
-
     //check for duplicate emails in the DB
     const duplicate = await UserModel.findOne({email}).exec();
     if(duplicate)return res.status(409).json({'message':  "taken"});// conflict

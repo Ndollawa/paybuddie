@@ -2,7 +2,7 @@ import React from 'react';
 import useImportScript from '../../../app/utils/hooks/importScript';
 // import ScriptTag from 'react-script-tag';
 
-const Js:React.FC = () => {
+const Js = () => {
   const javascript = [
     "dashboard-assets/vendor/global/global.min.js",
     "dashboard-assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js",
@@ -12,15 +12,13 @@ const Js:React.FC = () => {
     "dashboard-assets/js/dashboard/dashboard-1.js",
     "dashboard-assets/vendor/owl-carousel/owl.carousel.js",
     "dashboard-assets/js/custom.js",
-    "dashboard-assets/js/deznav-init.js",
-    "dashboard-assets/js/demo.js",
-    "dashboard-assets/js/styleSwitcher.js"
+    "dashboard-assets/js/deznav-init.js"
    
   ]	
   return (
     <>
       {
-    useImportScript(javascript)
+    // useImportScript(javascript)
    
     }
     </>
