@@ -44,20 +44,12 @@ const UserSchema=  new Schema({
         type:String
     },
     roles:{
+        User:{ 
         type:Number,
-        enum: {
-            values: [1000,1001,1002,1003],
-            message: '{VALUE} is not supported'
-          },
-        default:1003,
-        required: true   
-    //    :{
-    //     type: Number,
-    //     default: 3
-    //    },
-    //    Dev: Number,
-    //    User: Number,
-    //    Staff: Number
+        default:1003,},
+        Admin:Number,
+        Dev:Number,
+        Staff:Number, 
     },
     user_image:{
         type:String

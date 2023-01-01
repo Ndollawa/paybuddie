@@ -90,7 +90,7 @@ useEffect(()=>{
 
 
 const checkDuplicates:FormEventHandler = async (e:FormEvent) =>{
-   setValidate(user);
+  
         axiosFetch({
             axiosInstance:axios,
             method: 'POST',
@@ -103,9 +103,11 @@ const checkDuplicates:FormEventHandler = async (e:FormEvent) =>{
         }
     )
     if(!error){
-        if(res === 'available'){
-            setMsg({type:'info',msg:'Username Taken'}) 
-        }else if(res === 'taken'){
+        console.log(res)
+        if(res.message === 'available'){
+             setValidate(user);
+            setMsg({type:'success',msg:'Username Available'}) 
+        }else if(res.message === 'taken'){
             setMsg({type:'info',msg:'Username Taken'}) 
         }
     }else{
@@ -166,6 +168,9 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                         }
                                     {msg && <div ref={errRef} aria-live='assertive' className={`alert alert-${msg.type} alert-dismissible suserhow`}>
 									<>{
+                                    msg.type === 'success'
+                                    ?<><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> <strong>Success!</strong></>
+									:
                                     msg.type === 'warning'
                                     ?<><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg><strong>Warning!</strong></>
 									:msg.type === 'danger'

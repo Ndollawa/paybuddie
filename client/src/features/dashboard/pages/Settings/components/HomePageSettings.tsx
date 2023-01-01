@@ -1,21 +1,39 @@
-import React  from 'react'
+import React,{FormEvent,FormEventHandler}  from 'react';
+import { useSelector,useDispatch } from 'react-redux';
+import { useLandingPageConfig } from '../../../../app/appConfigSlice';
+import { useHomepageSettingsMutation } from '../../../../app/appConfigApiSlice';
+import { setAppHomepageSetting } from '../../../../app/appConfigSlice';
 import useInput from '../../../../../app/utils/hooks/useInput'
 
 const HomePageSettings = () => {
 
-    const [companyName, setCompanyName, companyNameAttr] = useInput("")
-const [companyEmail, setCompanyEmail, companyEmailAttr] = useInput("")
-const [companyAddress, setCompanyAddress, companyAddressAttr] = useInput("")
-const [companyContact, setCompanyContact, companyContactAttr] = useInput("")
-const [companyZipCode, setCompanyZipCode, companyZipCodeAttr] = useInput("")
-const [companyCountry, setCompanyCountry, companyCountryAttr] = useInput("")
-const [companyState, setCompanyState, companyStateAttr] = useInput("")
-const [companyCity, setCompanyCity, companyCityAttr] = useInput("")
-const [companyFacebookHandle, setCompanyFacebookHandle, companyFacebookHandleAttr] = useInput("")
-const [companyTwitterHandle, setCompanyTwitterHandle, companyTwitterHandleAttr] = useInput("")
-const [companyInstagramHandle, setCompanyInstagramHandle, companyInstagramHandleAttr] = useInput("")
-const [companyWhatsapp, setCompanyWhatsapp, companyWhatsappAttr] = useInput("")
-const [companyDescription, setCompanyDescription, companyDescriptionAttr] = useInput("")
+enum Styles{STYLE_1=1,STYLE_2, STYLE_3};
+
+const dispatch= useDispatch();
+const [homepageSettings,isLoading]=useHomepageSettingsMutation();
+
+const {navStyle,sliderStyle,aboutStyle,testimonialStyle,ourBenefitStyle,whatWeOfferStyle} = useSelector(useLandingPageConfig);
+
+
+const [aboutUsStyle, setAboutUsStyle, AboutUsStyleAttr] = useInput(aboutStyle)
+const [whatweOfferStyle, setWhatWeOfferStyle, WhatWeOfferStyleAttr] = useInput(whatWeOfferStyle)
+const [navstyle, setNavStyle, NavStyleAttr] = useInput(navStyle)
+const [testimonialstyle, setTestimonialStyle, TestimonialStyleAttr] = useInput(testimonialStyle)
+const [sliderstyle, setSliderStyle, SliderStyleAttr] = useInput(sliderStyle)
+const [ourBenefitstyle, setOurBenefitStyle, OurBenefitStyleAttr] = useInput(ourBenefitStyle)
+
+const styleOptions = [1,2,3].map(option=><option value={option}>Style {option}</option>)
+
+const updateSetting:FormEventHandler = async(e:FormEvent)=>{
+e.preventDefault()
+try {
+  await homepageSettings({}).unwrap()
+   dispatch(setAppHomepageSetting({}))
+} catch (error) {
+  
+}
+
+}
   return (
     <>
     <div className="card">
@@ -24,208 +42,147 @@ const [companyDescription, setCompanyDescription, companyDescriptionAttr] = useI
       </div>
       <div className="card-body">
         <div className="basic-form">
-          <form>
+          <form onSubmit={updateSetting}> 
             <div className="row">
-            <div className="mb-3 col-md-4">
-                <label className="form-label"><strong>Navbar Style</strong></label>
-                <select
-                  id="inputState"
-                  className="default-select form-control wide"
-                  value={companyState}
-                  onChange={setCompanyState}
-                  {...companyStateAttr}
-                >
-                  <option value="">Choose...</option>
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
-                </select>
+            <div className="mb-12 col-md-12">
+                <label className="form-label"><strong>Show Affiliate Section</strong></label>
+                <input
+                type="checkbox"
+                  className="setting-checkbox"
+                  value={navStyle}
+                  onChange={setNavStyle}
+                  {...NavStyleAttr}
+                />
+                 
               </div>
-
+            <div className="mb-12 col-md-12">
+                <label className="form-label"><strong>Show Blog Section</strong></label>
+                <input
+                type="checkbox"
+                  className="setting-checkbox"
+                  value={navstyle}
+                  onChange={setNavStyle}
+                  {...NavStyleAttr}
+                />
+                 
+              </div>
+            <div className="mb-12 col-md-12">
+                <label className="form-label"><strong>Show Testimonial Section</strong></label>
+                <input
+                type="checkbox"
+                  className="setting-checkbox "
+                  value={navStyle}
+                  onChange={setNavStyle}
+                  {...NavStyleAttr}
+                />
+                 
+              </div>
+             <br/>
+             <br/>
+             <br/>
               <div className="mb-3 col-md-4">
                 <label className="form-label"><strong>Slider Style</strong></label>
                 <select
-                  id="inputState"
                   className="default-select form-control wide"
-                  value={companyState}
-                  onChange={setCompanyState}
-                  {...companyStateAttr}
+                  value={sliderstyle}
+                  onChange={setSliderStyle}
+                  {...SliderStyleAttr}
                 >
                   <option value="">Choose...</option>
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
+                 {styleOptions}
                 </select>
               </div>
               <div className="mb-3 col-md-4">
-                <label className="form-label"><strong>Home Page Style</strong></label>
+                <label className="form-label"><strong>About Us Style</strong></label>
                 <select
-                  id="inputState"
                   className="default-select form-control wide"
-                  value={companyState}
-                  onChange={setCompanyState}
-                  {...companyStateAttr}
+                  value={aboutUsStyle}
+                  onChange={setAboutUsStyle}
+                  {...AboutUsStyleAttr}
                 >
                   <option value="">Choose...</option>
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
+                  {styleOptions}
                 </select>
 
             </div>
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Company Name</strong></label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                  value={companyName}
-                  onChange={setCompanyName}
-                  {...companyNameAttr}
-                />
-              </div>
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Company Email</strong></label>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder=""
-                  value={companyEmail}
-                  onChange={setCompanyEmail}
-                  {...companyEmailAttr}
-                />
-              </div>
-           
               
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Address</strong></label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                  value={companyAddress}
-                  onChange={setCompanyAddress}
-                  {...companyAddressAttr}
-                />
-              </div>
-             
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Contact Number</strong></label>
-                <input
-                  type="tel"
-                  className="form-control"
-                  pattern=''
-                  placeholder=""
-                  value={companyContact}
-                  onChange={setCompanyContact}
-                  {...companyContactAttr}
-                />
-              </div>
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>City</strong></label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="city"
-                  value={companyCity}
-                  onChange={setCompanyCity}
-                  {...companyCityAttr}
-                />
-              </div>
-           
-              <div className="mb-3 col-md-4">
-                <label className="form-label"><strong>State</strong></label>
+            <div className="mb-3 col-md-4">
+                <label className="form-label"><strong>Navbar Style</strong></label>
                 <select
-                  id="inputState"
                   className="default-select form-control wide"
-                  value={companyState}
-                  onChange={setCompanyState}
-                  {...companyStateAttr}
+                  value={navstyle}
+                  onChange={setNavStyle}
+                  {...NavStyleAttr}
                 >
                   <option value="">Choose...</option>
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
+                 {styleOptions}
                 </select>
               </div>
-              <div className="mb-3 col-md-2">
-                <label className="form-label"><strong>Zip</strong></label>
-                <input 
-                type="text" 
-                className="form-control"
-                value={companyZipCode}
-                onChange={setCompanyZipCode}
-                {...companyZipCodeAttr}
-                 />
-              </div>
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Country</strong></label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                  value={companyCountry}
-                  onChange={setCompanyCountry}
-                  {...companyCountryAttr}
-                />
-              </div>
-               <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Facebook Handle</strong></label>
-                <input
-                  type="url"
-                  className="form-control"
-                  placeholder="https://facebook.com/@companyName"
-                  value={companyFacebookHandle}
-                  onChange={setCompanyFacebookHandle}
-                  {...companyFacebookHandleAttr}
-                />
-              </div>
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Twitter Handle</strong></label>
-                <input
-                  type="url"
-                  className="form-control"
-                  placeholder="https://twitter.com/@companyName"
-                  value={companyTwitterHandle}
-                  onChange={setCompanyTwitterHandle}
-                  {...companyTwitterHandleAttr}
-                />
-              </div>
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Instagram Handle</strong></label>
-                <input
-                  type="url"
-                  className="form-control"
-                  placeholder="https://instagram.com/@companyName"
-                  value={companyInstagramHandle}
-                  onChange={setCompanyInstagramHandle}
-                  {...companyInstagramHandleAttr}
-                />
-              </div>
-              <div className="mb-3 col-md-6">
-                <label className="form-label"><strong>Whatsapp</strong></label>
-                <input
-                  type="url"
-                  className="form-control"
-                  placeholder="https://twhatsapp.com/@companyName"
-                  value={companyWhatsapp}
-                  onChange={setCompanyWhatsapp}
-                  {...companyWhatsappAttr}
-                />
-              </div>
-              <div className="mb-3 col-md-12">
-                <label className="form-label"><strong>Company's Description</strong></label>
-                <textarea
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                  rows="10"
-                  onChange={setCompanyDescription}
-                  {...companyDescriptionAttr}> value={companyDescription}</textarea>
               
+            <div className="mb-3 col-md-4">
+                <label className="form-label"><strong>What We Offer  Style</strong></label>
+                <select
+                  className="default-select form-control wide"
+                  value={whatweOfferStyle}
+                  onChange={setWhatWeOfferStyle}
+                  {...WhatWeOfferStyleAttr}
+                >
+                  <option value="">Choose...</option>
+                  {styleOptions}
+                </select>
               </div>
+
+              <div className="mb-3 col-md-4">
+                <label className="form-label"><strong>Testimonial Style</strong></label>
+                <select
+                  className="default-select form-control wide"
+                  value={testimonialstyle}
+                  onChange={setTestimonialStyle}
+                  {...TestimonialStyleAttr}
+                >
+                  <option value="">Choose...</option>
+                  {styleOptions}
+                </select>
+              </div>
+              <div className="mb-3 col-md-4">
+                <label className="form-label"><strong>Our Benefit Style</strong></label>
+                <select
+                  className="default-select form-control wide"
+                  value={ourBenefitstyle}
+                  onChange={setOurBenefitStyle}
+                  {...OurBenefitStyleAttr}
+                >
+                  <option value="">Choose...</option>
+                  {styleOptions}
+                </select>
+
             </div>
-            <div className="d-flex justify-right">
+                {/*  <div className="mb-3 col-md-4">
+                <label className="form-label"><strong>Primary Colour</strong></label>
+                <input
+                  type="color"
+                  className="form-control"
+                  placeholder=""
+                  value={primaryColour}
+                  onChange={setPrimaryColour}
+                  {...PrimaryColourAttr}
+                />
+              </div>
+           
+           <div className="mb-3 col-md-4">
+                <label className="form-label"><strong>Secondary Colour </strong></label>
+                <input
+                  type="color"
+                  className="form-control"
+                  placeholder=""
+                  value={WhatWeOfferStyle}
+                  onChange={setSecondaryColour}
+                  {...SecondaryColourAttr}
+                />
+              </div> */}
+               
+            </div>
+            <div className="d-flex justify-content-end">
             <button type="submit" className="btn btn-primary">
               Update Site Info
             </button></div>

@@ -60,7 +60,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
        
             
             // redux-rtkQuery approach
-            const userData =await login({email:user,password:pwd}).unwrap()
+            const userData = await login({user,password:pwd}).unwrap()
             dispatch(setCredentials({...userData, user}))
             setUser('');
             setPwd('');
@@ -72,6 +72,8 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                     setErrMsg({type:'danger',msg:'No Server Response'});
                 }else if(err.response?.status === 400){
                     setErrMsg({type:'warning',msg:'Missing form detail(s)'} )
+                }else if(err.response?.status === 401){
+                    setErrMsg({type:'warning',msg:'Invalid Credentials'} )
                 }else{
                     setErrMsg({type:'danger',msg:'Login Failed'})
                 }
@@ -105,7 +107,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                     </button></>
                                 </div>} 
                                         <div className="form-group">
-                                            <label className="mb-1"><strong>Email / Username</strong></label>
+                                            <label className="mb-1"><strong>Email or Username</strong></label>
                                             <div className={`input-group input-default`}>
                                             <span className="input-group-text"><FaRegUserCircle fontSize='1rem'/></span>
                                             <input 

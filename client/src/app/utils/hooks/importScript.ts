@@ -9,7 +9,7 @@ const useImportScript = (resourceUrl:string[])=> {
     script.src = url;
     script.type='text/javascript';
     script.async = false;
-    script.defer = false;
+    script.defer = true;
     // script.type = 'module';
 
   script.onload = () => {

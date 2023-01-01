@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+interface notificationProps{
+	toggleNotification:boolean;
+}
+
 const Notification = () => {
   return (
-    <div className="dropdown-menu dropdown-menu-end">
+	<>
                                     <div id="dlab_W_Notification1" className="widget-media dz-scroll p-3 height380">
 										<ul className="timeline">
 											<li>
@@ -75,7 +79,7 @@ const Notification = () => {
 										</ul>
 									</div>
                                     <Link className="all-notification" to=''>See all notifications <i className="ti-arrow-right"></i></Link>
-                                </div>
+                                </>
   )
 }
 

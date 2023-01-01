@@ -13,6 +13,7 @@ import cookieParser from 'cookie-parser';
 import credentials from './src/app/Http/Middleware/credentials';
 import mongoose from 'mongoose';
 import connectDB from './src/config/dbConn';
+import SettingsRoutes from './src/app/Routes/api/settings'
 // import PostRoutes from './src/app/Routes/api/post';
 // import UserRoutes from './src/app/Routes/api/user';
 import RefreshRoute from './src/app/Routes/api/refresh';
@@ -76,7 +77,7 @@ app.use('/auth',AuthRoutes);
 
 app.use(verifyJWT);
 //user routes
-// app.use('/user', UserRoutes);
+app.use('/settings', SettingsRoutes);
 app.all('*',(req,res)=>{
     res.sendStatus(404);
     ;

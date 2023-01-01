@@ -4,8 +4,27 @@ import ChatList from './ChatBoxComponents/ChatList'
 import ChatModal from './ChatBoxComponents/ChatModal'
 import NotesList from './ChatBoxComponents/NotesList'
 import NotificationList from './ChatBoxComponents/NotificationList'
+import $ from 'jquery'
 
 const Chatbox = () => {
+
+	var handleDzChatUser = function() {
+		$('.dz-chat-user-box .dz-chat-user').on('click',function(){
+			$('.dz-chat-user-box').addClass('d-none');
+			$('.dz-chat-history-box').removeClass('d-none');
+		}); 
+		
+		$('.dz-chat-history-back').on('click',function(){
+			$('.dz-chat-user-box').removeClass('d-none');
+			$('.dz-chat-history-box').addClass('d-none');
+		}); 
+		
+		$('.dz-fullscreen').on('click',function(){
+			$('.dz-fullscreen').toggleClass('active');
+		});
+	}
+	handleDzChatUser()
+	
   return (
  <>
     <div className="chatbox">

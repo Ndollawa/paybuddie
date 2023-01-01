@@ -20,7 +20,7 @@ const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
     <>
     <Head pageData={pageData}/>
  
-    <body className="custom-cursor">
+    <div className="custom-cursor">
 
     <div className="custom-cursor__cursor"></div>
     <div className="custom-cursor__cursor-two"></div>
@@ -54,10 +54,9 @@ const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
     {/* <!-- /.search-popup --> */}
 
     <Link to="#" data-target="html" className="scroll-to-target scroll-to-top"><i className="fa fa-angle-up"></i></Link>
-        <Js/>
-        </body>
-                {/* { useImportScript(javascript) } */}
+        </div>
 
+        <Js/>
     </>
   )
 }

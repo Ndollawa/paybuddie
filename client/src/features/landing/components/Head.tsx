@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet-async';
 import pageProps from "../../../app/utils/props/pageProps";
 import { useSelector } from 'react-redux';
 import {useCompanyDetails} from '../../app/appConfigSlice';
@@ -9,14 +10,10 @@ const Head:React.FC<pageProps> = ({pageData}:pageProps) => {
 const {pageTitle} = pageData!;
 const {siteName,favicon,description} = useSelector(useCompanyDetails); 
   return (
-    <head>
+    <Helmet>
     <meta charSet="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     {/* <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    --> */}
-    <link rel="manifest" href="/manifest.json" />
+   
     <title>{pageTitle+" - "+siteName}</title>
    
     <link rel="apple-touch-icon" sizes="180x180" href={favicon}/>
@@ -45,7 +42,7 @@ const {siteName,favicon,description} = useSelector(useCompanyDetails);
     <link rel="stylesheet" href="/assets/vendors/owl-carousel/assets/owl.theme.default.min.css" type='text/css' />
 
     <link rel="stylesheet" href="/assets/css/finlon.css" type='text/css' />
-</head>
+</Helmet>
   )
 }
 

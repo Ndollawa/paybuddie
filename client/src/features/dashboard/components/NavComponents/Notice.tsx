@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
+interface alertProps{
+	toggleAlert:boolean;
+}
 //bages [info, danger, success,primary, warning]
 const Notice = () => {
   return (

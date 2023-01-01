@@ -1,9 +1,11 @@
-import React from 'react';
+import React
+,{useEffect} from 'react';
 import MainBody from '../../components/MainBody';
 import { Link, NavLink ,Outlet} from 'react-router-dom';
-
+import $ from 'jquery';
 
 const SiteSettings = () => {
+ 
   return (
     <MainBody>
     <div className="row jumbotron"> 

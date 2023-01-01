@@ -17,7 +17,7 @@ class AuthController{
     login = async (req:Request, res:Response)=>{
         const cookies = req.cookies;
         const {user, password} = req.body;
-        console.log(user)
+
     if(!user || !password)return res.status(400).json({'message': 'Email/Username and password are required!'});
 
     //check for user  in the DB || username:username
@@ -29,15 +29,15 @@ class AuthController{
     }else{
     foundUser = await UserModel.findOne({username:user}).exec();
     }
-    console.log(foundUser)
-    if(!foundUser)return res.sendStatus(401);// unauthorized
+
+    if(!foundUser)return res.status(401).json({"message":"No User with Credentials"});// unauthorized
     try{
 
         //evaluate password
         const match = await bcrypt.compare(password,foundUser.password);
         if(match){
             //create JWTs
-            const roles = Object.values(foundUser.roles);
+            const roles = Object.values(foundUser.roles).filter(Boolean);
             const accessToken = jwt.sign(
                 {
                     'userInfo':{
@@ -82,7 +82,7 @@ class AuthController{
             res.json({accessToken})
 
     } else{
-            res.sendStatus(401);
+            res.status(401).json({"message":"Incorrect password or credentials"});
         }
       
     }catch(err:any){
@@ -149,6 +149,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
             foundUser.refreshToken = [...newRefeshTokenArray];
             const result = await foundUser.save();
         }
+        console.log(decodedToken.email)
             if(err || foundUser.email !== decodedToken.email) return res.sendStatus(403);// forbidden
             const roles = Object.values(foundUser.roles);
             const accessToken =jwt.sign(

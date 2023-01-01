@@ -25,8 +25,8 @@ const SideBar:React.FC<pageProps> = ({pageData,}:pageProps) => {
             </div>
             <SideNav/>
             <div className="copyright bottom-0">
-                <p><strong>{siteName}</strong> © 2021 All Rights Reserved</p>
-                <p className="fs-12">Made with <span className="heart"></span> by <a href="mailto:foundictsolutions@gmail.com">Found ICT Solutions</a></p>
+                <p><strong>{siteName}</strong><br/> © 2022 -  All Rights Reserved</p>
+                <p className="fs-12">Made with <span className="fa fa-heart"></span> by <a href="mailto:foundictsolutions@gmail.com">Found ICT Solutions</a></p>
             </div>
         </div>
     </div>

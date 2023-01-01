@@ -1,7 +1,6 @@
 import React from 'react'
 import {Navigate, Routes,Route} from 'react-router-dom';
 import RequireAuth from './features/dashboard/components/RequireAuth';
-import PersistentLogin from './features/auth/PersistentLogin';
 import Home from './features/landing/Index'
 import HomePage from './features/landing/pages/Home/Home';
 
@@ -103,8 +102,7 @@ const [pageTitle, setPageTitle] = React.useState("Home");
              {/* End Public Routes */}
 
               {/* Protected Routes */}
-            {/* <Route element={<PersistLogin/>} > */}
-            {/* <Route element={<RequireAuth allowedRoles={[1000,10001,1002,10003]} />} > */}
+            {/* <Route element={<RequireAuth allowedRoles={[1000,1001,1002,1003]} />} > */}
             <Route path="/dashboard" element={<Layout pageData={{pageTitle:"Dashboard"}}/>} >
                   <Route index element={<DashboardHomepage/>} />
                   <Route path="profile" element={<Profile pageData={{pageTitle:"Profile"}}/>} />
@@ -135,7 +133,6 @@ const [pageTitle, setPageTitle] = React.useState("Home");
              {/* End Protected Routes */}
 
 
-            {/* </Route> */}
             {/* </Route> */}
            
             <Route path='*'  element={<Navigate to="error/404"/>}/>

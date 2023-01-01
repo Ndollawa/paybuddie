@@ -1,6 +1,7 @@
-import React from 'react';
+import React,{useState} from 'react';
 import $ from 'jquery';
 import { Link, useNavigate } from 'react-router-dom';
+import useWindowSize from '../../../app/utils/hooks/useWindowSize';
 import Notification from './NavComponents/Notification';
 import pageProps from '../../../app/utils/props/pageProps';
 import Notice from './NavComponents/Notice';
@@ -10,6 +11,9 @@ import {logOut} from '../../auth/authSlice';
 
 
 const Nav:React.FC<pageProps> = ({pageData}:pageProps) => {
+    const [toggleNotification,setToggleNotification]= useState(false);
+    const [toggleAlert,setToggleAlert]= useState(false);
+    const [toggleUserDropdwn,setToggleUserDropdwn]= useState(false);
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const handleLogout = async () =>{
@@ -17,7 +21,7 @@ const Nav:React.FC<pageProps> = ({pageData}:pageProps) => {
         navigate('/')
    }
    
-   
+   const {width, height} = useWindowSize()
    const {siteName,logo,logoDark} = useSelector(useCompanyDetails);
 
    const toggleFullscreen = ()=>{
@@ -53,7 +57,87 @@ const showSideChat = ()=>{
         $('.chatbox').removeClass('active');
     });
 }
- 
+React.useEffect(() => {
+  const handleMenuTabs = () =>{
+// console.log(width)
+    if(width !== undefined && width <= 991 ){
+       $('.menu-tabs .nav-link').on('click',function(){
+            if($(this).hasClass('open'))
+            {
+               $(this).removeClass('open');
+               $('.fixed-content-box').removeClass('active');
+               $('.hamburger').show();
+            }else{
+               $('.menu-tabs .nav-link').removeClass('open');
+               $(this).addClass('open');
+               $('.fixed-content-box').addClass('active');
+               $('.hamburger').hide();
+            }
+            //jQuery('.fixed-content-box').toggleClass('active');
+        });
+       $('.close-fixed-content').on('click',function(){
+           $('.fixed-content-box').removeClass('active');
+           $('.hamburger').removeClass('is-active');
+           $('#main-wrapper').removeClass('menu-toggle');
+           $('.hamburger').show();
+        });
+    }
+}
+
+handleMenuTabs();
+const handleMenuPosition =()=>{
+		
+    if(width! > 1024){
+        $(".metismenu  li").unbind().each(function (e) {
+            if ($('ul', this).length > 0) {
+                var elm = $('ul:first', this).css('display','block');
+                
+                var off = elm.offset();
+                var l = off?.left;
+                var w = elm.width()!;
+                var elm = $('ul:first', this).removeAttr('style');
+                var docH = $("body").height();
+                var docW = $("body").width()!;
+                
+                if($('html').hasClass('rtl')){
+                    var isEntirelyVisible = (l! + w <= docW);	
+                }else{
+                    var isEntirelyVisible = (l! > 0)?true:false;	
+                }
+                    
+                if (!isEntirelyVisible) {
+                    $(this).find('ul:first').addClass('left');
+                } else {
+                    $(this).find('ul:first').removeClass('left');
+                }
+            }
+        });
+    }
+}	
+handleMenuPosition();
+return () => {
+    $('.menu-tabs .nav-link').off();
+$('.close-fixed-content').off();
+  };
+}, [width])
+
+const handleThemeMode = () =>{
+	    $('.dz-theme-mode').toggleClass('active');
+        
+        if($('.dz-theme-mode').hasClass('active')){
+            $('body').attr('data-theme-version','dark');
+        }else{
+            $('body').attr('data-theme-version','light');
+        }
+   
+}
+
+var handleAllChecked = function() {
+    $("#checkAll").on('change',function() {
+        $("td input:checkbox, .email-list .custom-checkbox input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+}
+ handleAllChecked()
   return (
     <>
             <nav className="navbar navbar-expand">
@@ -76,7 +160,14 @@ const showSideChat = ()=>{
                         </div>
                         <ul className="navbar-nav header-right main-notification">
 							<li className="nav-item dropdown notification_dropdown">
-                                <Link className="nav-link bell dz-theme-mode" to="">
+                                <Link className="nav-link bell dz-theme-mode" to="./settings" >
+									<i  className="fas fa-cog"></i>
+                                  
+									
+                                </Link>
+							</li>
+							<li className="nav-item dropdown notification_dropdown">
+                                <Link className="nav-link bell dz-theme-mode" to="" role='button' onClick={handleThemeMode}>
 									<i id="icon-light" className="fas fa-sun"></i>
                                     <i id="icon-dark" className="fas fa-moon"></i>
 									
@@ -89,13 +180,16 @@ const showSideChat = ()=>{
                                 </Link>
 							</li>
 							<li className="nav-item dropdown notification_dropdown">
-                                <Link className="nav-link  ai-icon" to="" role="button" data-bs-toggle="dropdown">
+                                <Link className={toggleNotification? "show nav-link ai-icon":"nav-link  ai-icon"} to="" role="button" data-bs-toggle="dropdown" onClick={()=>{setToggleNotification(prev=> !prev);setToggleAlert(false);setToggleUserDropdwn(false)}}>
                                    <svg className="bell-icon" width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="../../www.w3.org/2000/svg.html">
 										<path d="M22.75 15.8385V13.0463C22.7471 10.8855 21.9385 8.80353 20.4821 7.20735C19.0258 5.61116 17.0264 4.61555 14.875 4.41516V2.625C14.875 2.39294 14.7828 2.17038 14.6187 2.00628C14.4546 1.84219 14.2321 1.75 14 1.75C13.7679 1.75 13.5454 1.84219 13.3813 2.00628C13.2172 2.17038 13.125 2.39294 13.125 2.625V4.41534C10.9736 4.61572 8.97429 5.61131 7.51794 7.20746C6.06159 8.80361 5.25291 10.8855 5.25 13.0463V15.8383C4.26257 16.0412 3.37529 16.5784 2.73774 17.3593C2.10019 18.1401 1.75134 19.1169 1.75 20.125C1.75076 20.821 2.02757 21.4882 2.51969 21.9803C3.01181 22.4724 3.67904 22.7492 4.375 22.75H9.71346C9.91521 23.738 10.452 24.6259 11.2331 25.2636C12.0142 25.9013 12.9916 26.2497 14 26.2497C15.0084 26.2497 15.9858 25.9013 16.7669 25.2636C17.548 24.6259 18.0848 23.738 18.2865 22.75H23.625C24.321 22.7492 24.9882 22.4724 25.4803 21.9803C25.9724 21.4882 26.2492 20.821 26.25 20.125C26.2486 19.117 25.8998 18.1402 25.2622 17.3594C24.6247 16.5786 23.7374 16.0414 22.75 15.8385ZM7 13.0463C7.00232 11.2113 7.73226 9.45223 9.02974 8.15474C10.3272 6.85726 12.0863 6.12732 13.9212 6.125H14.0788C15.9137 6.12732 17.6728 6.85726 18.9703 8.15474C20.2677 9.45223 20.9977 11.2113 21 13.0463V15.75H7V13.0463ZM14 24.5C13.4589 24.4983 12.9316 24.3292 12.4905 24.0159C12.0493 23.7026 11.716 23.2604 11.5363 22.75H16.4637C16.284 23.2604 15.9507 23.7026 15.5095 24.0159C15.0684 24.3292 14.5411 24.4983 14 24.5ZM23.625 21H4.375C4.14298 20.9999 3.9205 20.9076 3.75644 20.7436C3.59237 20.5795 3.50014 20.357 3.5 20.125C3.50076 19.429 3.77757 18.7618 4.26969 18.2697C4.76181 17.7776 5.42904 17.5008 6.125 17.5H21.875C22.571 17.5008 23.2382 17.7776 23.7303 18.2697C24.2224 18.7618 24.4992 19.429 24.5 20.125C24.4999 20.357 24.4076 20.5795 24.2436 20.7436C24.0795 20.9076 23.857 20.9999 23.625 21Z" fill="#EB8153"/>
 									</svg>
 									<div className="pulse-css"></div>
                                 </Link>
-								<Notification/>
+
+                                <div className={toggleNotification? "show dropdown-menu dropdown-menu-end":"dropdown-menu dropdown-menu-end"}>
+								<Notification />
+                                </div>
 							</li>
 							<li className="nav-item dropdown notification_dropdown">
                                 <div className="nav-link bell bell-link" onClick={showSideChat}>
@@ -107,25 +201,26 @@ const showSideChat = ()=>{
                                 </div>
 							</li>
 							<li className="nav-item dropdown notification_dropdown d-sm-flex d-none">
-                                <Link className="nav-link  ai-icon" to="" role="button" data-bs-toggle="dropdown">
+                                <Link className={toggleAlert? "show nav-link ai-icon":"nav-link  ai-icon"} to="" role="button" data-bs-toggle="dropdown" onClick={()=>{setToggleAlert(prev=> !prev);setToggleNotification(false);setToggleUserDropdwn(false)}}>
                                   <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="../../www.w3.org/2000/svg.html">
 										<path d="M23.625 6.12506H22.75V2.62506C22.75 2.47268 22.7102 2.32295 22.6345 2.19068C22.5589 2.05841 22.45 1.94819 22.3186 1.87093C22.1873 1.79367 22.0381 1.75205 21.8857 1.75019C21.7333 1.74832 21.5831 1.78629 21.4499 1.86031L14 5.99915L6.55007 1.86031C6.41688 1.78629 6.26667 1.74832 6.11431 1.75019C5.96194 1.75205 5.8127 1.79367 5.68136 1.87093C5.55002 1.94819 5.44113 2.05841 5.36547 2.19068C5.28981 2.32295 5.25001 2.47268 5.25 2.62506V6.12506H4.375C3.67904 6.12582 3.01181 6.40263 2.51969 6.89475C2.02757 7.38687 1.75076 8.0541 1.75 8.75006V11.3751C1.75076 12.071 2.02757 12.7383 2.51969 13.2304C3.01181 13.7225 3.67904 13.9993 4.375 14.0001H5.25V23.6251C5.25076 24.321 5.52757 24.9882 6.01969 25.4804C6.51181 25.9725 7.17904 26.2493 7.875 26.2501H20.125C20.821 26.2493 21.4882 25.9725 21.9803 25.4804C22.4724 24.9882 22.7492 24.321 22.75 23.6251V14.0001H23.625C24.321 13.9993 24.9882 13.7225 25.4803 13.2304C25.9724 12.7383 26.2492 12.071 26.25 11.3751V8.75006C26.2492 8.0541 25.9724 7.38687 25.4803 6.89475C24.9882 6.40263 24.321 6.12582 23.625 6.12506ZM21 6.12506H17.3769L21 4.11256V6.12506ZM7 4.11256L10.6231 6.12506H7V4.11256ZM7 23.6251V14.0001H13.125V24.5001H7.875C7.64303 24.4998 7.42064 24.4075 7.25661 24.2434C7.09258 24.0794 7.0003 23.857 7 23.6251ZM21 23.6251C20.9997 23.857 20.9074 24.0794 20.7434 24.2434C20.5794 24.4075 20.357 24.4998 20.125 24.5001H14.875V14.0001H21V23.6251ZM24.5 11.3751C24.4997 11.607 24.4074 11.8294 24.2434 11.9934C24.0794 12.1575 23.857 12.2498 23.625 12.2501H4.375C4.14303 12.2498 3.92064 12.1575 3.75661 11.9934C3.59258 11.8294 3.5003 11.607 3.5 11.3751V8.75006C3.5003 8.51809 3.59258 8.2957 3.75661 8.13167C3.92064 7.96764 4.14303 7.87536 4.375 7.87506H23.625C23.857 7.87536 24.0794 7.96764 24.2434 8.13167C24.4074 8.2957 24.4997 8.51809 24.5 8.75006V11.3751Z" fill="#EB8153"/>
 									</svg>
                                 </Link>
-								<div className="dropdown-menu dropdown-menu-end p-3">
+								
+                            <div className={toggleAlert? "show dropdown-menu dropdown-menu-end":"dropdown-menu dropdown-menu-end"}>
 									<Notice/>
 								</div>
                             </li>
                             <li className="nav-item dropdown header-profile">
-                                <Link className="nav-link" to="#" role="button" data-bs-toggle="dropdown">
+                                <Link className="nav-link" to="#" role="button"  onClick={()=>{setToggleUserDropdwn(prev =>!prev);setToggleNotification(false);setToggleAlert(false);}} data-bs-toggle="dropdown">
                                     <img src="dashboard-assets/images/profile/pic1.jpg" width="20" alt=""/>
 									<div className="header-info">
 										<span>Johndoe</span>
 										<small>Super Admin</small>
 									</div>
                                 </Link>
-                                <div className="dropdown-menu dropdown-menu-end">
-                                    <Link to="/profile" className="dropdown-item ai-icon">
+                                <div className={toggleUserDropdwn? "show dropdown-menu dropdown-menu-end":"dropdown-menu dropdown-menu-end"} data-bs-popper="none">
+                                    <Link to="/profile" className="dropdown-item ai-icon" >
                                         <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" className="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span className="ms-2">Profile </span>
                                     </Link>

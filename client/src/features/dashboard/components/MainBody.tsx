@@ -1,16 +1,21 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { Link } from "react-router-dom";
+import $ from 'jquery'
 import Preloader from "./Preloader";
 import Header from "./Header";
 import SideBar from "./SideBar";
 import Chatbox from "./ChatBox";
 import Footer from "./Footer";
 import { useSelector } from 'react-redux';
-import {useCompanyDetails,useDashboardConfig} from '../../app/appConfigSlice'
+import {useCompanyDetails,useDashboardConfig} from '../../app/appConfigSlice';
+import useWindowSize from "../../../app/utils/hooks/useWindowSize";
+import AppSettiings from "./AppSettiings";
+import ThemePanel from "./ThemePanel";
+
 
 const MainBody = ({children}:any) => {
     const [isToggled,setIsToggled] = useState(false);
-
+    const {width, height} =useWindowSize();
   const isPreloading = true;    
 const pageData ={
     pageTitle: ''
@@ -38,9 +43,62 @@ setIsToggled(prev=> !prev);
 }
 let  menuWrapperStyle = isPreloading ? "show" : "";
 menuWrapperStyle += isToggled? " menu-toggle" : ""
+
+useEffect(() => {
+var body = $('#body');
+var html = $('html');
+    if(width! < 1200) {
+        body.attr("data-layout", "vertical");
+        body.attr("data-container", "wide");
+    }
+
+    if(width! > 767 && width! < 1200) {
+        body.attr("data-sidebar-style", "mini");
+    }
+
+    if(width! < 768) {
+        body.attr("data-sidebar-style", "overlay");
+    }
+
+    
+//   return () => {
+//     effect
+//   };
+}, [width])
+
+var handleMiniSidebar = function() {
+    $("ul#menu>li").on('click', function() {
+        const sidebarStyle = $('#body').attr('data-sidebar-style');
+        if (sidebarStyle === 'mini') {
+            // console.log($(this).find('ul'))
+            $(this).find('ul').stop()
+        }
+    })
+}
+handleMiniSidebar()
+
+var handleMinHeight = function() {
+    var win_h = window.outerHeight;
+    var win_h = window.outerHeight;
+    if (win_h > 0 ? win_h : height) {
+        $(".content-body").css("min-height", (win_h + 60) + "px");
+    };
+}
+handleMinHeight()
+
+var handleHeaderHight = function() {
+    const headerHight = $('.header').innerHeight();
+    $(window).scroll(function() {
+        if ($('#body').attr('data-layout') === "horizontal" && $('#body').attr('data-header-position') === "static" && $('#body').attr('data-sidebar-position') === "fixed")
+            $(this.window).scrollTop()! >= headerHight! ? $('.deznav').addClass('fixed') : $('.deznav').removeClass('fixed')
+    });
+}
+handleHeaderHight()
+
+
   return (
    <>
-   <body  data-typography={typography} data-theme-version={version} data-layout={layout} data-nav-headerbg={headerBg} data-headerbg={navheaderBg} data-sidebar-style={sidebarStyle} data-sidebarbg={sidebarBg} data-sidebar-position={sidebarPosition} data-header-position={headerPosition} data-container={containerLayout} data-direction={direction} data-primary={primary}>
+   <div  id="body" data-typography={typography} data-theme-version={version} data-layout={layout} data-nav-headerbg={headerBg} data-headerbg={navheaderBg} data-sidebar-style={sidebarStyle} data-sidebarbg={sidebarBg} data-sidebar-position={sidebarPosition} data-header-position={headerPosition} data-container={containerLayout} data-direction={direction} data-primary={primary}>
 
 {/* <!--*******************
     Preloader startdirection={direction}
@@ -60,7 +118,7 @@ menuWrapperStyle += isToggled? " menu-toggle" : ""
     ***********************************--> */}
            <div className="nav-header">
             <Link to="/dashboard" className="brand-logo">
-              {isToggled?<img src={favicon} alt={siteName} width='50'/> :<img src={logo} alt={siteName} width='150'/>} 
+              {(isToggled || width! < 728) ?<img src={favicon} alt={siteName} width='30'/> :<img src={version === 'dark'? logoDark : logo} alt={siteName} width='150'/>} 
             </Link>
 
             <div className="nav-control">
@@ -97,7 +155,7 @@ menuWrapperStyle += isToggled? " menu-toggle" : ""
 							<option>Surabaya, IDN</option>
 						</select>
 					</div>
-					<a href="javascript:void(0);" className="btn btn-secondary mb-2"><i className="las la-calendar scale5 me-3"></i>Filter Periode</a>
+					<Link to="" role="button" className="btn btn-secondary mb-2"><i className="las la-calendar scale5 me-3"></i>Filter Periode</Link>
 				</div>
    {children}
    
@@ -105,7 +163,9 @@ menuWrapperStyle += isToggled? " menu-toggle" : ""
         </div>
         <Footer />
       </div>
-    </body>
+        <AppSettiings/>
+        <ThemePanel/>
+    </div>
    </>
   )
 }

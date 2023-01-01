@@ -1,27 +1,55 @@
 import React,{FormEvent, FormEventHandler} from "react";
+import { useDispatch ,useSelector} from "react-redux";
 import useInput from "../../../../../app/utils/hooks/useInput";
+import { useGeneralSettingsMutation } from "../../../../app/appConfigApiSlice";
+import { setAppGeneralSetting } from "../../../../app/appConfigSlice";
+import { useCompanyDetails } from "../../../../app/appConfigSlice";
 
 const GeneralSettings = () => {
+const dispatch = useDispatch();
+const {email,contact,zip,description,siteName,activeHours,city,state,country,address,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
+const [generalSettings,isLoading] = useGeneralSettingsMutation();
 
-const [companyName, setCompanyName, companyNameAttr] = useInput("")
-const [companyEmail, setCompanyEmail, companyEmailAttr] = useInput("")
-const [companyAddress, setCompanyAddress, companyAddressAttr] = useInput("")
-const [companyContact, setCompanyContact, companyContactAttr] = useInput("")
-const [companyActiveHours, setCompanyActiveHours, companyActiveHoursAttr] = useInput("")
-const [companyZipCode, setCompanyZipCode, companyZipCodeAttr] = useInput("")
-const [companyCountry, setCompanyCountry, companyCountryAttr] = useInput("")
-const [companyState, setCompanyState, companyStateAttr] = useInput("")
-const [companyCity, setCompanyCity, companyCityAttr] = useInput("")
-const [companyFacebookHandle, setCompanyFacebookHandle, companyFacebookHandleAttr] = useInput("")
-const [companyTwitterHandle, setCompanyTwitterHandle, companyTwitterHandleAttr] = useInput("")
-const [companyInstagramHandle, setCompanyInstagramHandle, companyInstagramHandleAttr] = useInput("")
-const [companyWhatsapp, setCompanyWhatsapp, companyWhatsappAttr] = useInput("")
-const [companyDescription, setCompanyDescription, companyDescriptionAttr] = useInput("")
+
+const [companyName, setCompanyName, companyNameAttr] = useInput(siteName)
+const [companyEmail, setCompanyEmail, companyEmailAttr] = useInput(email)
+const [companyAddress, setCompanyAddress, companyAddressAttr] = useInput(address)
+const [companyContact, setCompanyContact, companyContactAttr] = useInput(contact)
+const [companyActiveHours, setCompanyActiveHours, companyActiveHoursAttr] = useInput(activeHours)
+const [companyZipCode, setCompanyZipCode, companyZipCodeAttr] = useInput(zip)
+const [companyCountry, setCompanyCountry, companyCountryAttr] = useInput(country)
+const [companyState, setCompanyState, companyStateAttr] = useInput(state)
+const [companyCity, setCompanyCity, companyCityAttr] = useInput(city)
+const [companyFacebookHandle, setCompanyFacebookHandle, companyFacebookHandleAttr] = useInput(facebookHandle)
+const [companyTwitterHandle, setCompanyTwitterHandle, companyTwitterHandleAttr] = useInput(twitterHandle)
+const [companyInstagramHandle, setCompanyInstagramHandle, companyInstagramHandleAttr] = useInput(instagram)
+const [companyWhatsapp, setCompanyWhatsapp, companyWhatsappAttr] = useInput(whatsapp)
+const [companyDescription, setCompanyDescription, companyDescriptionAttr] = useInput(description)
 
 const handleSubmit:FormEventHandler = async(e:FormEvent)=>{
 e.preventDefault();
-try{
+const data ={
+      siteName:companyName,
+      // logo:logo,
+      // logoDark:logoDark,
+      zip:companyZipCode,
+      city:companyCity,
+      state:companyState,
+      country:companyCountry,
+      description:companyDescription,
+      email:[companyEmail],
+      contact:[companyContact],
+      address:companyAddress,
+      activeHours:companyActiveHours,
+      facebookHandle:companyFacebookHandle,
+      twitterHandle:companyTwitterHandle,
+      instagram:companyInstagramHandle,
+      whatsapp:companyWhatsapp
   
+  }
+try{
+  const res = await generalSettings(data).unwrap()
+dispatch(setAppGeneralSetting(data))
 }catch(error){
   
 }
@@ -79,7 +107,7 @@ try{
                   <input
                     type="tel"
                     className="form-control"
-                    pattern=''
+                   
                     placeholder=""
                     value={companyContact}
                     onChange={setCompanyContact}
@@ -116,7 +144,7 @@ try{
                 <div className="mb-3 col-md-2">
                   <label className="form-label"><strong>Zip</strong></label>
                   <input 
-                  type="text" 
+                  type="number" 
                   className="form-control"
                   value={companyZipCode}
                   onChange={setCompanyZipCode}
@@ -201,7 +229,7 @@ try{
                 
                 </div>
               </div>
-              <div className="d-flex justify-right">
+              <div className="d-flex justify-content-end">
               <button type="submit" className="btn btn-primary">
                 Update Site Info
               </button></div>

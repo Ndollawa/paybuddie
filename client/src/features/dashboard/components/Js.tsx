@@ -11,9 +11,6 @@ const Js = () => {
     "dashboard-assets/vendor/apexchart/apexchart.js",
     "dashboard-assets/js/dashboard/dashboard-1.js",
     "dashboard-assets/vendor/owl-carousel/owl.carousel.js",
-    "dashboard-assets/js/custom.js",
-    "dashboard-assets/js/deznav-init.js"
-   
   ]	
   return (
     <>

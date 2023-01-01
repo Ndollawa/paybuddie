@@ -3,21 +3,24 @@ import logo from '../../paybuddie4.png'
 import logoDark from '../../paybuddie-white.png'
 import favicon from '../../favicon.png'
 
-enum Styles{STYLE_1,STYLE_2, STYLE_3};
-enum homeStyles {STYLE_1, STYLE_2, STYLE_3}
+enum Styles{STYLE_1=1,STYLE_2, STYLE_3};
 const initialState = {
         landingPageConfig:{
             navStyle:Styles.STYLE_1,
-            homeStyle:homeStyles.STYLE_1
+            sliderStyle:Styles.STYLE_1,
+            aboutStyle:Styles.STYLE_1,
+            testimonialStyle:Styles.STYLE_1,
+            ourBenefitStyle:Styles.STYLE_2,
+            whatWeOfferStyle:Styles.STYLE_1
         },
         dashboardConfig:{
             layoutOptions: {
             typography: "poppins",
             version: "light",
             layout: "vertical",
-            headerBg: "color_1",
-            primary: "color_1",
-            navheaderBg: "color_1",
+            headerBg: "color_4",
+            primary: "color_4",
+            navheaderBg: "color_4",
             sidebarBg: "color_1",
             sidebarStyle: "full",
             sidebarPosition: "fixed",
@@ -32,6 +35,10 @@ const initialState = {
             logo:logo,
             logoDark:logoDark,
             favicon:favicon,
+            city:"",
+            state:"",
+            country:"",
+            zip:"",
             description:"Some brief description here about the company would do!",
             email:["paybuddie@support.com"],
             contact:['08155393750'],
@@ -41,6 +48,11 @@ const initialState = {
             twitterHandle:"https://www.twitter.com/paybuddie",
             instagram:"https://www.instagram.com/paybuddie",
             whatsapp:"https://www.whatsapp.com/paybuddie"
+        },
+        pages:{
+            aboutUs:"",
+            privacyPolicy:"",
+            termsCondition:""
         }
 }
 
@@ -49,6 +61,23 @@ export const appConfigSlice = createSlice({
     name:'appConfig',
     initialState,
     reducers:{
+        setAppGeneralSetting:(state,action)=>{
+            // const {}=action.payload;
+            state.companyDetails={ ...state.companyDetails, ...action.payload };
+        },
+        setDashboardSetting:(state,action)=>{
+            console.log(action.payload)
+            state.dashboardConfig.layoutOptions ={ ...state.dashboardConfig.layoutOptions, ...action.payload};
+        },
+        setPagesSetting:(state,action)=>{
+            // const {}=action.payload;
+            state.pages={...state.pages,...action.payload}
+        },
+        setAppHomepageSetting:(state,action)=>{
+            // const {}=action.payload;
+            state.landingPageConfig={...state.landingPageConfig,...action.payload}
+        },
+    
 
     }
 })
@@ -56,5 +85,6 @@ export const appConfigSlice = createSlice({
 export const useCompanyDetails = (state:any)=>state.appConfig.companyDetails;
 export const useLandingPageConfig = (state:any)=>state.appConfig.landingPageConfig;
 export const useDashboardConfig = (state:any)=>state.appConfig.dashboardConfig;
-
+export const usePages = (state:any)=>state.appConfig.pages;
+export const {setAppGeneralSetting,setDashboardSetting,setPagesSetting,setAppHomepageSetting} = appConfigSlice.actions;
 export default appConfigSlice.reducer;
