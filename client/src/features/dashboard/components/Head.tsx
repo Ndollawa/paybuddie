@@ -2,7 +2,7 @@ import React from 'react';
 import {Helmet} from 'react-helmet-async'
 import pageProps from "../../../app/utils/props/pageProps";
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../../app/appConfigSlice';
+import {useCompanyDetails} from '../pages/Settings/settingsConfigSlice';
 
 
 const Head:React.FC<pageProps> = ({pageData}:pageProps) => {

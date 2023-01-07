@@ -1,16 +1,15 @@
 import React,{useEffect,useState,useRef, FormEventHandler, FormEvent} from 'react';
-import { AxiosError} from "axios";
+import jwt_decode from 'jwt-decode'
 import {FaUser,FaRegUserCircle,FaKeycdn} from 'react-icons/fa';
 import { Link, useNavigate, useLocation} from 'react-router-dom';
-// import axios from '../../app/api/axios';
-// import {authProps} from '../../app/utils/props/authProps';
+import {authProps} from '../../app/utils/props/authProps';
 // import useLocalStorage from '../../app/utils/hooks/useLocalStorage';
 // import useInput from '../../app/utils/hooks/useInput';
 import useToggle from '../../app/utils/hooks/useToggle';
 
 // react-reduct rtkquery approach
 import {useDispatch, useSelector} from 'react-redux';
-import {useCompanyDetails} from '../app/appConfigSlice'
+import {useCompanyDetails} from '../dashboard/pages/Settings/settingsConfigSlice';
 import {setCredentials} from './authSlice';
 import {useLoginMutation} from './authApiSlice'
 import OtherBody from '../dashboard/components/OtherBody';
@@ -22,7 +21,7 @@ interface errMessages{
 
 const Login:React.FC = () => {
 
-    const {siteName,logo,email,contact} = useSelector(useCompanyDetails);
+    const {siteName,logo} = useSelector(useCompanyDetails);
 
 
 const navigate = useNavigate();
@@ -60,19 +59,18 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
        
             
             // redux-rtkQuery approach
-            const userData = await login({user,password:pwd}).unwrap()
-            dispatch(setCredentials({...userData, user}))
+            const {accessToken} = await login({user,password:pwd}).unwrap()
+            dispatch(setCredentials({accessToken}))
             setUser('');
             setPwd('');
             navigate(from,{replace:true});
             
-        }catch(error){
-            const err = error as AxiosError;
-                if(!err?.response){
+        }catch(err:any){
+                if(!err){
                     setErrMsg({type:'danger',msg:'No Server Response'});
-                }else if(err.response?.status === 400){
+                }else if(err.status === 400){
                     setErrMsg({type:'warning',msg:'Missing form detail(s)'} )
-                }else if(err.response?.status === 401){
+                }else if(err.status === 401){
                     setErrMsg({type:'warning',msg:'Invalid Credentials'} )
                 }else{
                     setErrMsg({type:'danger',msg:'Login Failed'})

@@ -1,7 +1,7 @@
 import React from 'react';
 import pageProps from '../../../../app/utils/props/pageProps';
 import { useSelector } from 'react-redux';
-import {useCompanyDetails,useLandingPageConfig} from '../../../app/appConfigSlice';
+import {useCompanyDetails,useLandingPageConfig} from '../../../dashboard/pages/Settings/settingsConfigSlice';
 import Slider from './Components/Slider';
 import AboutUs from './Components/AboutUs';
 import WhatWeOffer from './Components/WhatWeOffer';

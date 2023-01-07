@@ -1,11 +1,10 @@
 import React ,{ReactNode, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import SideBarLinks from './Links';
+import {UserLinks, AdminLinks} from './Links';
 import $ from 'jquery';
 
 
 interface sideBarLink{
-    groupTitle?:string,
     id:number;
     icon?: string|JSX.Element;
     title?:string;
@@ -31,7 +30,8 @@ interface sideBarLink{
 
  };
 const SideNav = () => {
-let [links, setLinks] = React.useState(SideBarLinks)
+let [userLink, setUserLink] = React.useState(UserLinks)
+let [adminLink, setAdminLink] = React.useState(AdminLinks)
 
 useEffect(()=>{
    const handleMetisMenu = () =>{
@@ -46,12 +46,29 @@ handleMetisMenu();
 
 },[])
 const toggleMenu = (id:number,type:string)=>{
-   if(type === "main-menu"){
-      setLinks((prevValue)=>{
+   console.log(id+" "+type)
+   if(type === "user-main-menu"){
+      setUserLink((prevValue)=>{
        return prevValue.map((menu)=>{ return menu.id === id ? {...menu, isOpen:!menu.isOpen } : menu})
        } );
-    }else if(type === "sub-menu"){
-      setLinks((prevValue)=>{
+    }else if(type === "user-sub-menu"){
+      setUserLink((prevValue)=>{
+         return prevValue.map((menu)=>{
+            return menu.id === Math.ceil(id) ?
+            { ...menu,children:menu.children!.map((smenu)=>{
+               return  smenu.id === id ?
+                {...smenu, isOpen:!menu.isOpen } : smenu
+            })} : menu
+         } )
+         } )
+   }
+    else if(type === "admin-main-menu"){
+      setAdminLink((prevValue)=>{
+         return prevValue.map((menu)=>{ return menu.id === id ? {...menu, isOpen:!menu.isOpen } : menu})
+         } )
+   }
+    else if(type === "admin-sub-menu"){
+      setAdminLink((prevValue)=>{
          return prevValue.map((menu)=>{
             return menu.id === Math.ceil(id) ?
             { ...menu,children:menu.children!.map((smenu)=>{
@@ -63,17 +80,16 @@ const toggleMenu = (id:number,type:string)=>{
    }
     
 }
-   const sideNav:ReactNode = links.map((link:sideBarLink)=>{
+   const userLinks:ReactNode = userLink.map((link:sideBarLink)=>{
          
-      return(<li key={link.id}>{link.groupTitle && <li key={`group-link${link.id}`} className="nav-label">{link.groupTitle}</li>}
-                <li key={link.id} onClick={link.children?()=>toggleMenu(link.id,"main-menu"): undefined} className={link.isOpen? "mm-active":undefined}><Link className={link.children?"has-arrow ai-icon":"ai-icon"} to={link.path? link.path : ""} aria-expanded={link.isOpen?"true" : "false"}>
+      return(<li key={link.id} onClick={link.children?()=>toggleMenu(link.id,"user-main-menu"): undefined} className={link.isOpen? "mm-active":undefined}><Link className={link.children?"has-arrow ai-icon":"ai-icon"} to={link.path? link.path : ""} aria-expanded={link.isOpen?"true" : "false"}>
                         {link.icon}
                         <span className="nav-text">{link.title}</span>
                     </Link>
                  {link.children ?  <ul className={link.isOpen? "left mm-show mm-collapse":"mm-collapse"} aria-expanded={link.isOpen?"true" : "false"}>
                     {
                  link.children.map((sublink)=>{
-                    return(<li key={`sub-menu${sublink.id}`}  onClick={sublink.children?()=>toggleMenu(sublink.id,"sub-menu"): undefined}><Link to={sublink.path!} >{sublink.title}<span className="badge badge-xs badge-success">New</span></Link>
+                    return(<li key={`sub-menu${sublink.id}`}  onClick={sublink.children?()=>toggleMenu(sublink.id,"user-sub-menu"): undefined}><Link to={sublink.path!} >{sublink.title}<span className="badge badge-xs badge-success">New</span></Link>
                     {sublink.children ?  <ul className="mm-collapse" aria-expanded={sublink.isOpen?"true" : "false"}>
                     {
                  sublink.children.map((innersublink)=>{
@@ -83,7 +99,29 @@ const toggleMenu = (id:number,type:string)=>{
                  }</ul>:null}
                  </li>)
                 })
-            }</ul>:null}</li></li>)}
+            }</ul>:null}</li>)}
+            )
+          
+   const adminLinks:ReactNode = adminLink.map((link:sideBarLink)=>{
+         
+      return(<li key={link.id} onClick={link.children?()=>toggleMenu(link.id,"admin-main-menu"): undefined} className={link.isOpen? "mm-active":undefined}><Link className={link.children?"has-arrow ai-icon":"ai-icon"} to={link.path? link.path : ""} aria-expanded={link.isOpen?"true" : "false"}>
+                        {link.icon}
+                        <span className="nav-text">{link.title}</span>
+                    </Link>
+                 {link.children ?  <ul className={link.isOpen? "left mm-show mm-collapse":"mm-collapse"} aria-expanded={link.isOpen?"true" : "false"}>
+                    {
+                 link.children.map((sublink)=>{
+                    return(<li key={`sub-menu${sublink.id}`}  onClick={sublink.children?()=>toggleMenu(sublink.id,"admin-sub-menu"): undefined}><Link to={sublink.path!} >{sublink.title}<span className="badge badge-xs badge-success">New</span></Link>
+                    {sublink.children ?  <ul className="mm-collapse" aria-expanded={sublink.isOpen?"true" : "false"}>
+                    {
+                 sublink.children.map((innersublink)=>{
+                    return(<li key={`inner-menu${innersublink.id}`}><Link to={innersublink.path}>{innersublink.title}</Link></li>)
+
+                 })
+                 }</ul>:null}
+                 </li>)
+                })
+            }</ul>:null}</li>)}
             )
           
        
@@ -92,9 +130,10 @@ const toggleMenu = (id:number,type:string)=>{
 
        
              <ul className="metismenu" id="menu">
-            
-                   {sideNav}     
+                   {userLinks}     
         
+                  <li className="nav-label">Admin Section</li>
+                  {adminLinks}
             </ul> 
   )
 }

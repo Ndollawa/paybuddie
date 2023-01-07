@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {useCompanyDetails,useLandingPageConfig} from '../../app/appConfigSlice'
+import {useCompanyDetails,useLandingPageConfig} from '../../dashboard/pages/Settings/settingsConfigSlice';
 
 
 enum Styles{STYLE_1,STYLE_2, STYLE_3};

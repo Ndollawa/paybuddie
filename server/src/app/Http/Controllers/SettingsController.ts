@@ -59,12 +59,11 @@ updateHomepageSettings = async(req:Request, res:Response)=>{
 }
 
 updateDashboardSettings = async(req:Request, res:Response)=>{
-   const {data} = req.body;
-
-   console.log(req.body)  
+    const _id =  req.body._id
+    console.log(_id)
     try {
-    const result = await SettingModel.findOne() 
-    res.status(200).json({"settings":result});  
+    const result = await SettingModel.findOneAndUpdate({_id},{dashboardConfig:req.body}) 
+    res.status(200).json({"response":'success'});
     } catch (error) {
         res.status(500).json({"error":error})
     }

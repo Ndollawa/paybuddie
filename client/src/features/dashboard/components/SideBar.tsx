@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import SideNav from './SideBarComponent/SideNav'
 import pageProps from '../../../app/utils/props/pageProps'
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../../app/appConfigSlice'
+import { useCompanyDetails } from '../pages/Settings/settingsConfigSlice';
 
 enum Styles{STYLE_1,STYLE_2, STYLE_3};
 

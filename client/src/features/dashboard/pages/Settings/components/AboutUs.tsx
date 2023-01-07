@@ -1,7 +1,7 @@
 import React,{FormEvent,FormEventHandler} from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { usePagesSettingsMutation } from '../../../../app/appConfigApiSlice';
-import { setPagesSetting } from '../../../../app/appConfigSlice';
+import { usePagesSettingsMutation } from '../settingApiSlice';
+import { setPagesSetting } from '../settingsConfigSlice';
 
 import Tinymce from '../../../../../app/utils/Tinymce'
 

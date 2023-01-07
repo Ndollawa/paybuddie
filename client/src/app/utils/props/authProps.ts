@@ -3,7 +3,7 @@ auth?:{
        userInfo:{
               user:string,
               username?:string,
-              userEmail?: string,
+              email?: string,
               fullName?:string,
               roles?:number[],
               accessToken?:string

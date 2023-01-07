@@ -1,17 +1,20 @@
 import React,{useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useDashboardConfigSettingsMutation } from "../../app/appConfigApiSlice";
-import { setDashboardSetting } from "../../app/appConfigSlice";
+import { useDashboardConfigSettingsMutation } from "../pages/Settings/settingApiSlice";
+import { setDashboardSetting } from '../pages/Settings/settingsConfigSlice';
 import $ from 'jquery';
 import ThemeOptions from "./Themes/ThemeOptions";
 import { themeProps } from "./Themes/ThemeOptions";
+import { use_id } from "../pages/Settings/settingsConfigSlice";
+import { useSelector } from "react-redux";
 
 
 const ThemePanel = () => {
 const dispatch = useDispatch();
 const [dashboardConfigSetting,isLoading] = useDashboardConfigSettingsMutation();
- 
+ const _id = useSelector(use_id)
+
 const [toggleThemePanel, setToggleThemePanel] = React.useState(false);
 useEffect(() => {
   $(document).on('click', '.dz_theme_demo', function(){
@@ -21,7 +24,7 @@ useEffect(() => {
   (async()=>{
     try {
          await dashboardConfigSetting(Theme).unwrap();
-         dispatch(setDashboardSetting(Theme))
+         dispatch(setDashboardSetting({_id,Theme}))
        } catch (error) {
          
        }
@@ -50,14 +53,14 @@ $(document).on('click', '.dz_theme_demo_rtl', function(){
 
 
 const themesArray =[
-"dashboard-assets/images/themes/pic1.jpg",
-"dashboard-assets/images/themes/pic2.jpg",
-"dashboard-assets/images/themes/pic3.jpg",
-"dashboard-assets/images/themes/pic4.jpg",
-"dashboard-assets/images/themes/pic5.jpg",
-"dashboard-assets/images/themes/pic6.jpg",
-"dashboard-assets/images/themes/pic7.jpg",
-"dashboard-assets/images/themes/pic8.jpg"
+"/dashboard-assets/images/themes/pic1.jpg",
+"/dashboard-assets/images/themes/pic2.jpg",
+"/dashboard-assets/images/themes/pic3.jpg",
+"/dashboard-assets/images/themes/pic4.jpg",
+"/dashboard-assets/images/themes/pic5.jpg",
+"/dashboard-assets/images/themes/pic6.jpg",
+"/dashboard-assets/images/themes/pic7.jpg",
+"/dashboard-assets/images/themes/pic8.jpg"
 ]
 
 const themes = themesArray.map((themeImage:string,i:number)=>{

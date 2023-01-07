@@ -1,8 +1,8 @@
 import React,{ChangeEvent, FormEvent, FormEventHandler, useEffect, useRef} from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useDashboardConfigSettingsMutation } from "../../app/appConfigApiSlice";
-import { setDashboardSetting } from "../../app/appConfigSlice";
+import { useDashboardConfigSettingsMutation } from "../pages/Settings/settingApiSlice";
+import { setDashboardSetting } from '../pages/Settings/settingsConfigSlice';
 import $ from 'jquery';
 
 const AppSettiings = () => {

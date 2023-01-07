@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../../app/appConfigSlice'
+import {useCompanyDetails} from '../pages/Settings/settingsConfigSlice';
 import pageProps from '../../../app/utils/props/pageProps'
 
 

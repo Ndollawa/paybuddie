@@ -18,8 +18,8 @@ const key:Secret =process.env.ACCESS_TOKEN_SECRET!;
 const verifyJWT= (req: Request, res:Response, next:NextFunction)=>{
     const authHeader = req.headers.authorization! || req.headers.Authorization!;
     if(typeof authHeader === 'string'){
-    if(!authHeader.startsWith('Bearer ')) return res.sendStatus (401);
-    const token = authHeader.split('')[1];
+    if(!authHeader?.startsWith('Bearer ')) return res.sendStatus (401);
+    const token = authHeader.split(' ')[1];
       jwt.verify(
         token,
         key,
@@ -28,7 +28,7 @@ const verifyJWT= (req: Request, res:Response, next:NextFunction)=>{
 
             req.user = options?.userInfo?.user;
             req.username = options?.userInfo?.username;
-            req.userEmail = options?.userInfo?.userEmail;
+            req.email = options?.userInfo?.email;
             req.roles = options?.userInfo?.roles;
             next();
         }

@@ -13,21 +13,21 @@ import SettingsController from '../../Http/Controllers/SettingsController';
 
 router.route('/')
 .get((req:Request, res:Response, next:NextFunction) => SettingsController.index(req, res))
-.post(verifyJWT, verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.createSettings(req, res))
-.put(verifyJWT, verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.deleteSettings(req, res));
+.post(verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.createSettings(req, res))
+.put(verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.deleteSettings(req, res));
 
 router.route('/homepage-config')
-.post(verifyJWT, verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.updateHomepageSettings(req, res));
+.post(verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.updateHomepageSettings(req, res));
 
 router.route('/general')
-.post(verifyJWT, verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.updateGeneralSettings(req, res));
+.post(verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.updateGeneralSettings(req, res));
 
 router.route('/pages')
-.post(verifyJWT, verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.updatePagesSettings(req, res));
+.post(verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV), (req:Request, res:Response, next:NextFunction) => SettingsController.updatePagesSettings(req, res));
 
 router.route('/dashboard-config')
 .get((req:Request, res:Response, next:NextFunction) => SettingsController.index(req, res))
-.post(verifyJWT, verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV, ROLES_LIST.USER), (req:Request, res:Response, next:NextFunction) => SettingsController.updateDashboardSettings(req, res));
+.post((req:Request, res:Response, next:NextFunction) => SettingsController.updateDashboardSettings(req, res));
 
 
 

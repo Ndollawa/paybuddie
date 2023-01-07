@@ -1,16 +1,17 @@
 import { configureStore }  from  '@reduxjs/toolkit';
-import siteInfoReducer  from '../../features/site/siteInfoSlice';
+import { useDispatch } from 'react-redux';
 import { apiSlice } from '../api/apiSlice';
 import authReducer from '../../features/auth/authSlice';
-import appConfigReducer from '../../features/app/appConfigSlice';
-
+import settingReducer from '../../features/dashboard/pages/Settings/settingsConfigSlice';
+import PreloaderReducer from '../../features/dashboard/components/PreloaderSlice'
+import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export const store = configureStore({
     reducer:{
-        siteInfo: siteInfoReducer, 
         [apiSlice.reducerPath]: apiSlice.reducer,
         auth: authReducer,
-        appConfig: appConfigReducer,
+        settingsConfig: settingReducer,
+        preloader:PreloaderReducer
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware().concat(apiSlice.middleware),
@@ -19,5 +20,7 @@ export const store = configureStore({
 
 
 
-
-
+export type RootState = ReturnType<typeof store.getState>
+// export type AppDispatch = typeof store.dispatch
+// export const useAppDispatch: () => AppDispatch = useDispatch
+setupListeners(store.dispatch)

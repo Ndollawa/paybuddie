@@ -1,8 +1,8 @@
 import React,{FormEvent,FormEventHandler}  from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import { useLandingPageConfig } from '../../../../app/appConfigSlice';
-import { useHomepageSettingsMutation } from '../../../../app/appConfigApiSlice';
-import { setAppHomepageSetting } from '../../../../app/appConfigSlice';
+import { useLandingPageConfig } from '../settingsConfigSlice';
+import { useHomepageSettingsMutation } from '../settingApiSlice';
+import { setAppHomepageSetting } from '../settingsConfigSlice';
 import useInput from '../../../../../app/utils/hooks/useInput'
 
 const HomePageSettings = () => {

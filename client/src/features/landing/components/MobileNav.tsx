@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../../app/appConfigSlice'
+import {useCompanyDetails} from '../../dashboard/pages/Settings/settingsConfigSlice';
 
 const MobileNav = () => {
     const {siteName,logo,email,contact,description,activeHours,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);

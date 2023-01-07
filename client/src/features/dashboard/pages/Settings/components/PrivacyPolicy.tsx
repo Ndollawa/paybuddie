@@ -1,9 +1,9 @@
 import React, { FormEvent,FormEventHandler } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import Tinymce from '../../../../../app/utils/Tinymce'
-import { usePagesSettingsMutation } from '../../../../app/appConfigApiSlice';
-import { setPagesSetting } from '../../../../app/appConfigSlice';
-import { usePages } from '../../../../app/appConfigSlice';
+import { usePagesSettingsMutation } from '../settingApiSlice';
+import { setPagesSetting } from '../settingsConfigSlice';
+import { usePages } from '../settingsConfigSlice';
 
 
 const PrivacyPolicy = () => {

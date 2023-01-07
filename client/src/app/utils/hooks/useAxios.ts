@@ -21,7 +21,7 @@ const fetchData = async () => {
             const res = await axiosInstance[method.toLowerCase()](url,{ ...requestConfig, signal:controller.signal});
 
             setResponse(res.data);
-            console.log(res);
+            // console.log(res);
         }catch(err:any){
             console.error(err.message);
             setError(err.message)

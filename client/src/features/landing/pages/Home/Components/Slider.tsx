@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { useLandingPageConfig } from '../../../../app/appConfigSlice';
+import { useLandingPageConfig } from '../../../../dashboard/pages/Settings/settingsConfigSlice';
 import { useSelector } from 'react-redux';
 import { JsxEmit } from 'typescript';
 

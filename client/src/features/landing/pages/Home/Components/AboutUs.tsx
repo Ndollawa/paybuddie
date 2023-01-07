@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useCompanyDetails, useLandingPageConfig, usePages } from '../../../../app/appConfigSlice';
+import { useCompanyDetails, useLandingPageConfig, usePages } from '../../../../dashboard/pages/Settings/settingsConfigSlice';
 
 const AboutUs = () => {
   const {siteName} = useSelector(useCompanyDetails);

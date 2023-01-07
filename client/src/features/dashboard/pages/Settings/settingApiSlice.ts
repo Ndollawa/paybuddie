@@ -1,8 +1,23 @@
-import { apiSlice } from "../../app/api/apiSlice";
+import { apiSlice } from "../../../../app/api/apiSlice";
+import { setSettings } from "./settingsConfigSlice";
 
-
-export const appConfigApiSlice = apiSlice.injectEndpoints({
+export const settingApiSlice = apiSlice.injectEndpoints({
     endpoints:builder=>({
+        getSettings: builder.mutation<any, void>({
+            query:()=>({
+                url: '/settings',
+                method: 'GET',
+            }),
+            async onQueryStarted(args,{dispatch,queryFulfilled}){
+                try {
+                    const {data:{settings}}= await queryFulfilled
+                    // console.log(settings)
+                    dispatch(setSettings({settings}))
+                } catch (error) {
+                    
+                }
+        },
+        }),
         generalSettings: builder.mutation({
             query:data=>({
                 url: '/settings/general',
@@ -43,4 +58,4 @@ export const appConfigApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {useGeneralSettingsMutation,useDashboardConfigSettingsMutation, useHomepageSettingsMutation,usePagesSettingsMutation} = appConfigApiSlice;
+export const {useGetSettingsMutation, useGeneralSettingsMutation,useDashboardConfigSettingsMutation, useHomepageSettingsMutation,usePagesSettingsMutation} = settingApiSlice;

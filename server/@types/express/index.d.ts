@@ -5,7 +5,7 @@ declare global{
             userInfo:userInterface,
             roles:number[],
             user:string,
-            userEmail:string|string[],
+            email:string|string[],
             username:string,
             path:string
 

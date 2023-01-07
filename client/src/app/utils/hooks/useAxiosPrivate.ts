@@ -3,13 +3,12 @@ import { useEffect } from "react";
 import useRefreshToken from './useRefreshToken';
 import {useDispatch, useSelector } from 'react-redux';
 import {setCredentials} from '../../../features/auth/authSlice';
-import { selectCurrentToken , selectCurrentUser} from '../../../features/auth/authSlice';
+import { selectCurrentToken } from '../../../features/auth/authSlice';
 import {useLoginMutation} from '../../../features/auth/authApiSlice';
 
 const useAxiosPrivate = ()=>{
     const refresh = useRefreshToken();
     const token = useSelector(selectCurrentToken);
-    const user = useSelector(selectCurrentUser);
 
 
     useEffect(()=>{

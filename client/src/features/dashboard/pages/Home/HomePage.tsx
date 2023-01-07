@@ -1,7 +1,17 @@
-import React from 'react';
+import React,{useEffect} from 'react';
+import $ from 'jquery';
+// import 'owl.carousel/dist/assets/owl.carousel.css';
+// import 'owl.carousel';
 import MainBody from '../../components/MainBody';
 
 const HomePage = () => {
+useEffect(() => {
+// 	$('.owl-carousel').owlCarousel();
+//   return () => {
+// 	$('.owl-carousel').owlCarousel('destroy');
+//   };
+}, [])
+
   return (
     <>
     <MainBody>

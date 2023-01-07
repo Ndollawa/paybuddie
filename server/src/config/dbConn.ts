@@ -12,10 +12,10 @@ type ConnectionOptionsExtend = {
 
 const connectDB = async ()=>{
     try{
-        await mongoose.connect(`${process.env.DATABASE_URL}`,options);
+      const db = await mongoose.connect(`${process.env.DATABASE_URL}`,options);
     } catch(err){
         console.error(err);
-    }
+    } 
 }
 
 export default connectDB;

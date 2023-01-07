@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import {useCompanyDetails,useDashboardConfig} from '../../app/appConfigSlice';
+import {useCompanyDetails,useDashboardConfig} from '../pages/Settings/settingsConfigSlice';
 
 
 const OtherBody = ({children}:any) => {

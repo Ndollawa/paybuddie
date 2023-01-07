@@ -7,7 +7,7 @@ import {GrMail} from 'react-icons/gr';
 import {FaUser,FaRegUserCircle,FaKeycdn} from 'react-icons/fa';
 import axios from '../../app/api/axios';
 import useAxiosFunc from '../../app/utils/hooks/useAxiosFunc'; 
-import {useCompanyDetails} from '../app/appConfigSlice';
+import {useCompanyDetails} from '../dashboard/pages/Settings/settingsConfigSlice';
 import {useRegisterMutation} from './authApiSlice'
 import OtherBody from '../dashboard/components/OtherBody';
 
@@ -37,8 +37,8 @@ const userRef = useRef <HTMLInputElement>(null);
 const emailRef = useRef <HTMLInputElement>(null);
 const errRef = useRef <HTMLInputElement>(null);
 const successRef = useRef <HTMLInputElement>(null);
-// const [isPending, startTransition] = useTransition();
-const [res,error,loading,axiosFetch] = useAxiosFunc();
+
+const [response,error,loading,axiosFetch] = useAxiosFunc();
 const [user,setUser] = useState('');
 const [validate, setValidate] = useState('');
 const [validName,setValidName] = useState(false);
@@ -103,11 +103,11 @@ const checkDuplicates:FormEventHandler = async (e:FormEvent) =>{
         }
     )
     if(!error){
-        console.log(res)
-        if(res.message === 'available'){
+        console.log(response)
+        if(response.message === 'available'){
              setValidate(user);
             setMsg({type:'success',msg:'Username Available'}) 
-        }else if(res.message === 'taken'){
+        }else if(response.message === 'taken'){
             setMsg({type:'info',msg:'Username Taken'}) 
         }
     }else{
@@ -128,7 +128,7 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
             }else if(err.response?.status === 400){
                 setMsg({type:'warning',msg:'Missing form detail(s)'} )
             }else{
-                setMsg({type:'danger',msg:'Login Failed'})
+                setMsg({type:'danger',msg:'Registration Failed'})
             }
             errRef.current?.focus();
         }

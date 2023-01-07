@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useLandingPageConfig } from '../../../../app/appConfigSlice'
+import { useLandingPageConfig } from '../../../../dashboard/pages/Settings/settingsConfigSlice'
 
 const OurBenefit = () => {
 const {ourBenefitStyle} = useSelector(useLandingPageConfig)

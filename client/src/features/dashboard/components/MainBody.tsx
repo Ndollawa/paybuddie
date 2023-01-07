@@ -2,21 +2,24 @@ import React,{useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 import $ from 'jquery'
 import Preloader from "./Preloader";
+import { useIsLoading } from "./PreloaderSlice";
 import Header from "./Header";
 import SideBar from "./SideBar";
 import Chatbox from "./ChatBox";
 import Footer from "./Footer";
 import { useSelector } from 'react-redux';
-import {useCompanyDetails,useDashboardConfig} from '../../app/appConfigSlice';
+import {useCompanyDetails,useDashboardConfig} from '../pages/Settings/settingsConfigSlice';
 import useWindowSize from "../../../app/utils/hooks/useWindowSize";
 import AppSettiings from "./AppSettiings";
 import ThemePanel from "./ThemePanel";
 
 
 const MainBody = ({children}:any) => {
+
+    const isLoading = useSelector(useIsLoading);
+    console.log(isLoading)
     const [isToggled,setIsToggled] = useState(false);
-    const {width, height} =useWindowSize();
-  const isPreloading = true;    
+    const {width, height} =useWindowSize();  
 const pageData ={
     pageTitle: ''
 }
@@ -41,8 +44,9 @@ const toggleMenu = ()=>{
 setIsToggled(prev=> !prev);
 
 }
-let  menuWrapperStyle = isPreloading ? "show" : "";
-menuWrapperStyle += isToggled? " menu-toggle" : ""
+let menuWrapperStyle = isToggled? "menu-toggle" : "";
+menuWrapperStyle += !isLoading ? "show" :"";
+
 
 useEffect(() => {
 var body = $('#body');
@@ -59,8 +63,6 @@ var html = $('html');
     if(width! < 768) {
         body.attr("data-sidebar-style", "overlay");
     }
-
-    
 //   return () => {
 //     effect
 //   };
@@ -103,7 +105,7 @@ handleHeaderHight()
 {/* <!--*******************
     Preloader startdirection={direction}
 ********************--> */}
-{/* <Preloader/> */}
+{<Preloader/>}
 {/* <!--*******************
     Preloader end
 ********************-->

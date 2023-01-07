@@ -117,22 +117,21 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
 
     const foundUser = await UserModel.findOne({refreshToken}).exec();
    
-   
     // Detect refresh token reuse! (Hacked token)
+//    console.log(foundUser)
     if(!foundUser){
        jwt.verify(
         refreshToken,
-        `${process.env.ACCESS_TOKEN_SECRET}`,
+        `${process.env.REFRESH_TOKEN_SECRET}`,
        async (err:any, decodedToken:any)=>{
         // delete all tokens on reuse
             if(err) return res.sendStatus(403); //Forbidden
             const hackedUser = await UserModel.findOne({email:decodedToken.email}).exec();
             hackedUser.refreshToken = [];
             const result = await hackedUser.save();
-
+            // console.log(result)
         })
-        return res.sendStatus(403);// Forbidden
-       
+       return res.sendStatus(403);// Forbidden  
 
     }
 
@@ -142,14 +141,14 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
 
        jwt.verify(
         refreshToken,
-        `${process.env.ACCESS_TOKEN_SECRET}`,
+        `${process.env.REFRESH_TOKEN_SECRET}`,
        async (err:any, decodedToken:any)=>{
 
+        // console.log(decodedToken)
         if(err){
             foundUser.refreshToken = [...newRefeshTokenArray];
             const result = await foundUser.save();
         }
-        console.log(decodedToken.email)
             if(err || foundUser.email !== decodedToken.email) return res.sendStatus(403);// forbidden
             const roles = Object.values(foundUser.roles);
             const accessToken =jwt.sign(
@@ -177,6 +176,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
                 res.cookie('jwt', newRefreshToken,{httpOnly:true, secure:true, sameSite:'none', maxAge: 24
                 *60*60*7});
                 res.json({accessToken})
+                console.log(accessToken)
         }
         );
         

@@ -10,7 +10,12 @@ export interface userInterface{
         last_name: string | undefined;
         email: string;
         password: string;
-        roles: number;
+        roles:  {
+            User: number;
+            Admin?: number | undefined;
+            Dev?: number | undefined;
+            Staff?: number | undefined;
+        } ;
         refreshToken: string[];
         username: string | undefined;
         phone: string | undefined;

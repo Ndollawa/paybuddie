@@ -2,7 +2,7 @@ import React from 'react'
 import pageProps from '../../../../app/utils/props/pageProps'
 import Breadcrum from '../../components/Breadcrum'
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../../../app/appConfigSlice'
+import {useCompanyDetails} from '../../../dashboard/pages/Settings/settingsConfigSlice';
 
 
 const Contact :React.FC<pageProps> = ({pageData}:pageProps) => {

@@ -10,12 +10,11 @@ router.route('/login')
 .post((req:Request, res:Response,next:NextFunction)=>AuthController.login(req,res));
 
 router.route('/logout')
-// .get((req:Request, res:Response,next:NextFunction)=>AuthController.index(req,res))
-.post((req:Request, res:Response,next:NextFunction)=>AuthController.logout(req,res));
+.get((req:Request, res:Response,next:NextFunction)=>AuthController.logout(req,res));
 
 router.route('/refresh')
 // .get((req:Request, res:Response,next:NextFunction)=>RegisterController.index(req,res))
-.post((req:Request, res:Response,next:NextFunction)=>AuthController.refreshTokenHandler(req,res));
+.get((req:Request, res:Response,next:NextFunction)=>AuthController.refreshTokenHandler(req,res));
 
 router.route('/register')
 .get((req:Request, res:Response,next:NextFunction)=>RegisterController.index(req,res))

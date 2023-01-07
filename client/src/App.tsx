@@ -1,6 +1,8 @@
 import React from 'react'
 import {Navigate, Routes,Route} from 'react-router-dom';
 import RequireAuth from './features/dashboard/components/RequireAuth';
+import PersistLogin from './features/dashboard/components/PersistLogin';
+import Prefetch from './features/auth/Prefetch';
 import Home from './features/landing/Index'
 import HomePage from './features/landing/pages/Home/Home';
 
@@ -23,6 +25,7 @@ import PrivacyPolicy from './features/landing/pages/Privacy-Policy/PrivacyPolicy
 
 // Error pages
 import Error400 from './features/errorPages/Error400';
+import Error401 from './features/errorPages/Error401';
 import Error403 from './features/errorPages/Error403';
 import Error404 from './features/errorPages/Error404';
 import Error500 from './features/errorPages/Error500';
@@ -36,8 +39,9 @@ import Wallet from './features/dashboard/pages/Wallet/Wallet';
 import Transaction from './features/dashboard/pages/Transaction/Transaction';
 import Chat from './features/dashboard/pages/Messenger/Chat';
 import CoinDetail from './features/dashboard/pages/CoinDetail/CoinDetail';
-import User from './features/dashboard/pages/User/User';
-import Users from './features/dashboard/pages/User/Users';
+import User from './features/dashboard/pages/Users/User';
+import Users from './features/dashboard/pages/Users/Users';
+import FaqAdmin from './features/dashboard/pages/Faq/Faq';
 
 // auth routes
 import Login from './features/auth/Login';
@@ -53,9 +57,33 @@ import TermsConditionsSetting from './features/dashboard/pages/Settings/componen
 import PrivacyPolicySetting from './features/dashboard/pages/Settings/components/PrivacyPolicy';
 import SiteImage from './features/dashboard/pages/Settings/components/SiteImage';
 import Layout from './features/Layout/Layout';
+import { useDispatch, useSelector } from 'react-redux';
+import { useGetSettingsMutation } from './features/dashboard/pages/Settings/settingApiSlice';
+
+
 
 const App= ()=>{
 const [pageTitle, setPageTitle] = React.useState("Home");
+const dispatch  = useDispatch()
+const [getSettings,{isLoading}] = useGetSettingsMutation();
+
+
+React.useEffect(() => {
+  (async()=>{
+
+try {
+  await getSettings()
+} catch (error) {
+  console.log(error)
+}
+  })()
+
+
+  return () => {
+   
+  };
+}, [])
+
   return (
       
             
@@ -65,6 +93,7 @@ const [pageTitle, setPageTitle] = React.useState("Home");
              <Route path="error"  element={<Layout pageData={{pageTitle:"Dashboard"}}/> }>
                       <Route index element={<Error404/>} />
                       <Route path="400" element={<Error400 />} />
+                      <Route path="401" element={<Error401 />} />
                       <Route path="403" element={<Error403 />} />
                       <Route path="404" element={<Error404 />} />
                       <Route path="500" element={<Error500 />} />
@@ -76,6 +105,7 @@ const [pageTitle, setPageTitle] = React.useState("Home");
                       <Route path="register" element={<Register/>} />
                   
               </Route>
+            <Route element={<Prefetch/>}>
             <Route path="/" element={<Home pageData={{pageTitle:pageTitle,coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} >
                 <Route index element={<HomePage/>} />
                 <Route path="about" element={<About pageData={{pageTitle:"About",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
@@ -102,7 +132,10 @@ const [pageTitle, setPageTitle] = React.useState("Home");
              {/* End Public Routes */}
 
               {/* Protected Routes */}
-            {/* <Route element={<RequireAuth allowedRoles={[1000,1001,1002,1003]} />} > */}
+
+            <Route element={<PersistLogin />} >
+              
+            <Route element={<RequireAuth allowedRoles={[1000,1001,1002,1003]} />} >
             <Route path="/dashboard" element={<Layout pageData={{pageTitle:"Dashboard"}}/>} >
                   <Route index element={<DashboardHomepage/>} />
                   <Route path="profile" element={<Profile pageData={{pageTitle:"Profile"}}/>} />
@@ -114,6 +147,7 @@ const [pageTitle, setPageTitle] = React.useState("Home");
                   <Route path="messenger" element={<Chat pageData={{pageTitle:"Messenger",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="coin-Detail/:id" element={<CoinDetail pageData={{pageTitle:"Coin Data",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="faq" element={<FaqAdmin pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="our-team" element={<Team pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="our-team/:id/member/" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
@@ -133,8 +167,9 @@ const [pageTitle, setPageTitle] = React.useState("Home");
              {/* End Protected Routes */}
 
 
-            {/* </Route> */}
-           
+            </Route>
+            </Route>
+           </Route>
             <Route path='*'  element={<Navigate to="error/404"/>}/>
           </Routes>
 

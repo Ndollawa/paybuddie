@@ -1,9 +1,9 @@
 import React,{FormEvent, FormEventHandler} from "react";
 import { useDispatch ,useSelector} from "react-redux";
 import useInput from "../../../../../app/utils/hooks/useInput";
-import { useGeneralSettingsMutation } from "../../../../app/appConfigApiSlice";
-import { setAppGeneralSetting } from "../../../../app/appConfigSlice";
-import { useCompanyDetails } from "../../../../app/appConfigSlice";
+import { useGeneralSettingsMutation } from "../settingApiSlice";
+import { setAppGeneralSetting } from "../settingsConfigSlice";
+import { useCompanyDetails } from "../settingsConfigSlice";
 
 const GeneralSettings = () => {
 const dispatch = useDispatch();

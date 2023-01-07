@@ -23,6 +23,7 @@ import AuthRoutes from './src/app/Routes/api/auth';
 // import RegisterController from './src/app/Http/Controllers/RegisterController';
 // import  PostModel from './src/app/Models/Post';
 import CheckDuplicateRoutes from './src/app/Http/Controllers/DuplicateController';
+import { Seed } from './src/app/Seeders/Seeder';
 
 // const __filename = fileURLToPath(import.meta.url);
 
@@ -75,7 +76,7 @@ app.use('/auth',AuthRoutes);
 // app.use('/post', PostRoutes);
 
 
-app.use(verifyJWT);
+// app.use(verifyJWT);
 //user routes
 app.use('/settings', SettingsRoutes);
 app.all('*',(req,res)=>{
@@ -88,6 +89,7 @@ app.use(errorHandler);
 
 mongoose.connection.once('open',()=>{
     console.log('Connected to MongoDB');
+    // Seed();
     app.listen(PORT, ()=>console.log(`Server running on Port ${PORT}`));
 
 });

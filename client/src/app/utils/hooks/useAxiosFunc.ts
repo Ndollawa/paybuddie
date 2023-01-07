@@ -23,7 +23,7 @@ const {
         setController(ctrl)
         const res = await axiosInstance[method.toLowerCase()](url,{...requestConfig, signal:ctrl.signal});
         setResponse(res.data);
-        console.log(res)
+        // console.log(response)
     }catch(err:any){
         console.error(err.message);
         setError(err.message)

@@ -1,9 +1,8 @@
 import { ReactComponentElement, ReactElement } from 'react';
-import {IoIosPaper,IoMdPeople,IoMdPricetags,IoMdPersonAdd,IoMdTrash,IoMdPaper,IoIosCreate,IoIosBrowsers, IoIosWallet, IoIosAnalytics, IoIosFiling, IoIosPeople} from 'react-icons/io'
+import {IoIosPaper,IoMdPeople,IoMdPricetags,IoMdPersonAdd,IoMdTrash,IoMdPaper,IoIosCreate,IoIosBrowsers, IoIosWallet, IoIosAnalytics, IoIosFiling, IoIosPeople, IoIosHelp} from 'react-icons/io'
 import {FaRegQuestionCircle} from "react-icons/fa"
 
 export type sideBarLink ={
-    groupTitle?:string,
     id:number;
     icon?: string|JSX.Element;
     title?:string;
@@ -27,7 +26,7 @@ export type sideBarLink ={
 
 
  }[]
- const SideBarLinks:sideBarLink=[
+ export const UserLinks:sideBarLink=[
     {
         id:0,
     title:'Dashboard',
@@ -37,35 +36,35 @@ export type sideBarLink ={
         id:1,
         title:'Wallets',
         icon:<IoIosWallet fontSize={"2rem"}/>,
-        path:"/wallets"
+        path:"wallets"
     },
     {
         id:2,
         title:'Transactions',
         icon:<IoIosFiling fontSize={"2rem"}/>,
-        path:"/transactions"
+        path:"transactions"
     },
     {
         id:3,
         title:'Market',
         icon:<IoIosBrowsers fontSize={"2rem"}/>,
-        path:"/market"
+        path:"market"
     },
     {
         id:4,
         title:'Messenger',
         icon:<IoIosBrowsers fontSize={"2rem"}/>,
-        path:"/messenger"
+        path:"messenger"
     },
     {
         id:5,
         title:'Wallet',
         icon:<IoIosBrowsers fontSize={"2rem"}/>,
-        path:"/wallet"
-    },
-    {
+        path:"wallet"
+    }]
+
+    export const AdminLinks:sideBarLink =[{
         id:6,
-        groupTitle:'Admin Section',
         title:'User Management',
         icon:<IoIosPeople fontSize={"2rem"}/>,
         // path:
@@ -84,6 +83,11 @@ export type sideBarLink ={
                 path: ''
         }],
         
+    },{
+        id:7,
+        title:'FAQ Management',
+        icon:<IoIosHelp fontSize={"2rem"}/>,
+        path:'faq',
+        isActive:false,
+        isOpen:false
     }]
-    
-    export default SideBarLinks;

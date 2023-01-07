@@ -1,6 +1,6 @@
 import {Request,Response, NextFunction} from 'express'
 
- const verifyRoles = (...allowedRoles:number[]) =>{
+ const verifyRoles = (...allowedRoles:any) =>{
     return(req:Request, res:Response, next:NextFunction)=>{
      
      const roles = req.roles;
