@@ -6,25 +6,25 @@ import { setDashboardSetting } from '../pages/Settings/settingsConfigSlice';
 import $ from 'jquery';
 import ThemeOptions from "./Themes/ThemeOptions";
 import { themeProps } from "./Themes/ThemeOptions";
-import { use_id } from "../pages/Settings/settingsConfigSlice";
+import { useSettings} from "../pages/Settings/settingsConfigSlice";
 import { useSelector } from "react-redux";
 
 
 const ThemePanel = () => {
 const dispatch = useDispatch();
 const [dashboardConfigSetting,isLoading] = useDashboardConfigSettingsMutation();
- const _id = useSelector(use_id)
-
+ const settings = useSelector(useSettings)
+ const {_id} =settings
 const [toggleThemePanel, setToggleThemePanel] = React.useState(false);
 useEffect(() => {
   $(document).on('click', '.dz_theme_demo', function(){
-  var Theme = {...ThemeOptions[Number($(this).data('theme'))],direct:"ltr"};
+  var Theme = {...ThemeOptions[Number($(this).data('theme'))],direction:"ltr"};
   // console.log(Theme);
 
   (async()=>{
     try {
-         await dashboardConfigSetting(Theme).unwrap();
-         dispatch(setDashboardSetting({_id,Theme}))
+         await dashboardConfigSetting({_id,Theme}).unwrap();
+         dispatch(setDashboardSetting(Theme))
        } catch (error) {
          
        }
@@ -33,12 +33,12 @@ useEffect(() => {
 
 
 $(document).on('click', '.dz_theme_demo_rtl', function(){
-  var Theme = {...ThemeOptions[Number($(this).data('theme'))],direct:"rtl"};
+  var Theme = {...ThemeOptions[Number($(this).data('theme'))],direction:"rtl"};
   // console.log(Theme);
 
   (async()=>{
     try {
-         await dashboardConfigSetting(Theme).unwrap();
+         await dashboardConfigSetting({_id,Theme}).unwrap();
          dispatch(setDashboardSetting(Theme))
        } catch (error) {
          

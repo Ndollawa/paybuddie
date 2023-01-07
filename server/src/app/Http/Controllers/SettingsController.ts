@@ -59,10 +59,13 @@ updateHomepageSettings = async(req:Request, res:Response)=>{
 }
 
 updateDashboardSettings = async(req:Request, res:Response)=>{
-    const _id =  req.body._id
-    console.log(_id)
+    const{_id,Theme } =  req.body
+    console.log(Theme)
     try {
-    const result = await SettingModel.findOneAndUpdate({_id},{dashboardConfig:req.body}) 
+    const result = await SettingModel.findOne({_id})
+    result?.dashboardConfig?.layoutOptions = {...Theme}
+    result?.save()
+    // const result = await SettingModel.findOneAndUpdate({_id},{dashboardConfig:Theme}) 
     res.status(200).json({"response":'success'});
     } catch (error) {
         res.status(500).json({"error":error})

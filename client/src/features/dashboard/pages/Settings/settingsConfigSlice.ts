@@ -19,7 +19,7 @@ const initialState = {
             typography: "poppins",
             version: "light",
             layout: "vertical",
-            headerBg: "color_4",
+            headerBg: "color_1",
             primary: "color_4",
             navheaderBg: "color_4",
             sidebarBg: "color_1",
@@ -32,23 +32,23 @@ const initialState = {
             }
         },
         companyDetails:{
-            siteName:"PayBuddie",
-            logo:logo,
-            logoDark:logoDark,
-            favicon:favicon,
+            siteName:"",
+            logo:"",
+            logoDark:"",
+            favicon:"",
             city:"",
             state:"",
             country:"",
             zip:"",
-            description:"Some brief description here about the company would do!",
-            email:["paybuddie@support.com"],
-            contact:['08155393750'],
-            address:"14 Etta Agbor Road Calabar, CRS",
-            activeHours:"Mon - Fri: 7:00am - 6:00pm  Saturday: 9:00am - 5:00pm  Sunday: Closed",
-            facebookHandle:"https://www.facebook.com/paybuddie",
-            twitterHandle:"https://www.twitter.com/paybuddie",
-            instagram:"https://www.instagram.com/paybuddie",
-            whatsapp:"https://www.whatsapp.com/paybuddie"
+            description:"",
+            email:[],
+            contact:[],
+            address:"",
+            activeHours:"",
+            facebookHandle:"",
+            twitterHandle:"",
+            instagram:"",
+            whatsapp:""
         },
         pages:{
             aboutUs:"",
@@ -64,15 +64,15 @@ export const settingsConfigSlice = createSlice({
     reducers:{
         setSettings:(state,action)=>{
             // console.log(action.payload);
+            return action.payload
             // console.log(state);
-            state ={...action.payload}
         },
         setAppGeneralSetting:(state,action)=>{
             // const {}=action.payload;
             state.companyDetails={ ...state.companyDetails, ...action.payload };
         },
         setDashboardSetting:(state,action)=>{
-            console.log(action.payload)
+            // console.log(action.payload)
             state.dashboardConfig.layoutOptions ={ ...state.dashboardConfig.layoutOptions, ...action.payload};
         },
         setPagesSetting:(state,action)=>{
@@ -92,6 +92,6 @@ export const useCompanyDetails = (state:any)=>state.settingsConfig.companyDetail
 export const useLandingPageConfig = (state:any)=>state.settingsConfig.landingPageConfig;
 export const useDashboardConfig = (state:any)=>state.settingsConfig.dashboardConfig;
 export const usePages = (state:any)=>state.settingsConfig.pages;
-export const use_id = (state:any)=>state.settingsConfig._id;
+export const useSettings = (state:any)=>state.settingsConfig
 export const {setAppGeneralSetting,setDashboardSetting,setPagesSetting,setAppHomepageSetting,setSettings} = settingsConfigSlice.actions;
 export default settingsConfigSlice.reducer;

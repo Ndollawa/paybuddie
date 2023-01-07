@@ -12,7 +12,7 @@ export const settingApiSlice = apiSlice.injectEndpoints({
                 try {
                     const {data:{settings}}= await queryFulfilled
                     // console.log(settings)
-                    dispatch(setSettings({settings}))
+                    dispatch(setSettings({...settings}))
                 } catch (error) {
                     
                 }
