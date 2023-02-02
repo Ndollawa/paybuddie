@@ -1,9 +1,10 @@
-import React,{FormEvent,FormEventHandler}  from 'react';
+import React,{FormEvent,FormEventHandler,useRef}  from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import { useLandingPageConfig } from '../settingsConfigSlice';
 import { useHomepageSettingsMutation } from '../settingApiSlice';
 import { setAppHomepageSetting } from '../settingsConfigSlice';
-import useInput from '../../../../../app/utils/hooks/useInput'
+import useInput from '../../../../../app/utils/hooks/useInput';
+import {toast} from 'react-toastify';
 
 const HomePageSettings = () => {
 
@@ -29,8 +30,15 @@ e.preventDefault()
 try {
   await homepageSettings({}).unwrap()
    dispatch(setAppHomepageSetting({}))
-} catch (error) {
-  
+}  catch (error:any) {
+  toast.error(error,{
+    position:"top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick:true,
+    pauseOnHover:true,
+    theme:'light',
+  })
 }
 
 }
@@ -182,9 +190,9 @@ try {
               </div> */}
                
             </div>
-            <div className="d-flex justify-content-end">
+            <div className="card-footer d-flex justify-content-end">
             <button type="submit" className="btn btn-primary">
-              Update Site Info
+             Save
             </button></div>
           </form>
         </div>

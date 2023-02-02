@@ -10,7 +10,7 @@ router.route('/login')
 .post((req:Request, res:Response,next:NextFunction)=>AuthController.login(req,res));
 
 router.route('/logout')
-.get((req:Request, res:Response,next:NextFunction)=>AuthController.logout(req,res));
+.post((req:Request, res:Response,next:NextFunction)=>AuthController.logout(req,res));
 
 router.route('/refresh')
 // .get((req:Request, res:Response,next:NextFunction)=>RegisterController.index(req,res))

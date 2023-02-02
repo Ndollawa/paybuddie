@@ -1,6 +1,12 @@
 import { ReactComponentElement, ReactElement } from 'react';
-import {IoIosPaper,IoMdPeople,IoMdPricetags,IoMdPersonAdd,IoMdTrash,IoMdPaper,IoIosCreate,IoIosBrowsers, IoIosWallet, IoIosAnalytics, IoIosFiling, IoIosPeople, IoIosHelp} from 'react-icons/io'
-import {FaRegQuestionCircle} from "react-icons/fa"
+import { IoWalletOutline} from 'react-icons/io5'
+import {FaOpencart, FaRegQuestionCircle} from "react-icons/fa"
+import {BiTransfer} from 'react-icons/bi'
+import {GiTakeMyMoney} from 'react-icons/gi'
+import {RxDashboard} from 'react-icons/rx'
+// import {RiCurrencyLine} from 'react-icons/ri'
+import {TfiLayoutMediaCenter} from 'react-icons/tfi'
+import {HiOutlineChatBubbleLeftRight , HiOutlineUsers} from 'react-icons/hi2'
 
 export type sideBarLink ={
     id:number;
@@ -30,43 +36,38 @@ export type sideBarLink ={
     {
         id:0,
     title:'Dashboard',
-    icon:<IoIosAnalytics fontSize={"2rem"}/>,
-    path:"/dshboard"},
+    icon:<RxDashboard fontSize={"2rem"}/>,
+    path:"/dashboard"},
     {
         id:1,
         title:'Wallets',
-        icon:<IoIosWallet fontSize={"2rem"}/>,
-        path:"wallets"
+        icon:<IoWalletOutline fontSize={"2rem"}/>,
+        path:"/dashboard/wallets"
     },
     {
         id:2,
         title:'Transactions',
-        icon:<IoIosFiling fontSize={"2rem"}/>,
-        path:"transactions"
+        icon:<GiTakeMyMoney fontSize={"2rem"}/>,
+        path:"/dashboard/transactions"
     },
     {
         id:3,
         title:'Market',
-        icon:<IoIosBrowsers fontSize={"2rem"}/>,
-        path:"market"
+        icon:<FaOpencart fontSize={"2rem"}/>,
+        path:"/dashboard/market"
     },
     {
         id:4,
         title:'Messenger',
-        icon:<IoIosBrowsers fontSize={"2rem"}/>,
-        path:"messenger"
-    },
-    {
-        id:5,
-        title:'Wallet',
-        icon:<IoIosBrowsers fontSize={"2rem"}/>,
-        path:"wallet"
-    }]
+        icon:<HiOutlineChatBubbleLeftRight fontSize={"2rem"}/>,
+        path:"/dashboard/messenger"
+    }
+    ]
 
     export const AdminLinks:sideBarLink =[{
         id:6,
         title:'User Management',
-        icon:<IoIosPeople fontSize={"2rem"}/>,
+        icon:<HiOutlineUsers fontSize={"2rem"}/>,
         // path:
         isOpen:false,
         children:[
@@ -83,11 +84,21 @@ export type sideBarLink ={
                 path: ''
         }],
         
-    },{
+    },
+    {
         id:7,
         title:'FAQ Management',
-        icon:<IoIosHelp fontSize={"2rem"}/>,
-        path:'faq',
+        icon:<FaRegQuestionCircle fontSize={"2rem"}/>,
+        path:'/dashboard/faq',
         isActive:false,
         isOpen:false
-    }]
+    }
+    ,{
+        id:8,
+        title:'Slider Management',
+        icon:<TfiLayoutMediaCenter fontSize={"2rem"}/>,
+        path:'/dashboard/slider',
+        isActive:false,
+        isOpen:false
+    }
+]

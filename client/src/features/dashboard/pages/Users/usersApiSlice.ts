@@ -11,7 +11,7 @@ const initialState = usersAdapter.getInitialState()
 
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints:builder=>({
-        getUsers:builder.query<any, UserQuery|any>({
+        getUsers:builder.query<any, any>({
         query:()=>({
             url:'/users',
         validateStatus:(response:any, result:any)=>{
@@ -28,10 +28,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         providesTags:(result:any,error:any,arg:any)=>{
             if(result?.id){
                 return [
-                    {type: 'User', id:'LIST'},
-                    ...result.ids.map((id:string)=>({type:'User',id}))
+                    {type: 'Users', id:'LIST'},
+                    ...result.ids.map((id:string)=>({type:'Users',id}))
                 ]
-            }else return [{type: 'User', id:'LIST'}]
+            }else return [{type: 'Users', id:'LIST'}]
                 
         }
           }),
@@ -40,7 +40,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {useGetUsersQuery} = usersApiSlice;
-const selectUsersResult = usersApiSlice.endpoints.getUsers.select('User')
+const selectUsersResult = usersApiSlice.endpoints.getUsers.select('Users')
 // returns query result object
 const selectUserData = createSelector(
     selectUsersResult,

@@ -1,25 +1,43 @@
 import React from 'react'
 import MainBody from '../../components/MainBody'
-import pageProps from '../../../../app/utils/props/pageProps';
+import CreateFaqModal from './components/CreateFaqModal'
+import EditFaqModal from './components/EditFaqModal'
+import { useSelector } from 'react-redux'
+import { useGetFaqsQuery, selectFaqById } from './faqApiSlice'
+import pageProps from '../../../../app/utils/props/pageProps'
+import FaqTableData from './components/FaqTableData'
 
 
+const Faq = ({pageData}:pageProps)  => {
+ 
+const {
+    data: faqs,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+} = useGetFaqsQuery('faqList', {
+    pollingInterval: 15000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true
+})
 
-const Faq:React.FC<pageProps> = ({pageData}:pageProps)  => {
-  return (
-    <>
-    <MainBody>
+let content
 
-    <div className="col-12">
-                        <div className="card">
-                            <div className="card-header">
-                                <h4 className="card-title">All FAQs</h4>
-                            </div>
-                            <div className="card-body">
+if (isLoading) content = <p>Loading...</p>
 
-                                <div className="mb-5 d-flex">
-                                    <button className="btn btn-primary btn-sm">Add Faq</button>
-                                </div>
-                                <div className="table-responsive">
+if (isError) {
+    // content = <p className="errmsg">{error?.data?.message}</p>
+}
+
+if (isSuccess) {
+    const { ids } = faqs
+
+    const tableContent = ids?.length
+        ? ids.map((faqId:string|number ,i:number) => <FaqTableData key={faqId} faqId={faqId} />
+    )
+        : null
+      content= (<div className="table-responsive">
                                     <table id="example5" className="display" style={{minWidth: '845px'}}>
                                         <thead>
                                             <tr>
@@ -32,24 +50,31 @@ const Faq:React.FC<pageProps> = ({pageData}:pageProps)  => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Tiger Nixon</td>
-                                                <td>Architect</td>
-                                                <td>Male</td>
-                                                <td>2011/04/25</td>
-                                                <td>
-													<div className="d-flex">
-														<a href="#" className="btn btn-primary shadow btn-xs sharp me-1"><i className="fas fa-pencil-alt"></i></a>
-														<a href="#" className="btn btn-danger shadow btn-xs sharp"><i className="fa fa-trash"></i></a>
-													</div>												
-												</td>												
-                                            </tr>
                                            
+                                           
+                                           {tableContent}
                                         
                                         </tbody>
                                     </table>
+                                </div>)
+}
+
+ return (
+    <>
+    <MainBody>
+
+    <div className="col-12">
+                        <div className="card">
+                            <div className="card-header">
+                                <h4 className="card-title">All FAQs</h4>
+                            </div>
+                            <div className="card-body">
+
+                                <div className="mb-5 d-flex">
+                                
+                    <CreateFaqModal/>
                                 </div>
+                        {content}
                             </div>
                         </div>
                     </div>

@@ -1,16 +1,24 @@
 import  UserModel from '../../Models/User';
-import  bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import  bcrypt from 'bcrypt'
+import jwt,{VerifyCallback, VerifyErrors, VerifyOptions} from 'jsonwebtoken';
 import path from 'path';
 import { Request,Response } from 'express';
+import { UserInfo } from 'os';
 // import {fileURLToPath} from 'url';
 // require('dotenv').config()
 //   const __filename = fileURLToPath(import.meta.url);
 
         // 
         // const __dirname = path.dirname(__filename);
+interface userInfoProps{
+userInfo:{
+    user:string;
+    username:string;
+    email:string;
+    roles:number[];
+    }
+} 
 
-  
 class AuthController{
 
     //hanles user login
@@ -18,7 +26,7 @@ class AuthController{
         const cookies = req.cookies;
         const {user, password} = req.body;
 
-    if(!user || !password)return res.status(400).json({'message': 'Email/Username and password are required!'});
+    if(!user || !password)return res.status(400).json({message: 'Email  or Username and password are required!'});
 
     //check for user  in the DB || username:username
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -30,14 +38,19 @@ class AuthController{
     foundUser = await UserModel.findOne({username:user}).exec();
     }
 
-    if(!foundUser)return res.status(401).json({"message":"No User with Credentials"});// unauthorized
+    if(!foundUser)return res.status(401).json({message:"No User with Credentials"});// unauthorized
+    if(foundUser.accountStatus !== 'active')return res.status(401).json({message:"Unauthorized access"});// unauthorized
     try{
 
         //evaluate password
         const match = await bcrypt.compare(password,foundUser.password);
+        if (!match) return res.status(401).json({ message: 'Unauthorized' })
+
+      
         if(match){
             //create JWTs
-            const roles = Object.values(foundUser.roles).filter(Boolean);
+            const userRoles = foundUser?.roles
+            const roles = Object.values(userRoles!).filter(Boolean);
             const accessToken = jwt.sign(
                 {
                     'userInfo':{
@@ -64,7 +77,7 @@ class AuthController{
 
              if(cookies.jwt){
                 const refreshToken = cookies.jwt
-                const foundUser =await UserModel.findOne({refreshToken}).exec()
+                const foundUser = await UserModel.findOne({refreshToken}).exec()
                 if(!foundUser){
                    newRefeshTokenArray =[]; 
                 }
@@ -123,14 +136,15 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
        jwt.verify(
         refreshToken,
         `${process.env.REFRESH_TOKEN_SECRET}`,
-       async (err:any, decodedToken:any)=>{
+        async(error:any, decodedToken:any) =>{
         // delete all tokens on reuse
-            if(err) return res.sendStatus(403); //Forbidden
+            if(error) return res.status(403).json({message:'Access Forbidden'}); //Forbidden
             const hackedUser = await UserModel.findOne({email:decodedToken.email}).exec();
-            hackedUser.refreshToken = [];
-            const result = await hackedUser.save();
+            hackedUser!.refreshToken = [];
+            const result = await hackedUser!.save();
             // console.log(result)
-        })
+        }
+        )
        return res.sendStatus(403);// Forbidden  
 
     }
@@ -150,7 +164,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
             const result = await foundUser.save();
         }
             if(err || foundUser.email !== decodedToken.email) return res.sendStatus(403);// forbidden
-            const roles = Object.values(foundUser.roles);
+            const roles = Object.values(foundUser.roles!);
             const accessToken =jwt.sign(
                 {
                     "userInfo":{
@@ -176,7 +190,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
                 res.cookie('jwt', newRefreshToken,{httpOnly:true, secure:true, sameSite:'none', maxAge: 24
                 *60*60*7});
                 res.json({accessToken})
-                console.log(accessToken)
+                // console.log(accessToken)
         }
         );
         

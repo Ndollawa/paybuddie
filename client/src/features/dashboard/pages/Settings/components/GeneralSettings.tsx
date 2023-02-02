@@ -1,16 +1,23 @@
-import React,{FormEvent, FormEventHandler} from "react";
+import React,{FormEvent, FormEventHandler, useEffect} from "react";
 import { useDispatch ,useSelector} from "react-redux";
 import useInput from "../../../../../app/utils/hooks/useInput";
 import { useGeneralSettingsMutation } from "../settingApiSlice";
-import { setAppGeneralSetting } from "../settingsConfigSlice";
+import { setAppGeneralSetting, useSettings } from "../settingsConfigSlice";
 import { useCompanyDetails } from "../settingsConfigSlice";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+  
+import { setPreloader } from "../../../components/PreloaderSlice";
 
 const GeneralSettings = () => {
 const dispatch = useDispatch();
+const {_id} = useSelector(useSettings)
 const {email,contact,zip,description,siteName,activeHours,city,state,country,address,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
 const [generalSettings,isLoading] = useGeneralSettingsMutation();
-
-
+// alert(_id)
+// useEffect(()=>{
+// dispatch(setPreloader(isLoading? true :false))
+// },[isLoading])
 const [companyName, setCompanyName, companyNameAttr] = useInput(siteName)
 const [companyEmail, setCompanyEmail, companyEmailAttr] = useInput(email)
 const [companyAddress, setCompanyAddress, companyAddressAttr] = useInput(address)
@@ -37,8 +44,8 @@ const data ={
       state:companyState,
       country:companyCountry,
       description:companyDescription,
-      email:[companyEmail],
-      contact:[companyContact],
+      email:companyEmail,
+      contact:companyContact,
       address:companyAddress,
       activeHours:companyActiveHours,
       facebookHandle:companyFacebookHandle,
@@ -48,10 +55,25 @@ const data ={
   
   }
 try{
-  const res = await generalSettings(data).unwrap()
+  const res = await generalSettings({_id,data}).unwrap()
 dispatch(setAppGeneralSetting(data))
-}catch(error){
-  
+toast.success("Settings Updated!",{
+  position:"top-right",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick:true,
+  pauseOnHover:true,
+  theme:'light',
+})
+} catch (error:any) {
+  toast.error("Sorry an Error occured: "+JSON.stringify(error),{
+    position:"top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick:true,
+    pauseOnHover:true,
+    theme:'light',
+  })
 }
 
 }
@@ -229,7 +251,7 @@ dispatch(setAppGeneralSetting(data))
                 
                 </div>
               </div>
-              <div className="d-flex justify-content-end">
+              <div className="card-footer d-flex justify-content-end">
               <button type="submit" className="btn btn-primary">
                 Update Site Info
               </button></div>

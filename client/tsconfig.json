@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/app/api/axios.ts"  ]
 }

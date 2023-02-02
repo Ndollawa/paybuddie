@@ -4,6 +4,7 @@ dotenv.config();
 import express, { Application } from "express";
 import path from 'path';
 import cors from 'cors';
+import  'express-async-errors'
 // import {fileURLToPath} from 'url';
 import { logger } from './src/app/Http/Middleware/logEvents';
 import errorHandler from './src/app/Http/Middleware/errorHandler';
@@ -14,8 +15,10 @@ import credentials from './src/app/Http/Middleware/credentials';
 import mongoose from 'mongoose';
 import connectDB from './src/config/dbConn';
 import SettingsRoutes from './src/app/Routes/api/settings'
-// import PostRoutes from './src/app/Routes/api/post';
-// import UserRoutes from './src/app/Routes/api/user';
+import FaqsRoutes from './src/app/Routes/api/faq';
+import ProfileRoutes from './src/app/Routes/api/profile';
+import UsersRoutes from './src/app/Routes/api/users';
+// import UsersRoutes from './src/app/Routes/api/users';
 import RefreshRoute from './src/app/Routes/api/refresh';
 // import RegisterRoutes from './src/app/Routes/api/register';
 import AuthRoutes from './src/app/Routes/api/auth';
@@ -76,12 +79,15 @@ app.use('/auth',AuthRoutes);
 // app.use('/post', PostRoutes);
 
 
-// app.use(verifyJWT);
 //user routes
 app.use('/settings', SettingsRoutes);
+
+// app.use(verifyJWT);
+app.use('/faqs', FaqsRoutes);
+app.use('/profile', ProfileRoutes);
+app.use('/users', UsersRoutes);
 app.all('*',(req,res)=>{
-    res.sendStatus(404);
-    ;
+    res.status(404).json({message: 'Resource not Found!'});
 });
 
 // custom middleware for handling errors
@@ -89,7 +95,7 @@ app.use(errorHandler);
 
 mongoose.connection.once('open',()=>{
     console.log('Connected to MongoDB');
-    // Seed();
+    Seed();
     app.listen(PORT, ()=>console.log(`Server running on Port ${PORT}`));
 
 });

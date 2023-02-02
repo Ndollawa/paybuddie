@@ -15,8 +15,9 @@ const RequireAuth = ({allowedRoles}:allowedRolesProps) =>{
     const  roles = decodedToken?.userInfo?.roles || []
     // console.log(token)
     return(
-       
-        roles?.find((role:number) => allowedRoles?.includes(role))
+        token === null || undefined
+        ?<Navigate to="/auth/login" state={{from:from}} replace />
+        :roles?.find((role:number) => allowedRoles?.includes(role))
         ? <Outlet/>
         : token
         ?<Navigate to="/error/403" state={{from:from}} replace />

@@ -19,17 +19,12 @@ const {pageTitle} = pageData!;
 	<meta name="description" content={description} />
 	<meta property="og:title" content={siteName} />
 	<meta property="og:description" content={description} />
-	<meta property="og:image" content="page-error-404.html" />
+	<meta property="og:image" content="" />
 	<meta name="format-detection" content="telephone=no"/>
     <base href='/'/>
     <title>{pageTitle}</title>
     {/* <!-- Favicon icon --> */}
     <link rel="icon" type="image/png" sizes="16x16" href={favicon} />
-
-
-{/* <!-- Bottom CSS --> */}
-    <link href="/dashboard-assets/css/style.css" type='text/css' rel="stylesheet"/>
-{/* <!-- End Bottom CSS CSS --> */}
 	
 </Helmet>
   )

@@ -1,7 +1,8 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom';
 import useAxiosFunc from '../../app/utils/hooks/useAxiosFunc';
-import axios from '../../app/api/axios';
+// import axios from '../../app/api/axios';
+import './dashboardStyles/styles.css'
 import {setSettings } from '../dashboard/pages/Settings/settingsConfigSlice';
 import { useDispatch,useSelector } from 'react-redux';
 import Head from '../dashboard/components/Head';

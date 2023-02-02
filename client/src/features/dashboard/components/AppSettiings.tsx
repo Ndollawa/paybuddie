@@ -1,12 +1,14 @@
 import React,{ChangeEvent, FormEvent, FormEventHandler, useEffect, useRef} from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { useDashboardConfigSettingsMutation } from "../pages/Settings/settingApiSlice";
+import { useSettings } from "../pages/Settings/settingsConfigSlice";
 import { setDashboardSetting } from '../pages/Settings/settingsConfigSlice';
 import $ from 'jquery';
 
 const AppSettiings = () => {
-
+  const settings = useSelector(useSettings)
+  const {_id} =settings
   const body = $('body');
   const html = $('html');
 
@@ -35,7 +37,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
         const data = {typography:e.currentTarget.value};
         (async()=>{
           try {
-               await dashboardConfigSetting(data).unwrap();
+               await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
                
@@ -50,7 +52,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
       (async()=>{
         try {
-             await dashboardConfigSetting(data).unwrap();
+             await dashboardConfigSetting({_id,data}).unwrap();
              dispatch(setDashboardSetting(data))
            } catch (error) {
              
@@ -71,7 +73,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
         (async()=>{
           try {
-               await dashboardConfigSetting(data).unwrap();
+               await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
                
@@ -87,7 +89,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
       (async()=>{
         try {
-             await dashboardConfigSetting(data).unwrap();
+             await dashboardConfigSetting({_id,data}).unwrap();
              dispatch(setDashboardSetting(data))
            } catch (error) {
              
@@ -105,7 +107,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     console.log(e.currentTarget.value);
     (async()=>{
        try {
-            await dashboardConfigSetting(data).unwrap();
+            await dashboardConfigSetting({_id,data}).unwrap();
             dispatch(setDashboardSetting(data))
           } catch (error) {
             
@@ -121,7 +123,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
     (async()=>{
       try {
-           await dashboardConfigSetting(data).unwrap();
+           await dashboardConfigSetting({_id,data}).unwrap();
            dispatch(setDashboardSetting(data))
          } catch (error) {
            
@@ -134,7 +136,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
         (async()=>{
           try {
-               await dashboardConfigSetting(data).unwrap();
+               await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
                
@@ -152,7 +154,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
                 (async()=>{
                   try {
-                       await dashboardConfigSetting(data).unwrap();
+                       await dashboardConfigSetting({_id,data}).unwrap();
                        dispatch(setDashboardSetting(data))
                      } catch (error) {
                        
@@ -172,7 +174,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
         (async()=>{
           try {
-               await dashboardConfigSetting(data).unwrap();
+               await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
                
@@ -220,7 +222,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
         (async()=>{
           try {
-               await dashboardConfigSetting(data).unwrap();
+               await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
                
@@ -248,7 +250,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
   (async()=>{
  try {
-        await dashboardConfigSetting(data).unwrap();
+        await dashboardConfigSetting({_id,data}).unwrap();
         dispatch(setDashboardSetting(data))
       } catch (error) {
         
@@ -262,7 +264,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     const data = {headerBg:e.currentTarget.getAttribute('value')};
 (async()=>{
        try {
-            await dashboardConfigSetting(data).unwrap();
+            await dashboardConfigSetting({_id,data}).unwrap();
             dispatch(setDashboardSetting(data))
           } catch (error) {
             
@@ -274,7 +276,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     const data = {sidebarBg:e.currentTarget.getAttribute('value')};
 (async()=>{
        try {
-            await dashboardConfigSetting(data).unwrap();
+            await dashboardConfigSetting({_id,data}).unwrap();
             dispatch(setDashboardSetting(data))
           } catch (error) {
             
@@ -286,7 +288,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     const data = {primary:e.currentTarget.getAttribute('value')};
 (async()=>{
        try {
-            await dashboardConfigSetting(data).unwrap();
+            await dashboardConfigSetting({_id,data}).unwrap();
             dispatch(setDashboardSetting(data))
           } catch (error) {
             

@@ -1,26 +1,36 @@
-import React, { FormEvent,FormEventHandler } from 'react'
-import { useDispatch,useSelector } from 'react-redux'
-import Tinymce from '../../../../../app/utils/Tinymce'
+import React, { FormEvent,FormEventHandler,useRef, useState } from 'react'
+import { Editor } from '@tinymce/tinymce-react';
+import { useDispatch,useSelector } from 'react-redux';
 import { usePagesSettingsMutation } from '../settingApiSlice';
-import { setPagesSetting } from '../settingsConfigSlice';
+import { setPagesSetting, useSettings } from '../settingsConfigSlice';
 import { usePages } from '../settingsConfigSlice';
+import {toast} from 'react-toastify';
 
 
 const PrivacyPolicy = () => {
+  const {privacyPolicy} = useSelector(usePages)
+  const [privacy, setPrivacy] = useState(privacyPolicy) 
   const dispatch = useDispatch();
-  const [policySetting,isLoading] = usePagesSettingsMutation();
-  
+  const [pagesSetting,isLoading] = usePagesSettingsMutation();
+  const {_id} = useSelector(useSettings)
+
 const updateSetting:FormEventHandler = async(e:FormEvent)=>{
   e.preventDefault();
   try {
-    await  policySetting({}).unwrap();
-   dispatch(setPagesSetting({})) 
+    await  pagesSetting({_id,data:{privacyPolicy}}).unwrap();
+   dispatch(setPagesSetting({privacyPolicy})) 
 
-  } catch (error) {
-    
+  }  catch (error:any) {
+    toast.error(error,{
+      position:"top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick:true,
+      pauseOnHover:true,
+      theme:'light',
+    })
   }
 }
-
 
   return (
     <div className="card">
@@ -35,12 +45,31 @@ const updateSetting:FormEventHandler = async(e:FormEvent)=>{
               <div className="col-md-12">
 
                   {/* <label><strong>Privacy and Policy</strong></label>
-                */}
-                  <Tinymce/>
+                */}<Editor
+        tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
+        value={privacy}
+        onEditorChange={(newValue, editor)=>setPrivacy(newValue)}
+        initialValue=''
+        init={{
+          height: 500,
+          menubar: false,
+          plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
+          ],
+          toolbar: 'undo redo | blocks | ' +
+            'bold italic forecolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        }}
+      />
               </div>
-              <div className="card-footer">
-                  <button type="submit" className="btn btn-primary btn-sm">Save</button>
-                </div>
+          <div className="card-footer d-flex justify-content-end mt-10">
+              <button type="submit" className="btn btn-primary">
+                Update
+              </button></div>
           </div>
           </form>
         </div>

@@ -59,7 +59,8 @@ import SiteImage from './features/dashboard/pages/Settings/components/SiteImage'
 import Layout from './features/Layout/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetSettingsMutation } from './features/dashboard/pages/Settings/settingApiSlice';
-
+import Slider from './features/dashboard/pages/Slider/Slider';
+import {ToastContainer} from 'react-toastify'
 
 
 const App= ()=>{
@@ -86,8 +87,9 @@ try {
 
   return (
       
-            
+            <>
                     
+            <ToastContainer/>
           <Routes>
             {/* Public Routes */}{/* ^/$|/index(.html)? */}
              <Route path="error"  element={<Layout pageData={{pageTitle:"Dashboard"}}/> }>
@@ -134,7 +136,6 @@ try {
               {/* Protected Routes */}
 
             <Route element={<PersistLogin />} >
-              
             <Route element={<RequireAuth allowedRoles={[1000,1001,1002,1003]} />} >
             <Route path="/dashboard" element={<Layout pageData={{pageTitle:"Dashboard"}}/>} >
                   <Route index element={<DashboardHomepage/>} />
@@ -152,6 +153,8 @@ try {
                   <Route path="our-team/:id/member/" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="services/:id/service/" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="slider" element={<Slider />} />
+
                   <Route path="settings/" element={<SiteSettings/>} >
                       <Route index element={<GeneralSettings/>} />
                       <Route path="general" element={<GeneralSettings/>} />
@@ -165,14 +168,12 @@ try {
                  
             </Route> 
              {/* End Protected Routes */}
-
-
             </Route>
             </Route>
            </Route>
             <Route path='*'  element={<Navigate to="error/404"/>}/>
           </Routes>
-
+</>
   );
 }
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import MainBody from '../../components/MainBody';
+import OtherBody from '../../components/OtherBody';
 import pageProps from '../../../../app/utils/props/pageProps';
 
 const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
   return (
-    <MainBody>
+    <OtherBody>
         <div className="row">
 					<div className="col-xl-12">
 						<div className="card">
@@ -416,7 +416,7 @@ const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
 						</div>
 					</div>
 				</div> 
-    </MainBody>
+    </OtherBody>
   )
 }
 

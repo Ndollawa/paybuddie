@@ -17,7 +17,7 @@ import ThemePanel from "./ThemePanel";
 const MainBody = ({children}:any) => {
 
     const isLoading = useSelector(useIsLoading);
-    console.log(isLoading)
+    // console.log(isLoading)
     const [isToggled,setIsToggled] = useState(false);
     const {width, height} =useWindowSize();  
 const pageData ={
@@ -44,8 +44,8 @@ const toggleMenu = ()=>{
 setIsToggled(prev=> !prev);
 
 }
-let menuWrapperStyle = isToggled? "menu-toggle" : "";
-menuWrapperStyle += !isLoading ? "show" :"";
+let menuWrapperStyle = isToggled? "menu-toggle " : " ";
+menuWrapperStyle += !isLoading ? " show" :" ";
 
 
 useEffect(() => {

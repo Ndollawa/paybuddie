@@ -4,14 +4,15 @@ import { logOut , setCredentials} from "./authSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints:builder=>({
-        login: builder.mutation({
-            query:credentials=>({
+        login:builder.mutation<any, any>({
+           query:credentials=>({
                 url: '/auth/login',
                 method: 'POST',
                 body:{
                     ...credentials
-                }
-            })
+                },
+                
+            }),
         }),
         register:builder.mutation({
             query:credentials=>({
@@ -49,6 +50,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 try {
                     const {data}= await queryFulfilled
                     const{accessToken} = data
+                    // console.log(accessToken)
                     dispatch(setCredentials({accessToken}))
                 } catch (error) {
                     
