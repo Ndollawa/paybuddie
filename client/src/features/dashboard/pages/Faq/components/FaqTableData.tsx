@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { selectFaqById,useGetFaqsQuery } from '../faqApiSlice'
 import EditFaqModal from './EditFaqModal'
 
@@ -36,4 +35,4 @@ const FaqTableData = ({faqId}:any) => {
   
 }
 
-export default FaqTableData
+export default React.memo(FaqTableData)

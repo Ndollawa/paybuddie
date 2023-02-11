@@ -8,13 +8,12 @@ import useToggle from '../../app/utils/hooks/useToggle';
 // react-reduct rtkquery approach
 import {useDispatch, useSelector} from 'react-redux';
 import {useCompanyDetails} from '../dashboard/pages/Settings/settingsConfigSlice';
-import {setCredentials} from './authSlice';
 import {useLoginMutation} from './authApiSlice';
+import { setCredentials } from './authSlice';
 import jwt_decode from 'jwt-decode';
 import { authProps } from '../../app/utils/props/authProps';
-import { useGetCurrentUserMutation } from "./UserApiSlice";
 import OtherBody from '../dashboard/components/OtherBody';
-
+import ClipLoader from 'react-spinners/ClipLoader';
 interface errMessages{
     type:string,
     msg:string
@@ -22,6 +21,7 @@ interface errMessages{
 
 const Login:React.FC = () => {
 
+    
     const {siteName,logo} = useSelector(useCompanyDetails);
 
 
@@ -29,14 +29,8 @@ const navigate = useNavigate();
 const location = useLocation();
 
 //redux-rtkquery
-const [login,{isLoading:isLoadingLogin}] = useLoginMutation();
-         
-const[getCurrentUser,{
-    isLoading:isLoadingGetCurrentUser,
-    isSuccess,
-    isError,
-    error
-}]  = useGetCurrentUserMutation()
+const [login,{isLoading:isLoadingLogin, isSuccess}] = useLoginMutation();
+ 
 const dispatch = useDispatch();
 
 const from = location.state?.from?.pathname || '/dashboard';
@@ -71,11 +65,9 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
             const decodedToken:authProps['auth'] | undefined = accessToken
             ? jwt_decode(accessToken)
                : undefined;
-            const  userId:string | undefined = decodedToken?.userInfo?.user
-            console.log(userId)
-            if(userId)getCurrentUser(userId)
-            
-            dispatch(setCredentials({accessToken}))
+            const  user_info = decodedToken?.userInfo
+    //    console.log(_user)
+            dispatch(setCredentials({accessToken,user_info}))
             setUser('');
             setPwd('');
             navigate(from,{replace:true});
@@ -142,6 +134,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                          <div className={`input-group input-default`}>
                                             <span className="input-group-text"><FaKeycdn fontSize='1rem'/></span>
                                             <input 
+                                            autoComplete='off'
                                             type="password" 
                                             className="form-control" 
                                             required
@@ -168,12 +161,11 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                             </div>
                                         </div>
                                         <div className="text-center">
-                                            <button type="submit" className="btn btn-primary btn-block">{(isLoadingLogin &&
-isLoadingGetCurrentUser)? "Signing in..." :"Sign Me In" }</button>
+                                            <button type="submit" className="btn btn-primary btn-block">{(isLoadingLogin)? "Logging In...":"Login" } {isLoadingLogin && <ClipLoader loading={isLoadingLogin} color={'#ffffff'} size={'0.8rem'}/>}</button>
                                         </div>
                                     </form>
                                     <div className="new-account mt-3">
-                                        <p>Don't have an account? <Link className="text-primary" to="/register">Sign up</Link></p>
+                                        <p>Don't have an account? <Link className="text-primary" to="/auth/register">Register</Link></p>
                                     </div>
                                 </div>
                             </div>

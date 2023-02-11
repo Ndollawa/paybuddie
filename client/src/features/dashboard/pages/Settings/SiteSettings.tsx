@@ -8,6 +8,7 @@ const SiteSettings = () => {
  
   return (
     <MainBody>
+    <div className="container-fluid">
     <div className="row jumbotron"> 
             <div className='col-md-3 col-sm-12'>
                 <div className="card">
@@ -31,11 +32,11 @@ const SiteSettings = () => {
             </div>
         <div className="col-md-9"> 
         <Outlet/>
-      
+         </div>
         </div>
     </div>
 </MainBody>
   )
 }
 
-export default SiteSettings
+export default React.memo(SiteSettings)

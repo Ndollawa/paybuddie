@@ -15,7 +15,7 @@ const Error401 = () => {
                     <div className="form-input-content text-center error-page">
                         <h1 className="error-text font-weight-bold">401</h1>
                         <h4><i className="fa fa-thumbs-down text-danger"></i> Bad Request</h4>
-                        <p>Your Login session has expired! Please log back in</p>
+                        <p>Oppps!!!, Your Login session has expired.<br/> Please log back in</p>
 						<div>
                             <Link className="btn btn-primary" to="/auth/login">Login Here</Link>
                         </div>
@@ -27,4 +27,4 @@ const Error401 = () => {
   )
 }
 
-export default Error401
+export default React.memo(Error401)

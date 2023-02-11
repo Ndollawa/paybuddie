@@ -120,4 +120,4 @@ e.preventDefault();
   )
 }
 
-export default CreateFaqModal
+export default React.memo(CreateFaqModal)

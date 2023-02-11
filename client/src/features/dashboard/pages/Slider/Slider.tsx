@@ -63,8 +63,8 @@
      return (
         <>
         <MainBody>
-    
-        <div className="col-12">
+        <div className="container-fluid">
+            <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
                                     <h4 className="card-title">All FAQs</h4>
@@ -79,6 +79,7 @@
                                 </div>
                             </div>
                         </div>
+                 </div>
         </MainBody>
         </>
       )

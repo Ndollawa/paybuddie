@@ -5,11 +5,13 @@ import useWindowSize from '../../../app/utils/hooks/useWindowSize'
 import Notification from './NavComponents/Notification'
 import pageProps from '../../../app/utils/props/pageProps'
 import Notice from './NavComponents/Notice'
-import { useSelector ,useDispatch} from 'react-redux'
+import { useSelector} from 'react-redux'
+import { selectCurrentUser } from '../../auth/authSlice'
 import {useCompanyDetails} from '../pages/Settings/settingsConfigSlice'
 import { useSendLogoutMutation } from '../../auth/authApiSlice'
+import useUserImage from '../../../app/utils/hooks/useUserImage'
 
-const DASH_RREGEX = /^\/dashboard(\/)?$/
+// const DASH_RREGEX = /^\/dashboard(\/)?$/
 // const DASH_RREGEX = /^\/dashboard\/path(\/)?$/
 
 
@@ -18,12 +20,14 @@ const Nav:React.FC<pageProps> = ({pageData}:pageProps) => {
     const [toggleAlert,setToggleAlert]= useState(false)
     const [toggleUserDropdwn,setToggleUserDropdwn]= useState(false)
    const navigate = useNavigate()
-   const dispatch = useDispatch()
    const {pathname} = useLocation()
-
+    const currentUser = useSelector(selectCurrentUser);
+    const userImage = useUserImage(currentUser);
+    // console.log(currentUser)
    const [sendLogout,{
-    isLoading,
-    isSuccess,isError,
+    isLoading:isLogoutLoading,
+    isSuccess,
+    isError,
     error
    }] = useSendLogoutMutation()
  
@@ -173,7 +177,7 @@ var handleAllChecked = function() {
                         </div>
                         <ul className="navbar-nav header-right main-notification">
 							<li className="nav-item dropdown notification_dropdown">
-                                <Link className="nav-link bell dz-theme-mode" to="./settings" >
+                                <Link className="nav-link bell dz-theme-mode" to="/dashboard/settings" >
 									<i  className="fas fa-cog"></i>
                                   
 									
@@ -236,10 +240,10 @@ var handleAllChecked = function() {
                                     setToggleUserDropdwn(prev =>!prev);
                                     setToggleNotification(false);
                                     setToggleAlert(false);}} data-bs-toggle="dropdown">
-                                    <img src="dashboard-assets/images/profile/pic1.jpg" width="20" alt=""/>
+                                    <img src={userImage} width="20" alt={currentUser.username}/>
 									<div className="header-info">
-										<span>Johndoe</span>
-										<small>Super Admin</small>
+										<span>{(currentUser.firstName && currentUser.lastName)? currentUser.firstName+" "+currentUser.lastName : currentUser.username}</span>
+										<small>{currentUser.email}</small>
 									</div>
                                 </Link>
                                 <div className={toggleUserDropdwn? "show dropdown-menu dropdown-menu-end":"dropdown-menu dropdown-menu-end"} data-bs-popper="none">
@@ -264,4 +268,4 @@ var handleAllChecked = function() {
   )
 }
 
-export default Nav
+export default React.memo(Nav)

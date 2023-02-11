@@ -3,36 +3,23 @@ import { Editor } from '@tinymce/tinymce-react';
 import { useDispatch,useSelector } from 'react-redux';
 import { usePagesSettingsMutation,} from '../settingApiSlice';
 import { setPagesSetting, useSettings,usePages } from '../settingsConfigSlice';
-import {toast} from 'react-toastify';
+import showToast from '../../../../../app/utils/hooks/showToast';
 
 const AboutUs = () => {
-const {aboutUs} = useSelector(usePages)
-  const [about_Us,setAboutUs] = useState(aboutUs)
+const pages = useSelector(usePages)
+  const [about_Us,setAboutUs] = useState(pages.aboutUs)
   const dispatch= useDispatch();
 const [pagesSettings,isLoading]=usePagesSettingsMutation();
 const {_id} = useSelector(useSettings) 
 const updateSetting:FormEventHandler = async(e:FormEvent)=>{
 e.preventDefault()
 try {
-  await pagesSettings({_id,data:{aboutUs:about_Us}}).unwrap()
-   dispatch(setPagesSetting({aboutUs:about_Us}))
-  toast.success("Update Successful!",{
-    position:"top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick:true,
-    pauseOnHover:true,
-    theme:'light',
-  })
-} catch (error:any) {
-  toast.error(error,{
-    position:"top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick:true,
-    pauseOnHover:true,
-    theme:'light',
-  })
+  const data = {...pages,aboutUs:about_Us}
+  await pagesSettings({_id,data}).unwrap()
+   dispatch(setPagesSetting({data}))
+   showToast('success',"Settings Updated successfully!")
+  } catch (error:any) {
+    showToast('error',error)
 }
 
 }
@@ -55,10 +42,10 @@ try {
         tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
        onEditorChange={(newValue,editor)=>setAboutUs(newValue)}
        value={about_Us}
-        initialValue=''
+        initialValue={pages.aboutUs}
         init={{
           height: 500,
-          menubar: false,
+          menubar: true,
           plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
@@ -76,7 +63,7 @@ try {
           </div>
           <div className="card-footer d-flex justify-content-end">
               <button type="submit" className="btn btn-primary">
-                Update
+                Update Page Info
               </button></div>
           </form>
         </div>
@@ -85,4 +72,4 @@ try {
   )
 }
 
-export default AboutUs
+export default React.memo(AboutUs)

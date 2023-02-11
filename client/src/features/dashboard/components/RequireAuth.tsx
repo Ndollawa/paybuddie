@@ -7,7 +7,7 @@ import { selectCurrentToken } from '../../auth/authSlice';
 const RequireAuth = ({allowedRoles}:allowedRolesProps) =>{
     const location = useLocation();
     const token = useSelector(selectCurrentToken);
-    const from = location.state?.from?.pathname || '/dashboard';
+
 
     const decodedToken:authProps['auth'] | undefined = token
              ? jwt_decode(token)
@@ -16,11 +16,11 @@ const RequireAuth = ({allowedRoles}:allowedRolesProps) =>{
     // console.log(token)
     return(
         token === null || undefined
-        ?<Navigate to="/auth/login" state={{from:from}} replace />
+        ?<Navigate to="/auth/login" state={{from:location}} replace />
         :roles?.find((role:number) => allowedRoles?.includes(role))
         ? <Outlet/>
         : token
-        ?<Navigate to="/error/403" state={{from:from}} replace />
+        ?<Navigate to="/error/403" state={{from:location}} />
         : <Outlet/>
        
     );

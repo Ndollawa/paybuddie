@@ -12,7 +12,7 @@ const Error403 = () => {
                         <h4><i className="fa fa-times-circle text-danger"></i> Forbidden Error!</h4>
                         <p>You do not have permission to view this resource.</p>
 						<div>
-                            <a className="btn btn-primary" href="/">Back to Home</a>
+                            <button className="btn btn-primary" onClick={()=>window.history.back()}>Click to go Back</button>
                         </div>
                     </div>
                 </div>
@@ -23,4 +23,4 @@ const Error403 = () => {
   )
 }
 
-export default Error403
+export default React.memo(Error403)

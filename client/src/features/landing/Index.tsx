@@ -10,11 +10,10 @@ import MobileNav from './components/MobileNav';
 import Search from './components/Search';
 import $ from 'jquery';
 import pageProps from "../../app/utils/props/pageProps";
-import './styles.css'
+import './styles.css';
 
     
 const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
-
 
     useEffect(()=>{
         if ($(".preloader").length) {

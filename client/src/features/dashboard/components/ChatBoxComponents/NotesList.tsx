@@ -55,4 +55,4 @@ const NotesList = () => {
   )
 }
 
-export default NotesList
+export default React.memo(NotesList)

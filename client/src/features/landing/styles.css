@@ -2765,7 +2765,7 @@ h6 {
 	padding-bottom: 50px;
 	box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.07);
 	background-color: #fff;
-	/* background-image: url(../images/shapes/contact-info-shape-1-1.png); */
+	background-image: url(./images/shapes/contact-info-shape-1-1.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 	position: relative;
@@ -2797,7 +2797,7 @@ h6 {
 }
 
 .client-carousel--team-details {
-	/* background-image: url(../images/shapes/contact-info-shape-light-1-1.png); */
+	background-image: url(./images/shapes/contact-info-shape-light-1-1.png);
 	background-color: var(--thm-base);
 }
 
@@ -2810,7 +2810,7 @@ h6 {
 --------------------------------------------------------------*/
 .main-footer {
 	background-color: var(--thm-black);
-	/* background-image: url(../images/shapes/footer-bg-1-1.png); */
+	background-image: url(./images/shapes/footer-bg-1-1.png);
 	background-repeat: no-repeat;
 	background-position: top center;
 	background-blend-mode: luminosity;
@@ -3015,7 +3015,7 @@ h6 {
 .contact-info-one {
 	box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.07);
 	background-color: #fff;
-	/* background-image: url(../images/shapes/contact-info-shape-1-1.png); */
+	background-image: url(./images/shapes/contact-info-shape-1-1.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 	padding-top: 70px;
@@ -3112,7 +3112,7 @@ h6 {
 
 
 .contact-one {
-	/* background-image: url(../images/shapes/contact-page-form-1-1.png); */
+	background-image: url(./images/shapes/contact-page-form-1-1.png);
 	background-repeat: no-repeat;
 	background-position: top left;
 }
@@ -3175,7 +3175,7 @@ h6 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	/* background-image: url(../images/shapes/faq-form-bg-1-1.png); */
+	background-image: url(./images/shapes/faq-form-bg-1-1.png);
 	background-repeat: no-repeat;
 	background-position: top center;
 }
@@ -3608,7 +3608,7 @@ h6 {
 	width: 100%;
 	height: 530px;
 	background-color: var(--thm-gray);
-	/* background-image: url(../images/shapes/team-about-bg-1-1.png); */
+	background-image: url(./images/shapes/team-about-bg-1-1.png);
 	background-size: cover;
 	mix-blend-mode: luminosity;
 	position: absolute;
@@ -3617,7 +3617,7 @@ h6 {
 }
 
 .team-details {
-	/* background-image: url(../images/shapes/contact-page-form-1-1.png); */
+	background-image: url(./images/shapes/contact-page-form-1-1.png);
 	background-repeat: no-repeat;
 	background-position: top left;
 }
@@ -4303,7 +4303,7 @@ h6 {
 }
 
 .service-two__shape {
-	/* background-image: url(../images/shapes/service-2-1.png); */
+	background-image: url(./images/shapes/service-2-1.png);
 	width: 158px;
 	height: 137px;
 	background-repeat: no-repeat;
@@ -4399,7 +4399,7 @@ h6 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	/* background-image: url(../images/shapes/faq-form-bg-1-1.png); */
+	background-image: url(./images/shapes/faq-form-bg-1-1.png);
 	background-repeat: no-repeat;
 	background-position: top center;
 }
@@ -4688,7 +4688,7 @@ h6 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	/* background-image: url(../images/shapes/faq-form-bg-1-1.png); */
+	background-image: url(./images/shapes/faq-form-bg-1-1.png);
 	background-repeat: no-repeat;
 	background-position: top center;
 }
@@ -4734,7 +4734,7 @@ h6 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	/* background-image: url(../images/shapes/service-card-5-s-1.png); */
+	background-image: url(./images/shapes/service-card-5-s-1.png);
 	background-position: top left;
 	background-repeat: no-repeat;
 	transform: scale(1, 0);
@@ -5046,7 +5046,7 @@ h6 {
 /*@media (min-width: 992px) {
 	.call-to-action-two {
 		padding-top: 0;
-		background-image: url(../images/shapes/cta-2-shape-1.png);
+		background-image: url(./images/shapes/cta-2-shape-1.png);
 	}
 }*/
 @media (min-width: 992px) {
@@ -5411,7 +5411,7 @@ h6 {
 
 .benefit-one {
 	position: relative;
-	/* background-image: url(../images/shapes/benefit-circle-1-1.png); */
+	background-image: url(./images/shapes/benefit-circle-1-1.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 	overflow: hidden;
@@ -5647,7 +5647,7 @@ h6 {
 	left: 146px;
 	width: 97px;
 	height: 133px;
-	/* background-image: url(../images/shapes/about-4-s-1.png); */
+	background-image: url(./images/shapes/about-4-s-1.png);
 	background-repeat: no-repeat;
 	animation-name: shapeMover;
 	animation-duration: 4s;
@@ -5856,7 +5856,7 @@ h6 {
 .about-four__image__shape {
 	width: 194px;
 	height: 189px;
-	/* background-image: url(../images/shapes/about-4-dot-1.png); */
+	background-image: url(./images/shapes/about-4-dot-1.png);
 	background-repeat: no-repeat;
 	background-position: top center;
 	position: absolute;
@@ -5874,7 +5874,7 @@ h6 {
 	left: 310px;
 	width: 97px;
 	height: 133px;
-	/* background-image: url(../images/shapes/about-5-s-1.png); */
+	background-image: url(./images/shapes/about-5-s-1.png);
 	background-repeat: no-repeat;
 	animation-name: shapeMover;
 	animation-duration: 4s;
@@ -5888,7 +5888,7 @@ h6 {
 	right: 125px;
 	width: 158px;
 	height: 137px;
-	/* background-image: url(../images/shapes/about-5-s-2.png); */
+	background-image: url(./images/shapes/about-5-s-2.png);
 	background-repeat: no-repeat;
 	animation-name: bubbleMover;
 	animation-timing-function: linear;
@@ -5902,7 +5902,7 @@ h6 {
 	right: 0;
 	width: 638px;
 	height: 585px;
-	/* background-image: url(../images/shapes/about-5-bg-1-1.png); */
+	background-image: url(./images/shapes/about-5-bg-1-1.png);
 	background-repeat: no-repeat;
 	display: none;
 }
@@ -6170,7 +6170,7 @@ h6 {
 }
 
 .about-six {
-	/* background-image: url(../images/shapes/about-6-bg-1-1.png); */
+	background-image: url(./images/shapes/about-6-bg-1-1.png);
 	background-repeat: no-repeat;
 	background-position: left -20%;
 	position: relative;
@@ -6183,7 +6183,7 @@ h6 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	/* background-image: url(../images/shapes/about-6-bg-c-1.png); */
+	background-image: url(./images/shapes/about-6-bg-c-1.png);
 	background-position: right -15%;
 	background-repeat: no-repeat;
 }
@@ -6347,7 +6347,7 @@ h6 {
 	left: 190px;
 	width: 97px;
 	height: 133px;
-	/* background-image: url(../images/shapes/about-5-s-1.png); */
+	background-image: url(./images/shapes/about-5-s-1.png);
 	background-repeat: no-repeat;
 	animation-name: shapeMover;
 	animation-duration: 4s;
@@ -6361,7 +6361,7 @@ h6 {
 	right: 180px;
 	width: 158px;
 	height: 137px;
-	/* background-image: url(../images/shapes/about-5-s-2.png); */
+	background-image: url(./images/shapes/about-5-s-2.png);
 	background-repeat: no-repeat;
 	animation-name: shapeMover;
 	animation-duration: 4s;
@@ -6375,7 +6375,7 @@ h6 {
 	right: 235px;
 	width: 83px;
 	height: 69px;
-	/* background-image: url(../images/shapes/service-h-2.png); */
+	background-image: url(./images/shapes/service-h-2.png);
 	background-repeat: no-repeat;
 	animation-name: bubbleMover;
 	animation-timing-function: linear;
@@ -6450,7 +6450,7 @@ h6 {
 
 @media (min-width: 992px) {
 	.work-process .row {
-		/* background-image: url(../images/shapes/work-process-1-1.png); */
+		background-image: url(./images/shapes/work-process-1-1.png);
 		background-repeat: no-repeat;
 		background-position: center 10%;
 	}
@@ -6510,7 +6510,7 @@ h6 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	/* background-image: url(../images/shapes/benefit-2-circle.png); */
+	background-image: url(./images/shapes/benefit-2-circle.png);
 	background-position: top right;
 	background-repeat: no-repeat;
 }
@@ -7013,7 +7013,7 @@ h6 {
 # fact
 --------------------------------------------------------------*/
 .fact-one {
-	/* background-image: url(../images/shapes/fact-bg-1-1.png); */
+	background-image: url(./images/shapes/fact-bg-1-1.png);
 	background-color: var(--thm-black);
 	background-position: center center;
 }
@@ -7157,7 +7157,7 @@ h6 {
 .testimonial-card__line {
 	width: 100%;
 	height: 42px;
-	/* background-image: url(../images/shapes/testi-line-1-1.png); */
+	background-image: url(./images/shapes/testi-line-1-1.png);
 	background-size: auto 100%;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -7168,11 +7168,11 @@ h6 {
 }
 
 .testimonial-card:hover .testimonial-card__line {
-	/* background-image: url(../images/shapes/testi-line-1-1-h.png); */
+	background-image: url(./images/shapes/testi-line-1-1-h.png);
 }
 
 .testimonials-one {
-	/* background-image: url(../images/shapes/testi-bg-1-1.png); */
+	background-image: url(./images/shapes/testi-bg-1-1.png);
 	background-repeat: no-repeat;
 	background-position: center left;
 }
@@ -7180,7 +7180,7 @@ h6 {
 .testimonials-two {
 	background-repeat: no-repeat;
 	background-position: center left;
-	/* background-image: url(../images/shapes/testi-bg-2-1.png); */
+	background-image: url(./images/shapes/testi-bg-2-1.png);
 	background-color: var(--thm-gray);
 }
 
@@ -7262,7 +7262,7 @@ h6 {
 	position: absolute;
 	bottom: 0;
 	left: -50px;
-	/* background-image: url(../images/shapes/testi-3-map-1-1.png); */
+	background-image: url(./images/shapes/testi-3-map-1-1.png);
 	width: 429px;
 	height: 410px;
 	z-index: 10;
@@ -7320,7 +7320,7 @@ h6 {
 	left: 0;
 	right: 33px;
 	bottom: 0;
-	/* background-image: url(../images/shapes/testi-line-2-1.png); */
+	background-image: url(./images/shapes/testi-line-2-1.png);
 	background-repeat: no-repeat;
 	background-position: right top;
 	z-index: 10;
@@ -7477,8 +7477,8 @@ h6 {
 	right: 0;
 	bottom: 0;
 	z-index: 1;
-/*	background-image: url(../images/shapes/video-bg-1-2.png);
-	background-repeat: no-repeat;*/
+	background-image: url(./images/shapes/video-bg-1-2.png); 
+	background-repeat: no-repeat;
 	display: none;
 }
 
@@ -7488,10 +7488,10 @@ h6 {
 	}
 }
 
-/*.video-one--home .video-one__shape {
-	background-image: url(../images/shapes/video-bg-1-1.png);
+.video-one--home .video-one__shape {
+	 background-image: url(./images/shapes/video-bg-1-1.png);
 
-}*/
+}
 .video-one--home .video-one__shape-edge{
 
 		padding-top: 0;
@@ -7671,7 +7671,7 @@ h6 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	/* background-image: url(../images/shapes/faq-form-bg-1-1.png); */
+	background-image: url(./images/shapes/faq-form-bg-1-1.png);
 	background-repeat: no-repeat;
 	background-position: top center;
 }
@@ -7829,7 +7829,7 @@ h6 {
 .loan-calculator__image__caption {
 	width: 398px;
 	height: 295px;
-	/* background-image: url(../images/shapes/calculator-form-bubble-bg-1-1.png); */
+	background-image: url(./images/shapes/calculator-form-bubble-bg-1-1.png);
 	background-repeat: no-repeat;
 	align-items: flex-start;
 	justify-content: center;
@@ -8161,7 +8161,7 @@ h6 {
 
 .slider-one__title span::before {
 	content: '';
-	/* background-image: url(../images/shapes/main-slider-t-1-1.png); */
+	background-image: url(./images/shapes/main-slider-t-1-1.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 100%;
@@ -8346,7 +8346,7 @@ h6 {
 .slider-one--two .slider-one__title span::before {
 	width: 51px;
 	height: 48px;
-	/* background-image: url(../images/shapes/slider-2-s-1.png); */
+	background-image: url(./images/shapes/slider-2-s-1.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	left: auto;

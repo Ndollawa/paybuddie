@@ -1,12 +1,15 @@
 import SliderModel from '../../Models/Slider'
 // import UserModel from '../../Models/User'
 import {Request, Response} from 'express'
+import BaseController from './BaseController'
 
 
 
-class SliderController {
-    // constructor() {
-    // }
+class SliderController extends BaseController {
+    constructor(){
+        super(SliderModel)   
+
+   }
 
 // @desc Get all notes 
 // @route GET /notes

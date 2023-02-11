@@ -1,5 +1,5 @@
 import { Outlet ,Link, useLocation, Navigate} from "react-router-dom";
-import { useState, useEffect,useRef } from "react";
+import React,{ useState, useEffect,useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRefreshMutation } from "../../auth/authApiSlice";
 import { selectCurrentToken } from '../../auth/authSlice';
@@ -16,7 +16,7 @@ const PersistLogin = () =>{
     const location = useLocation();
     const dispatch = useDispatch();
 
-    const from = location.state?.from?.pathname || '/dashboard';
+
 const [refresh,{
     isUninitialized,
     isLoading,
@@ -55,7 +55,7 @@ useEffect(() =>{
             }
            
         }
-        if(!token && persist) verifyRefreshToken()
+        if(!token && persist){verifyRefreshToken()} 
        
     }
   return () =>{
@@ -75,7 +75,7 @@ useEffect(() =>{
       
                 </div></>)
                 }else if(isError){
-                  content = <Navigate to={`/error/401`} state={{from:from}}/>
+                  content = <Navigate to={`/error/401`} state={{from:location}}/>
 
                 }else if(isSuccess && trueSuccess){
                    content = <Outlet/> 
@@ -92,4 +92,4 @@ dispatch(setPreloader(isLoading? true :false))
     )
 }
 
-export default PersistLogin;
+export default React.memo(PersistLogin);

@@ -5,7 +5,8 @@ import MainBody from '../../components/MainBody';
 const Transaction:React.FC<pageProps> = ({pageData}:pageProps) => {
   return (
     <MainBody>
-       <div className="row">
+		<div className="container-fluid">
+       				<div className="row">
 					<div className="col-xl-12">
 						<div className="table-responsive table-hover fs-14">
 							<table className="table display mb-4 dataTablesCard short-one card-table text-black" id="example6">
@@ -507,7 +508,8 @@ const Transaction:React.FC<pageProps> = ({pageData}:pageProps) => {
 							</table>
 						</div>	
 					</div>
-				</div> 
+				</div>
+			</div> 
 </MainBody>
   )
 }

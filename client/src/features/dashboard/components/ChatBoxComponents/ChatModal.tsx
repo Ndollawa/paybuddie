@@ -161,4 +161,4 @@ const ChatModal = () => {
   )
 }
 
-export default ChatModal
+export default React.memo(ChatModal)

@@ -94,4 +94,4 @@ const Chatbox = () => {
   )
 }
 
-export default Chatbox
+export default React.memo(Chatbox)

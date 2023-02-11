@@ -14,8 +14,8 @@ export interface decoded {
  
 const verifyJWT= (req: Request, res:Response, next:NextFunction)=>{
     const authHeader:any = req.headers.authorization || req.headers.Authorization;
-    // console.log(req.headers)
-    if(!authHeader?.startsWith('Bearer ')) return res.status(401).json({message:'Unauthorized'});
+    // console.log(req.headers.authorization)
+    if(!authHeader?.startsWith('Bearer ')) return res.status(401).json({message:'Unauthorized Access'});
     const token = authHeader.split(' ')[1];
       jwt.verify(
         token,

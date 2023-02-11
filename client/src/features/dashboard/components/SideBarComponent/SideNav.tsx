@@ -138,4 +138,4 @@ const toggleMenu = (id:number,type:string)=>{
   )
 }
 
-export default SideNav
+export default React.memo(SideNav)

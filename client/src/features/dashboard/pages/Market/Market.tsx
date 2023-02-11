@@ -4,12 +4,11 @@ import pageProps from '../../../../app/utils/props/pageProps';
 
 const Market:React.FC<pageProps> = ({pageData}:pageProps)  => {
   return (
-    <>
     <MainBody>
+    <div className="container-fluid">
 
-      
+    </div>
     </MainBody>
-    </>
   )
 }
 

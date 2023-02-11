@@ -32,4 +32,4 @@ const {
   )
 }
 
-export default OtherBody
+export default React.memo(OtherBody)

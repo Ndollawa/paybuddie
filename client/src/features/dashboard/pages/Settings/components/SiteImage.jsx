@@ -32,4 +32,4 @@ const SiteImage = () => {
   )
 }
 
-export default SiteImage
+export default React.memo(SiteImage)

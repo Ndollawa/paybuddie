@@ -1,16 +1,14 @@
 import {useDispatch, useSelector } from 'react-redux';
-import { AxiosError } from 'axios';
-import React, {useRef,useState,useEffect,FormEvent, FormEventHandler } from 'react';
+import React, {useRef,useState,useEffect,useDeferredValue, FormEvent, FormEventHandler } from 'react';
 import { Link } from 'react-router-dom';
 import {GoKey} from 'react-icons/go';
 import {GrMail} from 'react-icons/gr';
-import {FaUser,FaRegUserCircle,FaKeycdn} from 'react-icons/fa';
-import axios from '../../app/api/axios';
-import useAxiosFunc from '../../app/utils/hooks/useAxiosFunc'; 
+import {FaUser,FaRegUserCircle,FaKeycdn} from 'react-icons/fa'; 
 import {useCompanyDetails} from '../dashboard/pages/Settings/settingsConfigSlice';
-import {useRegisterMutation} from './authApiSlice'
+import {useRegisterMutation} from './authApiSlice';
+import { useCheckDuplicateUserMutation } from '../dashboard/pages/Users/usersApiSlice';
 import OtherBody from '../dashboard/components/OtherBody';
-
+import { ClipLoader } from 'react-spinners';
 
 // username regex must start with a lowercase or uppercase laters and must be followed by lower or uppercase or digits,- or _ of 3 to 23 characters
 const USER_REGEX = /^[a-zA-Z][a-zA-z0-9-_]{3,23}$/;
@@ -25,7 +23,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-
 
 interface Messages{
     type:string,
-    msg:string
+    msg:string | unknown
 }
 
 const Register:React.FC = () => {
@@ -38,9 +36,14 @@ const emailRef = useRef <HTMLInputElement>(null);
 const errRef = useRef <HTMLInputElement>(null);
 const successRef = useRef <HTMLInputElement>(null);
 
-const [response,error,loading,axiosFetch] = useAxiosFunc();
+const [checkDuplicateUser,{
+    error:checkDuplicateUserError,
+    data:response,
+    isLoading:isCheckDuplicateUserLoading,
+    isError:isCheckDuplicateUserError,
+    isSuccess:isCheckDuplicateUserSuccess
+}] = useCheckDuplicateUserMutation();
 const [user,setUser] = useState('');
-const [validate, setValidate] = useState('');
 const [validName,setValidName] = useState(false);
 const [userFocus,setUserFocus] = useState(false);
 
@@ -60,8 +63,16 @@ const [msg,setMsg] = useState<Messages>();
 const [success,setSuccess] = useState(false);
 // const [userFocus,setUserFocus] = useState(false);
 
+const deferredEmail = useDeferredValue(email)
+const deferredUsername = useDeferredValue(user)
 const dispatch = useDispatch()
-const [register,{isLoading}] = useRegisterMutation();
+const [register,{
+    isLoading,
+    status,
+    error,
+    isError,
+    isSuccess
+}] = useRegisterMutation();
 useEffect(()=>{
     userRef.current?.focus();
 }, [])
@@ -69,17 +80,38 @@ useEffect(()=>{
 useEffect(()=>{
     setMsg(undefined)
 }, [user,email,pwd,matchPwd]);
- 
+ const checkDuplicate = async (key:string) =>{
+  const data ={ user:key }
+       await checkDuplicateUser(data)
+    
+    if(!checkDuplicateUserError  && isCheckDuplicateUserSuccess && !isCheckDuplicateUserLoading){
+            if(response.message === 'available'){
+            setMsg({type:'success',msg:`${key} Available`}) 
+            }else if(response.message === 'taken'){
+            setMsg({type:'danger',msg:` Conflict: User with ${key} already exist!`})}
 
-useEffect(()=>{
-    const result = USER_REGEX.test(user);
+        }else if(isCheckDuplicateUserError){
+        setMsg({type:'danger',msg:checkDuplicateUserError})    
+    }
+    }
+
+const checkUser = (key:string)=>{
+    const result = USER_REGEX.test(key);
    setValidName(result)
-}, [user]);
+   if(result){
+    checkDuplicate(key)
+   }    
+       
+    
+}
 
-useEffect(()=>{
-    const result = EMAIL_REGEX.test(email);
-    setValidEmail(result)
-}, [email]);
+const checkEmail = (key:string)=>{
+    const result = EMAIL_REGEX.test(key);
+   setValidEmail(result)
+   if(result){
+    checkDuplicate(key)
+   }  
+}
 
 useEffect(()=>{
     const result = PWD_REGEX.test(pwd);
@@ -89,57 +121,30 @@ useEffect(()=>{
 }, [pwd,matchPwd]);
 
 
-const checkDuplicates:FormEventHandler = async (e:FormEvent) =>{
-  
-        axiosFetch({
-            axiosInstance:axios,
-            method: 'POST',
-            url: '/checkduplicate',
-            requestConfig: {
-                data: {
-                    user:validate
-                }
-            }
-        }
-    )
-    if(!error){
-        console.log(response)
-        if(response.message === 'available'){
-             setValidate(user);
-            setMsg({type:'success',msg:'Username Available'}) 
-        }else if(response.message === 'taken'){
-            setMsg({type:'info',msg:'Username Taken'}) 
-        }
-    }else{
-        setMsg({type:'error',msg:error})
-    }
-    }
+
 const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
     e.preventDefault();
-    try{
-   
-        // redux-rtkQuery approach
-        await register({username:user,email,password:pwd}).unwrap()
-        
-    }catch(error){
-        const err = error as AxiosError;
-            if(!err?.response){
-                setMsg({type:'danger',msg:'No Server Response'});
-            }else if(err.response?.status === 400){
-                setMsg({type:'warning',msg:'Missing form detail(s)'} )
-            }else{
-                setMsg({type:'danger',msg:'Registration Failed'})
-            }
+        await register({username:user,email,password:pwd})
+        console.log()
+            if(error){
+            //     setMsg({type:'danger',msg:'No Server Response'});
+            // }else if(status === 400){
+            //     setMsg({type:'warning',msg:'Missing form detail(s)'} )
+            // }else if(status === 409){
+            //     setMsg({type:'danger',msg:'Conflict: User with Username or email already exist!'} )
+            // }else{
+                setMsg({type:'danger',msg:'Registration Failed<br/>'+error})
             errRef.current?.focus();
-        }
-      setMsg({type:'success',msg:'New Account successfully created!'}) 
+            }
+    if(!error && isSuccess){
+        setMsg({type:'success',msg:'New Account successfully created!'}) 
 
-    setSuccess(true);
-    setUser('');
-    setEmail('');
-    setPwd('');
-    setMatchPwd('');
-   
+        setSuccess(true);
+        setUser('');
+        setEmail('');
+        setPwd('');
+        setMatchPwd('');
+   }
     }
 
   return (
@@ -199,11 +204,10 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                                 aria-invalid ={validName ? "false": "true"}
                                                 aria-describedby="uidnote"
                                                 onChange={(e)=> setUser(e.target.value)}
-                                                onKeyUp={checkDuplicates}
                                                 onFocus={()=>setUserFocus(true)}
-                                                onBlur={()=>setUserFocus(false)}
+                                                onBlur={()=>{setUserFocus(false); checkUser(user);}}
                                                 value={user}
-                                                />
+                                                />{isCheckDuplicateUserLoading && <span className="input-group-text"><ClipLoader loading={isCheckDuplicateUserLoading} color={'#ffffff'} size={'0.8rem'}/></span>}
                                             </div>
                                         </div>
                                         {(userFocus && !validName) && <p className='alert alert-danger' id='uidnote'>4 to 24 characters.<br/>Must begin with  a letter.<br/> Letters, numbers, underscore,hyphens, % allowed</p>}
@@ -223,7 +227,7 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                             aria-describedby="uemailnote"
                                             onKeyUp={(e)=> setEmail(email)}
                                             onFocus={()=>setEmailFocus(true)}
-                                            onBlur={()=>setEmailFocus(false)}
+                                            onBlur={()=>{setEmailFocus(false); checkEmail(email);}}
                                             value={email}
                                              />
                                         </div>
@@ -270,11 +274,11 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                         {(matchFocus && !validMatch) && <p className='alert alert-danger' id='confirmpwdnote'>Passwords do not match!</p>}
                                         <div className="text-center mt-4">
                                             <button type="submit" 
-                                            disabled={!validEmail && !validPwd && !validName && !validMatch} className="btn btn-primary btn-block">Sign me up</button>
+                                            disabled={!(validEmail && validPwd && validName && validMatch)? true : false} className="btn btn-primary btn-block">{isLoading?"Registering...":"Register Me"} {isLoading && <ClipLoader loading={isLoading} color={'#ffffff'} size={'0.8rem'}/>}</button>
                                         </div>
                                     </form>
                                     <div className="new-account mt-3">
-                                        <p>Already have an account? <Link className="text-primary" to="/login">Sign in</Link></p>
+                                        <p>Already have an account? <Link className="text-primary" to="/auth/login">Login</Link></p>
                                     </div>
                                 </div>
                             </div>

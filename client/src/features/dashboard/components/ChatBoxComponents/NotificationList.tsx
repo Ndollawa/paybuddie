@@ -46,4 +46,4 @@ const NotificationList = () => {
   )
 }
 
-export default NotificationList
+export default React.memo(NotificationList)

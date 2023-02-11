@@ -1,56 +1,116 @@
+import {
+    createSelector,
+    createEntityAdapter
+} from "@reduxjs/toolkit";
+import { RootState } from "@reduxjs/toolkit/dist/query/core/apiState";
 import { apiSlice } from "../../../../app/api/apiSlice";
-import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
+import { userInterface } from "../../../auth/authSlice";
 
-interface UserQuery{
-    type:string;
-    id:any;
-}
 
-const usersAdapter = createEntityAdapter({})
+
+
+
+const usersAdapter = createEntityAdapter({
+    // sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1
+})
+
 const initialState = usersAdapter.getInitialState()
 
 export const usersApiSlice = apiSlice.injectEndpoints({
-    endpoints:builder=>({
-        getUsers:builder.query<any, any>({
-        query:()=>({
-            url:'/users',
-        validateStatus:(response:any, result:any)=>{
-            return response.status === 200 && !result.isError
-        },
-        keepUnsusedDataFor:5,
-        transformResponse:(responseData:any) =>{
-            const loadedUsers = responseData.map((user:any) =>{
-                user.id = user._id
-                return user
-            });
-            return usersAdapter.setAll(initialState,loadedUsers)
-        },
-        providesTags:(result:any,error:any,arg:any)=>{
-            if(result?.id){
-                return [
-                    {type: 'Users', id:'LIST'},
-                    ...result.ids.map((id:string)=>({type:'Users',id}))
-                ]
-            }else return [{type: 'Users', id:'LIST'}]
-                
-        }
-          }),
-       }),
+    endpoints: builder => ({
+        getUsers: builder.query<any, any>({
+            query: () => ({
+                url: '/users',
+                validateStatus: (response:any, result:any) => {
+                    return response.status === 200 && !result.isError
+                },
+            }),
+            transformResponse: (responseData:userInterface) => {
+                const loadedUsers = Object.values(responseData).map((user:any) => {
+                    user.id = user._id
+                    return user
+                });
+                return usersAdapter.setAll(initialState, loadedUsers)
+            },
+            providesTags: (result, error, arg) => {
+                if (result?.ids) {
+                    return [
+                        { type: 'User', id: 'LIST' },
+                        ...result.ids.map((id:string) => ({ type: 'User', id }))
+                    ]
+                } else return [{ type: 'User', id: 'LIST' }]
+            }
+        }),
+        addNewUser: builder.mutation({
+            query: initialUser => ({
+                url: '/users',
+                method: 'POST',
+                body: {
+                    ...initialUser,
+                }
+            }),
+            invalidatesTags: [
+                { type: 'User', id: "LIST" }
+            ]
+        }),
+        updateUser: builder.mutation({
+            query: initialUser => ({
+                url: '/users',
+                method: 'PATCH',
+                body: {
+                    ...initialUser,
+                }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'User', id: arg.id }
+            ]
+        }),
+        checkDuplicateUser: builder.mutation({
+            query: userInfo => ({
+                url: '/checkduplicate',
+                method: 'PATCH',
+                body: {
+                    ...userInfo,
+                }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'User', id: arg.id }
+            ]
+        }),
+        deleteUser: builder.mutation({
+            query: ({ _id }) => ({
+                url: `/users`,
+                method: 'DELETE',
+                body: { _id }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'User', id: arg.id }
+            ]
+        }),
     }),
 })
 
-export const {useGetUsersQuery} = usersApiSlice;
-const selectUsersResult = usersApiSlice.endpoints.getUsers.select('Users')
-// returns query result object
-const selectUserData = createSelector(
+export const {
+    useGetUsersQuery,
+    useAddNewUserMutation,
+    useUpdateUserMutation,
+    useCheckDuplicateUserMutation,
+    useDeleteUserMutation,
+} = usersApiSlice
+
+// returns the query result object
+export const selectUsersResult = usersApiSlice.endpoints.getUsers.select('User')
+
+// creates memoized selector
+const selectUsersData = createSelector(
     selectUsersResult,
-    usersResult =>usersResult?.data // normalized state object with ids and entities
+    usersResult => usersResult.data // normalized state object with ids & entities
 )
 
-// getSelectors
-export const{
-    selectAll:selectAllUsers,
-    selectById:selectUserById,
-    selectIds:selectUserIds
-    // pass in a selector that returnd the users slice of state
-} = usersAdapter.getSelectors((state:any)=>selectUserData(state) ?? initialState)
+//getSelectors creates these selectors and we rename them with aliases using destructuring
+export const {
+    selectAll: selectAllUsers,
+    selectById: selectUserById,
+    selectIds: selectUserIds
+    // Pass in a selector that returns the notes slice of state
+} = usersAdapter.getSelectors((state:any) => selectUsersData(state) ?? initialState)

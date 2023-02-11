@@ -1,6 +1,8 @@
 import { apiSlice } from "../../app/api/apiSlice";
 import { logOut , setCredentials} from "./authSlice";
-
+import jwt_decode from 'jwt-decode';
+import { authProps } from "../../app/utils/props/authProps";
+import localStorage from "redux-persist/es/storage";
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints:builder=>({
@@ -36,6 +38,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     setTimeout(()=>{
                    dispatch(apiSlice.util.resetApiState())
                     },1000) 
+                    localStorage.removeItem('persist:rootApp')
                 } catch (error) {
                     console.log(error)
                 }
@@ -51,9 +54,15 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     const {data}= await queryFulfilled
                     const{accessToken} = data
                     // console.log(accessToken)
-                    dispatch(setCredentials({accessToken}))
+                    const decodedToken:authProps['auth'] | undefined = accessToken
+                    ? jwt_decode(accessToken)
+                       : undefined;
+                    const  user_info = decodedToken?.userInfo
+            //    console.log(user_info)
+                    dispatch(setCredentials({accessToken,user_info}))
                 } catch (error) {
                     
+                    console.log(error)
                 }
             }
         }),

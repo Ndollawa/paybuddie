@@ -1,12 +1,12 @@
 import {createSlice, Selector} from '@reduxjs/toolkit';
-import logo from '../../../../paybuddie4.png'
-import logoDark from '../../../../paybuddie-white.png'
-import favicon from '../../../../favicon.png'
 
 enum Styles{STYLE_1=1,STYLE_2, STYLE_3};
 const initialState = {
         _id:"",
         landingPageConfig:{
+            showBlog:null,
+            showAffiliate:null,
+            showTestimonial:null,
             navStyle:Styles.STYLE_1,
             sliderStyle:Styles.STYLE_1,
             aboutStyle:Styles.STYLE_1,
@@ -32,28 +32,28 @@ const initialState = {
             }
         },
         companyDetails:{
-            siteName:"",
+            siteName:null,
             logo:"",
             logoDark:"",
-            favicon:"",
-            city:"",
-            state:"",
-            country:"",
-            zip:"",
-            description:"",
+            favicon:null,
+            city:null,
+            state:null,
+            country:null,
+            zip:null,
+            description:null,
             email:[],
             contact:[],
-            address:"",
-            activeHours:"",
-            facebookHandle:"",
-            twitterHandle:"",
-            instagram:"",
-            whatsapp:""
+            address:null,
+            activeHours:null,
+            facebookHandle:null,
+            twitterHandle:null,
+            instagram:null,
+            whatsapp:null
         },
         pages:{
-            aboutUs:"",
-            privacyPolicy:"",
-            termsCondition:""
+            aboutUs:null,
+            privacyPolicy:null,
+            termsCondition:null
         }
 }
 

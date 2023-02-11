@@ -10,8 +10,9 @@ import Footer from "./Footer";
 import { useSelector } from 'react-redux';
 import {useCompanyDetails,useDashboardConfig} from '../pages/Settings/settingsConfigSlice';
 import useWindowSize from "../../../app/utils/hooks/useWindowSize";
-import AppSettiings from "./AppSettiings";
+import AppSettings from "./AppSettings";
 import ThemePanel from "./ThemePanel";
+import Breadcrum from "./Breadcrum";
 
 
 const MainBody = ({children}:any) => {
@@ -21,7 +22,7 @@ const MainBody = ({children}:any) => {
     const [isToggled,setIsToggled] = useState(false);
     const {width, height} =useWindowSize();  
 const pageData ={
-    pageTitle: ''
+    pageTitle: 'Dashboard'
 }
 const {siteName,logo,favicon,logoDark} = useSelector(useCompanyDetails);
 const {layoutOptions} = useSelector(useDashboardConfig);
@@ -145,32 +146,21 @@ handleHeaderHight()
 		{/* <!--**********************************
             Content body start
         ***********************************--> */}
-        <div className="content-body">
-			<div className="container-fluid">
-				<div className="form-head mb-sm-5 mb-3 d-flex flex-wrap align-items-center">
-					<h2 className="font-w600 title mb-2 me-auto ">{pageData?.pageTitle}</h2>
-					<div className="weather-btn mb-2">
-						<span className="me-3 font-w600 text-black"><i className="fa fa-cloud me-2"></i>21</span>
-						<select className="form-control style-1 default-select  me-3 ">
-							<option>Medan, IDN</option>
-							<option>Jakarta, IDN</option>
-							<option>Surabaya, IDN</option>
-						</select>
-					</div>
-					<Link to="" role="button" className="btn btn-secondary mb-2"><i className="las la-calendar scale5 me-3"></i>Filter Periode</Link>
-				</div>
-   {children}
+        {/* <Breadcrum /> */}
+        <div className="content-body" style={{position:'relative',height:'fit-content(100%)'}}>
+			
+				
+            {children}
    
-   </div>
         </div>
         <Footer />
       </div>
-        <AppSettiings/>
+        <AppSettings/>
         <ThemePanel/>
     </div>
    </>
   )
 }
 
-export default MainBody
+export default React.memo(MainBody)
 

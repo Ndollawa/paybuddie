@@ -18,30 +18,30 @@ const [dashboardConfigSetting,isLoading] = useDashboardConfigSettingsMutation();
 const [toggleThemePanel, setToggleThemePanel] = React.useState(false);
 useEffect(() => {
   $(document).on('click', '.dz_theme_demo', function(){
-  var Theme = {...ThemeOptions[Number($(this).data('theme'))],direction:"ltr"};
+  var data = {...ThemeOptions[Number($(this).data('theme'))],direction:"ltr"};
   // console.log(Theme);
 
   (async()=>{
     try {
-         await dashboardConfigSetting({_id,Theme}).unwrap();
-         dispatch(setDashboardSetting(Theme))
+         await dashboardConfigSetting({_id,data}).unwrap();
+         dispatch(setDashboardSetting(data))
        } catch (error) {
-         
+        console.log(error) 
        }
  })(); 
 });
 
 
 $(document).on('click', '.dz_theme_demo_rtl', function(){
-  var Theme = {...ThemeOptions[Number($(this).data('theme'))],direction:"rtl"};
+  var data = {...ThemeOptions[Number($(this).data('theme'))],direction:"rtl"};
   // console.log(Theme);
 
   (async()=>{
     try {
-         await dashboardConfigSetting({_id,Theme}).unwrap();
-         dispatch(setDashboardSetting(Theme))
+         await dashboardConfigSetting({_id,data}).unwrap();
+         dispatch(setDashboardSetting(data))
        } catch (error) {
-         
+        console.log(error) 
        }
  })(); 
 });
@@ -94,19 +94,19 @@ const themes = themesArray.map((themeImage:string,i:number)=>{
   )
 })
 
-const deleteAllCookie = ()=>{
+// const deleteAllCookie = ()=>{
 
-}
+// }
 
-const themeChange = (theme:number, direction:string)=>{
-  var themeSettings:themeProps;
-  themeSettings = ThemeOptions[theme];
-  themeSettings.direction = direction;
-  // dezSettingsOptions = themeSettings; /* For Screen Resize */
-  // new dezSettings(themeSettings);
+// const themeChange = (theme:number, direction:string)=>{
+//   var themeSettings:themeProps;
+//   themeSettings = ThemeOptions[theme];
+//   themeSettings.direction = direction;
+//   // dezSettingsOptions = themeSettings; /* For Screen Resize */
+//   // new dezSettings(themeSettings);
   
-  // setThemeInCookie(themeSettings);
-}
+//   // setThemeInCookie(themeSettings);
+// }
   return (
     <>
       <div className={toggleThemePanel?"dz-demo-panel show":"dz-demo-panel"}>
@@ -125,14 +125,14 @@ const themeChange = (theme:number, direction:string)=>{
           </span>
         </Link>
         <div className="dz-demo-inner">
-          <Link
+          {/* <Link
             to=""
             role="button"
             className="btn btn-primary btn-sm px-2 py-1 mb-3"
             onClick={deleteAllCookie}
           >
             Delete All Cookie
-          </Link>
+          </Link> */}
           <div className="dz-demo-header">
             <h3 className="text-white">Select Preset Demo</h3>
             <Link className="dz-demo-close" to="" role="button"  onClick={()=>setToggleThemePanel(false)}>

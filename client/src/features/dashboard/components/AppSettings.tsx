@@ -1,4 +1,4 @@
-import React,{ChangeEvent, FormEvent, FormEventHandler, useEffect, useRef} from "react";
+import React,{ FormEvent, FormEventHandler, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
 import { useDashboardConfigSettingsMutation } from "../pages/Settings/settingApiSlice";
@@ -6,9 +6,9 @@ import { useSettings } from "../pages/Settings/settingsConfigSlice";
 import { setDashboardSetting } from '../pages/Settings/settingsConfigSlice';
 import $ from 'jquery';
 
-const AppSettiings = () => {
+const AppSettings = () => {
   const settings = useSelector(useSettings)
-  const {_id} =settings
+  const {_id,dashboardConfig:{layoutOptions}} =settings
   const body = $('body');
   const html = $('html');
 
@@ -34,13 +34,13 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
 //change the theme typography controller
    const typographySelect:FormEventHandler =(e:FormEvent<HTMLInputElement>)=> {
       e.persist();
-        const data = {typography:e.currentTarget.value};
+        const data = {...layoutOptions,typography:e.currentTarget.value};
         (async()=>{
           try {
                await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
-               
+            console.log(error)   
              }
        })(); 
     }
@@ -48,7 +48,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     //change the theme version controller
   const  versionSelect:FormEventHandler = (e:FormEvent<HTMLInputElement>) =>{
       e.persist();
-      const data = {version:e.currentTarget.value};
+      const data = {...layoutOptions,version:e.currentTarget.value};
     
       (async()=>{
         try {
@@ -69,14 +69,14 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
        if(e.currentTarget.value === "fixed" && body.attr('data-sidebar-style') === "modern" && body.attr('data-layout') === "vertical" ){
         alert("Sorry, Modern sidebar layout dosen't support fixed position!") 
        }else{
-        const data = {layout:e.currentTarget.value};
+        const data = {...layoutOptions,layout:e.currentTarget.value};
     
         (async()=>{
           try {
                await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
-               
+            console.log(error)   
              }
        })(); 
       }
@@ -85,7 +85,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     //change the header position controller
   const  headerPositionSelect:FormEventHandler = (e:FormEvent<HTMLInputElement>) =>{
       e.persist();
-      const data = {headerPosition:e.currentTarget.value};
+      const data = {...layoutOptions,headerPosition:e.currentTarget.value};
     
       (async()=>{
         try {
@@ -103,14 +103,14 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
       html.attr('dir', e.currentTarget.value);
         html.attr('class', '');
         html.addClass(`${e.currentTarget.value}`);
-        const data = {direction:e.currentTarget.value};
+        const data = {...layoutOptions,direction:e.currentTarget.value};
     console.log(e.currentTarget.value);
     (async()=>{
        try {
             await dashboardConfigSetting({_id,data}).unwrap();
             dispatch(setDashboardSetting(data))
           } catch (error) {
-            
+         console.log(error)   
           }
     })();   
     }
@@ -119,27 +119,27 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     const layoutSelect:FormEventHandler=(e:FormEvent<HTMLInputElement>)=> {
       e.persist();
         if(body.attr('data-sidebar-style') === 'overlay') {
-    const data = {sidebarStyle:"full",layout:e.currentTarget.value};
+    const data = {...layoutOptions,sidebarStyle:"full",layout:e.currentTarget.value};
     
     (async()=>{
       try {
            await dashboardConfigSetting({_id,data}).unwrap();
            dispatch(setDashboardSetting(data))
          } catch (error) {
-           
+           console.log(error)
          }
    })(); 
             return;
         }
 
-        const data = {layout:e.currentTarget.value};
+        const data = {...layoutOptions,layout:e.currentTarget.value};
     
         (async()=>{
           try {
                await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
-               
+            console.log(error)   
              }
        })(); 
     }
@@ -150,14 +150,14 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
         if(e.currentTarget.value === "boxed") {
 
             if(body.attr('data-layout') === "vertical" && body.attr('data-sidebar-style') === "full") {
-                const data = {sidebarStyle:"overlay",containerLayout:e.currentTarget.value};
+                const data = {...layoutOptions,sidebarStyle:"overlay",containerLayout:e.currentTarget.value};
     
                 (async()=>{
                   try {
                        await dashboardConfigSetting({_id,data}).unwrap();
                        dispatch(setDashboardSetting(data))
                      } catch (error) {
-                       
+                       console.log(error)
                      }
                })();  
                 setTimeout(function(){
@@ -170,14 +170,14 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
             
         }
 
-        const data = {containerLayout:e.currentTarget.value};
+        const data = {...layoutOptions,containerLayout:e.currentTarget.value};
     
         (async()=>{
           try {
                await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
-               
+            console.log(error)   
              }
        })(); 
     }
@@ -218,14 +218,14 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
             }
         }
 
-        const data = {sidebarStyle:e.currentTarget.value};
+        const data = {...layoutOptions,sidebarStyle:e.currentTarget.value};
     
         (async()=>{
           try {
                await dashboardConfigSetting({_id,data}).unwrap();
                dispatch(setDashboardSetting(data))
              } catch (error) {
-               
+            console.log(error)   
              }
        })(); 
 
@@ -246,7 +246,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
   	//change the nav-header background controller
     $('input[name="navigation_header"]').on('click',(e)=> {
   //  alert(e.currentTarget.value)  
-   const data = {navheaderBg:e.currentTarget.getAttribute('value')};
+   const data = {...layoutOptions,navheaderBg:e.currentTarget.getAttribute('value')};
     
   (async()=>{
  try {
@@ -261,44 +261,46 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     
       //change the header background controller
       $('input[name="header_bg"]').on('click', (e)=> {      
-    const data = {headerBg:e.currentTarget.getAttribute('value')};
+    const data = {...layoutOptions,headerBg:e.currentTarget.getAttribute('value')};
+
 (async()=>{
        try {
             await dashboardConfigSetting({_id,data}).unwrap();
             dispatch(setDashboardSetting(data))
           } catch (error) {
-            
+         console.log(error)   
           }
     })();       });
   
       //change the sidebar background controller
       $('input[name="sidebar_bg"]').on('click', (e)=> { 
-    const data = {sidebarBg:e.currentTarget.getAttribute('value')};
+         alert('clicked')
+    const data = {...layoutOptions,sidebarBg:e.currentTarget.getAttribute('value')};
 (async()=>{
        try {
             await dashboardConfigSetting({_id,data}).unwrap();
             dispatch(setDashboardSetting(data))
           } catch (error) {
-            
+         console.log(error)   
           }
     })();       });
     
     //change the primary color controller
       $('input[name="primary_bg"]').on('click', (e)=> {
-    const data = {primary:e.currentTarget.getAttribute('value')};
+    const data = {...layoutOptions,primary:e.currentTarget.getAttribute('value')};
 (async()=>{
        try {
             await dashboardConfigSetting({_id,data}).unwrap();
             dispatch(setDashboardSetting(data))
           } catch (error) {
-            
+         console.log(error)   
           }
     })();       });
   
  
-  const deleteAllCookie=()=>{
+  // const deleteAllCookie=()=>{
     
-  }
+  // }
   return (
     <>
       <div className="sidebar-right">
@@ -325,7 +327,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
         <div className="sidebar-right-inner">
           <h4>
             Pick your style
-            <Link
+            {/* <Link
               to=""
               onClick={deleteAllCookie}
               className="btn btn-primary btn-sm pull-right"
@@ -333,7 +335,7 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
               // onClick={handleRightSidebar}
             >
               Delete All Cookie
-            </Link>
+            </Link> */}
           </h4>
           <div className="card-tabs">
             <ul className="nav nav-tabs" role="tablist">
@@ -1133,4 +1135,4 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
   );
 };
 
-export default AppSettiings;
+export default React.memo(AppSettings)

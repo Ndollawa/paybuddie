@@ -89,7 +89,8 @@ switch (sliderStyle) {
                                       
                                       {slide.heading}
                                     </p>
-                                    <h2>{slide.subHeading}</h2>
+                                    <h2 className="slider-one__title">{slide.subHeading}</h2>
+                                    
                                     <p className="slider-one__text">{slide.body}</p>
                                     <div className="slider-one__btns">
                                         <a href={slide.link} className="thm-btn">{slide.cotBtnText}</a>

@@ -12,7 +12,7 @@ const Error503 = () => {
                         <h4><i className="fa fa-times-circle text-danger"></i> Service Unavailable</h4>
                         <p>Sorry, we are under maintenance!</p>
 						<div>
-                            <a className="btn btn-primary" href="/">Back to Home</a>
+                            <button className="btn btn-primary" onClick={()=>window.history.back()}>Click to go Back</button>
                         </div>
                     </div>
                 </div>
@@ -22,4 +22,4 @@ const Error503 = () => {
   )
 }
 
-export default Error503
+export default React.memo(Error503)

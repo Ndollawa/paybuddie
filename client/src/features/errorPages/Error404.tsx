@@ -12,7 +12,7 @@ const Error404 = () => {
                         <h4><i className="fa fa-exclamation-triangle text-warning"></i> The page you were looking for is not found!</h4>
                         <p>You may have mistyped the address or the page may have moved.</p>
 						<div>
-                            <a className="btn btn-primary" href="/">Back to Home</a>
+                            <button className="btn btn-primary" onClick={()=>window.history.back()}>Click to go Back</button>
                         </div>
                     </div>
                 </div>
@@ -22,4 +22,4 @@ const Error404 = () => {
   )
 }
 
-export default Error404
+export default React.memo(Error404)

@@ -1,31 +1,88 @@
+import {
+    createSelector,
+    createEntityAdapter
+} from "@reduxjs/toolkit";
 import { apiSlice } from "../../../../app/api/apiSlice";
-import { setSettings } from "./settingsConfigSlice";
 
-export const settingApiSlice = apiSlice.injectEndpoints({
-    endpoints:builder=>({
-        getSettings: builder.mutation<any, void>({
-            query:()=>({
+
+
+const settingsAdapter = createEntityAdapter({
+    // sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1
+})
+
+const initialState = settingsAdapter.getInitialState()
+
+export const settingsApiSlice = apiSlice.injectEndpoints({
+    endpoints: builder => ({
+        getSettings: builder.query<any, any>({
+            query: () => ({
                 url: '/settings',
-                method: 'GET',
+                validateStatus: (response:any, result:any) => {
+                    return response.status === 200 && !result.isError
+                },
             }),
-            async onQueryStarted(args,{dispatch,queryFulfilled}){
-                try {
-                    const {data:{settings}}= await queryFulfilled
-                    // console.log(settings)
-                    dispatch(setSettings({...settings}))
-                } catch (error) {
-                    
-                }
-        },
+            transformResponse: (responseData:any) => {
+                const loadedSettings = Object.values(responseData).map((setting:any) => {
+                    setting.id = setting._id
+                    // console.log(setting)
+                    return setting
+                });
+                return settingsAdapter.setAll(initialState, loadedSettings)
+            },
+            providesTags: (result, error, arg) => {
+                if (result?.ids) {
+                    return [
+                        { type: 'Setting', id: 'LIST' },
+                        ...result.ids.map((id:string) => ({ type: 'Setting', id }))
+                    ]
+                } else return [{ type: 'Setting', id: 'LIST' }]
+            }
         }),
-        generalSettings: builder.mutation({
+        addNewSetting: builder.mutation({
+            query: initialSetting => ({
+                url: '/settings',
+                method: 'POST',
+                body: {
+                    ...initialSetting,
+                }
+            }),
+            invalidatesTags: [
+                { type: 'Setting', id: "LIST" }
+            ]
+        }),
+        updateSetting: builder.mutation({
+            query: initialSetting => ({
+                url: '/settings',
+                method: 'PATCH',
+                body: {
+                    ...initialSetting,
+                }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Setting', id: arg.id }
+            ]
+        }),
+        deleteSetting: builder.mutation({
+            query: ({ _id }) => ({
+                url: `/settings`,
+                method: 'DELETE',
+                body: { _id }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Setting', id: arg.id }
+            ]
+        }),
+         generalSettings: builder.mutation({
             query:data=>({
                 url: '/settings/general',
                 method: 'POST',
                 body:{
                     ...data
                 }
-            })
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Setting', id: arg.id }
+            ]
         }),
         homepageSettings:builder.mutation({
             query:data=>({
@@ -34,7 +91,10 @@ export const settingApiSlice = apiSlice.injectEndpoints({
                 body:{
                     ...data
                 }
-            })
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Setting', id: arg.id }
+            ]
         }),
         pagesSettings:builder.mutation({
             query:data=>({
@@ -43,7 +103,10 @@ export const settingApiSlice = apiSlice.injectEndpoints({
                 body:{
                     ...data
                 }
-            })
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Setting', id: arg.id }
+            ]
         }),
         
         dashboardConfigSettings:builder.mutation({
@@ -53,9 +116,38 @@ export const settingApiSlice = apiSlice.injectEndpoints({
                 body:{
                     ...data
                 }
-            })
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Setting', id: arg.id }
+            ]
         }),
-    })
+    }),    
 })
 
-export const {useGetSettingsMutation, useGeneralSettingsMutation,useDashboardConfigSettingsMutation, useHomepageSettingsMutation,usePagesSettingsMutation} = settingApiSlice;
+export const {
+    useGetSettingsQuery,
+    useAddNewSettingMutation,
+    useUpdateSettingMutation,
+    useDeleteSettingMutation, 
+    useGeneralSettingsMutation,
+    useDashboardConfigSettingsMutation,
+    useHomepageSettingsMutation,
+    usePagesSettingsMutation
+} = settingsApiSlice
+
+// returns the query result object
+export const selectSettingsResult = settingsApiSlice.endpoints.getSettings.select('Setting')
+
+// creates memoized selector
+const selectSettingsData = createSelector(
+    selectSettingsResult,
+    settingsResult => settingsResult.data // normalized state object with ids & entities
+)
+
+//getSelectors creates these selectors and we rename them with aliases using destructuring
+export const {
+    selectAll: selectAllSettings,
+    selectById: selectSettingById,
+    selectIds: selectSettingIds
+    // Pass in a selector that returns the notes slice of state
+} = settingsAdapter.getSelectors((state:any) => selectSettingsData(state) ?? initialState)

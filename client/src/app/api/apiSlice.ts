@@ -1,6 +1,6 @@
-import { BaseQueryApi, BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { setCredentials } from '../../features/auth/authSlice';
+import { setCredentials, logOut } from '../../features/auth/authSlice';
 import { store } from '../stores/store';
 
 
@@ -37,6 +37,14 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
         }else{
             if(refreshResult?.error?.status === 403){
                 refreshResult.error.data =  "Your login session has expired"
+            }else if(refreshResult?.error?.status === 401){
+                
+                const token =  store.getState().auth.token;
+                var d = new Date();
+                d.setTime(d.getTime() + (30*60*1000)); /* 30 Minutes */
+                var expires = "expires="+ d.toString();
+                document.cookie = 'jwt' + "=" + token + ";" + expires + ";path=/";
+            
             }
             return refreshResult
         }

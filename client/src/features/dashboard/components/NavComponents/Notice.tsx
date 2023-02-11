@@ -22,4 +22,4 @@ const Notice = () => {
   )
 }
 
-export default Notice
+export default React.memo(Notice)

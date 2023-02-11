@@ -10591,7 +10591,8 @@ html[dir="rtl"] [data-direction="rtl"][data-sidebar-style="compact"]:not([data-l
           height: 100%;
           margin-right: 5px;
           margin-top: -3px;
-          color: invert(var(--primary),100%); }
+          /* color: invert(var(--primary),100%);  */
+        }
         .deznav .metismenu > li > a g [fill] {
           fill: #8088a1; }
         .deznav .metismenu > li > a .nav-text {
@@ -28563,4 +28564,83 @@ color:#ffffff;
 background:var(--primary);
 font-weight:bold;
 padding:0.7rem 1.5rem;
+}
+/*********************************************************************
+
+                    [36. FAB-ICON ]
+
+**********************************************************************/
+.fab-container{
+position: fixed;
+bottom: 50px;
+right: 50px;
+z-index: 999;
+cursor: pointer;
+}
+.fab-icon-holder{
+width: 50px;
+height: 50px;
+border-radius: 100%;
+background: var(--secondary);
+box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+.fab-icon-holder:hover{
+    opacity: 0.8;
+}
+.fab-icon-holder i {
+    position: relative;
+    display:flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-content: center!important;
+    align-self: center!important;
+    text-align: center!important;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    color: #ffffff;
+}
+.fab-btn{
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+}
+.fab-options{
+    list-style: none;
+    margin: 0;
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    opacity: 0;
+    transition: all;
+    transition: 0.3s ease;
+    transform: scale(0);
+    transform-origin: 85% bottom;
+
+}
+.fab-btn:hover + .fab-options, .fab-options:hover{
+opacity: 1;
+transform: scale(1);
+}
+.fab-options li{
+    /*position: absolute;*/
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
+}
+.fab-label{
+padding: 2px 5px;
+align-self: center;
+user-select: none;
+white-space: nowrap;
+border-radius: 3px;
+font-size: 13px;
+background: #666666;
+color: #ffffff;
+box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+margin-right: 10px;
+
+}
+.fab-btn:scroll{
+    opacity: 0;
 }

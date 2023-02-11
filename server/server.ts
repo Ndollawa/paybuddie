@@ -16,6 +16,7 @@ import mongoose from 'mongoose';
 import connectDB from './src/config/dbConn';
 import SettingsRoutes from './src/app/Routes/api/settings'
 import FaqsRoutes from './src/app/Routes/api/faq';
+import SlidersRoutes from './src/app/Routes/api/slider';
 import ProfileRoutes from './src/app/Routes/api/profile';
 import UsersRoutes from './src/app/Routes/api/users';
 // import UsersRoutes from './src/app/Routes/api/users';
@@ -74,6 +75,8 @@ app.use(cookieParser());
 
 app.use('/checkduplicate', CheckDuplicateRoutes);
 app.use('/auth',AuthRoutes);
+app.use('/sliders', SlidersRoutes);
+app.use('/users', UsersRoutes);
 
 // //post routes
 // app.use('/post', PostRoutes);
@@ -82,10 +85,9 @@ app.use('/auth',AuthRoutes);
 //user routes
 app.use('/settings', SettingsRoutes);
 
-// app.use(verifyJWT);
+app.use(verifyJWT);
 app.use('/faqs', FaqsRoutes);
 app.use('/profile', ProfileRoutes);
-app.use('/users', UsersRoutes);
 app.all('*',(req,res)=>{
     res.status(404).json({message: 'Resource not Found!'});
 });
@@ -95,7 +97,7 @@ app.use(errorHandler);
 
 mongoose.connection.once('open',()=>{
     console.log('Connected to MongoDB');
-    Seed();
+    // Seed();
     app.listen(PORT, ()=>console.log(`Server running on Port ${PORT}`));
 
 });

@@ -12,7 +12,7 @@ const Error400 = () => {
                         <h4><i className="fa fa-thumbs-down text-danger"></i> Bad Request</h4>
                         <p>Your Request resulted in an error</p>
 						<div>
-                            <a className="btn btn-primary" href="/">Back to Home</a>
+                            <button className="btn btn-primary" onClick={()=>window.history.back()}>Click to go Back</button>
                         </div>
                     </div>
                 </div>
@@ -22,4 +22,4 @@ const Error400 = () => {
   )
 }
 
-export default Error400
+export default React.memo(Error400)

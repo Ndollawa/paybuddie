@@ -1,9 +1,8 @@
 import  UserModel from '../../Models/User';
 import  bcrypt from 'bcrypt'
-import jwt,{VerifyCallback, VerifyErrors, VerifyOptions} from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import path from 'path';
 import { Request,Response } from 'express';
-import { UserInfo } from 'os';
 // import {fileURLToPath} from 'url';
 // require('dotenv').config()
 //   const __filename = fileURLToPath(import.meta.url);
@@ -12,10 +11,24 @@ import { UserInfo } from 'os';
         // const __dirname = path.dirname(__filename);
 interface userInfoProps{
 userInfo:{
-    user:string;
-    username:string;
-    email:string;
-    roles:number[];
+        _id:string | undefined | null;
+       firstName: string | undefined | null;
+       lastName: string | undefined | null;
+       email: string | null;
+       username: string | undefined;
+       phone: string | undefined | null;
+       dob: string | undefined | null;
+       gender: string | undefined;
+       address: string | undefined;
+       city: string | undefined;
+       state: string | undefined;
+       country: string | undefined;
+       occupation: string | undefined;
+       bio: string | undefined;
+       userImage: string | undefined ;
+       accountStatus:undefined | number | null;
+       verificationStatus:string | number | boolean;
+       accountSecurity_2FA: boolean | string | null;
     }
 } 
 
@@ -37,14 +50,14 @@ class AuthController{
     }else{
     foundUser = await UserModel.findOne({username:user}).exec();
     }
-
+// console.log(foundUser)
     if(!foundUser)return res.status(401).json({message:"No User with Credentials"});// unauthorized
     if(foundUser.accountStatus !== 'active')return res.status(401).json({message:"Unauthorized access"});// unauthorized
     try{
 
         //evaluate password
         const match = await bcrypt.compare(password,foundUser.password);
-        if (!match) return res.status(401).json({ message: 'Unauthorized' })
+        if (!match) return res.status(401).json({ message: 'Unauthorized Access' })
 
       
         if(match){
@@ -53,19 +66,55 @@ class AuthController{
             const roles = Object.values(userRoles!).filter(Boolean);
             const accessToken = jwt.sign(
                 {
-                    'userInfo':{
-
-                        'user':foundUser._id,
-                        'email':foundUser.email, 
-                        'username':foundUser.username,
-                        'roles':roles
+                    userInfo:{
+                        _id:foundUser._id,
+                        email:foundUser.email,
+                        userImage:foundUser.userImage,
+                        username:foundUser.username,
+                        firstName:foundUser.firstName,
+                        lastName:foundUser.lastName,
+                        phone:foundUser.phone,
+                        dob:foundUser.dob,
+                        gender: foundUser.gender,
+                        address: foundUser.address,
+                        city: foundUser.city,
+                        state: foundUser.state,
+                        country: foundUser.country,
+                        occupation: foundUser.occupation,
+                        bio: foundUser.bio,
+                        accountStatus:foundUser.accountStatus,
+                        verificationStatus:foundUser.verificationStatus,
+                        accountSecurity_2FA:foundUser.accountSecurity_2FA,
+                        roles:roles
                     }
                 },
                 `${process.env.ACCESS_TOKEN_SECRET}`,
                 {expiresIn: '3m'}
             );
             const newRefreshToken = jwt.sign(
-                {'email':foundUser.email},
+                {
+                userInfo:{
+                     _id:foundUser._id,
+                        email:foundUser.email,
+                        userImage:foundUser.userImage,
+                        username:foundUser.username,
+                        firstName:foundUser.firstName,
+                        lastName:foundUser.lastName,
+                        phone:foundUser.phone,
+                        dob:foundUser.dob,
+                        gender: foundUser.gender,
+                        address: foundUser.address,
+                        city: foundUser.city,
+                        state: foundUser.state,
+                        country: foundUser.country,
+                        occupation: foundUser.occupation,
+                        bio: foundUser.bio,
+                        accountStatus:foundUser.accountStatus,
+                        verificationStatus:foundUser.verificationStatus,
+                        accountSecurity_2FA:foundUser.accountSecurity_2FA,
+                        roles:roles
+                }
+                },
                 `${process.env.REFRESH_TOKEN_SECRET}`,
                 {expiresIn:'15m'}
             );
@@ -75,7 +124,7 @@ class AuthController{
                         : foundUser.refreshToken.filter(rt =>rt !== cookies.jwt);
       
 
-             if(cookies.jwt){
+             if(cookies?.jwt){
                 const refreshToken = cookies.jwt
                 const foundUser = await UserModel.findOne({refreshToken}).exec()
                 if(!foundUser){
@@ -91,20 +140,20 @@ class AuthController{
                 const result = await foundUser.save() 
                 // create secure cookie with new accessToken
             res.cookie('jwt', newRefreshToken,{httpOnly:true, secure:true, sameSite:'none', maxAge: 24
-            *60*60*7});
+            *60*60*1000});
             res.json({accessToken})
 
     } else{
-            res.status(401).json({"message":"Incorrect password or credentials"});
+            res.status(401).json({message:"Incorrect password or credentials"});
         }
       
     }catch(err:any){
-        res.status(500).json({'message': err.message});
+        res.status(500).json({message: err.message});
     }
 }
 logout = async (req:Request, res:Response)=>{
     const cookies = req.cookies;
-    if(!cookies?.jwt)return res.sendStatus(401);
+    if(!cookies?.jwt)return res.status(401).json({message:'Unauthorized user'});
 const refreshToken = cookies.jwt; 
     //on logout delete access token
     const foundUser = await UserModel.findOne({refreshToken}).exec();
@@ -123,7 +172,8 @@ const refreshToken = cookies.jwt;
 }
 refreshTokenHandler = async (req:Request, res:Response)=>{
     const cookies = req.cookies;
-    if(!cookies?.jwt)return res.sendStatus(401);
+    // console.log(JSON.stringify(cookies))
+    if(!cookies?.jwt)return res.status(401).json({message:'No cookie'});
     const refreshToken = cookies.jwt;
    res.clearCookie('jwt',{httpOnly:true, secure:true, sameSite:'none' })   
     //check for user  in the DB
@@ -139,13 +189,13 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
         async(error:any, decodedToken:any) =>{
         // delete all tokens on reuse
             if(error) return res.status(403).json({message:'Access Forbidden'}); //Forbidden
-            const hackedUser = await UserModel.findOne({email:decodedToken.email}).exec();
+            const hackedUser = await UserModel.findOne({email:decodedToken.userInfo.email}).exec();
             hackedUser!.refreshToken = [];
             const result = await hackedUser!.save();
             // console.log(result)
         }
         )
-       return res.sendStatus(403);// Forbidden  
+       return res.status(403).json({message:'Access Forbidden'});// Forbidden  
 
     }
 
@@ -163,15 +213,31 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
             foundUser.refreshToken = [...newRefeshTokenArray];
             const result = await foundUser.save();
         }
-            if(err || foundUser.email !== decodedToken.email) return res.sendStatus(403);// forbidden
+       
+            if(err || foundUser.email !== decodedToken.userInfo.email) return res.status(403).json({message:'Access Forbidden'});;// forbidden
             const roles = Object.values(foundUser.roles!);
             const accessToken =jwt.sign(
                 {
-                    "userInfo":{
-                      'user':decodedToken.user,
-                        'email':decodedToken.email, 
-                        'username':decodedToken.username, 
-                        'roles':roles
+                userInfo:{
+                    _id:foundUser._id,
+                    email:foundUser.email,
+                    userImage:foundUser.userImage,
+                    username:foundUser.username,
+                    firstName:foundUser.firstName,
+                    lastName:foundUser.lastName,
+                    phone:foundUser.phone,
+                    dob:foundUser.dob,
+                    gender: foundUser.gender,
+                    address: foundUser.address,
+                    city: foundUser.city,
+                    state: foundUser.state,
+                    country: foundUser.country,
+                    occupation: foundUser.occupation,
+                    bio: foundUser.bio,
+                    accountStatus:foundUser.accountStatus,
+                    verificationStatus:foundUser.verificationStatus,
+                    accountSecurity_2FA:foundUser.accountSecurity_2FA,
+                    roles:roles
                     }
                 },
                 `${process.env.ACCESS_TOKEN_SECRET}`,
@@ -179,7 +245,28 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
             )
 
             const newRefreshToken = jwt.sign(
-                {'email':foundUser.email},
+                {
+                  userInfo:{   _id:foundUser._id,
+                        email:foundUser.email,
+                        userImage:foundUser.userImage,
+                        username:foundUser.username,
+                        firstName:foundUser.firstName,
+                        lastName:foundUser.lastName,
+                        phone:foundUser.phone,
+                        dob:foundUser.dob,
+                        gender: foundUser.gender,
+                        address: foundUser.address,
+                        city: foundUser.city,
+                        state: foundUser.state,
+                        country: foundUser.country,
+                        occupation: foundUser.occupation,
+                        bio: foundUser.bio,
+                        accountStatus:foundUser.accountStatus,
+                        verificationStatus:foundUser.verificationStatus,
+                        accountSecurity_2FA:foundUser.accountSecurity_2FA,
+                        roles:roles
+                }
+                },
                 `${process.env.REFRESH_TOKEN_SECRET}`,
                 {expiresIn:'15m'}
             );
@@ -188,7 +275,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
                 const result = await foundUser.save();
 
                 res.cookie('jwt', newRefreshToken,{httpOnly:true, secure:true, sameSite:'none', maxAge: 24
-                *60*60*7});
+                *60*60*1000});
                 res.json({accessToken})
                 // console.log(accessToken)
         }

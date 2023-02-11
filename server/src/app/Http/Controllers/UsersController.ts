@@ -3,22 +3,16 @@ import bcrypt from 'bcrypt';
 // import {fileURLToPath} from 'url';
 import { Request, Response } from 'express';
 import BaseController from './BaseController';
-// require('dotenv').config()
-//  const __filename = fileURLToPath(import.meta.url);
 
-        // 
-        // const __dirname = path.dirname(__filename);
 class UsersController extends BaseController{
     constructor(){
-        super(UserModel)
-        this.getAllUsers = this.getAllUsers.bind(this);
-       
+        super(UserModel)   
 
    }
 // @desc Get all users
 // @route GET /users
 // @access Private
-public getAllUsers = async (req:Request, res:Response) => {
+public list = async (req:Request, res:Response) => {
     // Get all users from MongoDB
     const users = await UserModel.find().select('-password').lean()
 
@@ -33,7 +27,7 @@ public getAllUsers = async (req:Request, res:Response) => {
 // @desc Create new user
 // @route POST /users
 // @access Private
-public createNewUser = async (req:Request, res:Response) => {
+public create = async (req:Request, res:Response) => {
     const {email, username, password, roles } = req.body
 
     // Confirm data
@@ -68,47 +62,33 @@ public createNewUser = async (req:Request, res:Response) => {
 // @desc Update a user
 // @route PATCH /users
 // @access Private
-public updateUser = async (req:Request, res:Response) => {
-    const { id, username, roles, active, password } = req.body
-
-    // Confirm data 
-    if (!id || !username || !Array.isArray(roles) || !roles.length || typeof active !== 'boolean') {
-        return res.status(400).json({ message: 'All fields except password are required' })
-    }
-
-    // Does the user exist to update?
-    const user = await UserModel.findById(id).exec()
-
-    if (!user) {
-        return res.status(400).json({ message: 'User not found' })
-    }
-
-    // Check for duplicate 
-    const duplicate = await UserModel.findOne({ username }).collation({ locale: 'en', strength: 2 }).lean().exec()
-
-    // Allow updates to the original user 
-    if (duplicate && duplicate?._id.toString() !== id) {
-        return res.status(409).json({ message: 'Duplicate username' })
-    }
-
-    user.username = username
-    // user?.roles = roles
-    user.accountStatus = 'active'
-
-    if (password) {
+public update = async (req:Request, res:Response) => {
+    const { _id,type, data } = req.body
+    console.log(req.body)
+switch (type) {
+    case 'passwordUpdate':
+        const {password} = req.body
         // Hash password 
-        user.password = await bcrypt.hash(password, 10) // salt rounds 
-    }
+        const hashedPwd = await bcrypt.hash(password, 10) // salt rounds
+        await UserModel.findByIdAndUpdate(_id,{password:hashedPwd},{new:true})
+        res.status(200).json({message:'success'})   
+        break;
+    case 'profileUpdate':
+        await UserModel.findByIdAndUpdate(_id,data,{new:true})
+        res.status(200).json({message:'success'})
+        break;
 
-    const updatedUser = await user.save()
-
-    res.json({ message: `${updatedUser.username} updated` })
+    default:
+        res.status(400).json({message:'Bad Request'})
+        break;
+}
+   
 }
 
 // @desc Delete a user
 // @route DELETE /users
 // @access Private
-public deleteUser = async (req:Request, res:Response) => {
+public delete = async (req:Request, res:Response) => {
     const { id } = req.body
 
     // Confirm data

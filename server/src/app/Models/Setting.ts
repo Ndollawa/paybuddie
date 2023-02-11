@@ -5,6 +5,9 @@ const Schema = mongoose.Schema;
 
 const SettingSchema =  new Schema({
     landingPageConfig:{
+        showBlog:{type:Boolean,default:true},
+        showAffiliate:{type:Boolean,default:true},
+        showTestimonial:{type:Boolean,default:true},
         navStyle:{
             type:Number,
             enum: {values: [1,2,3],message: '{VALUE} is not supported',default:1},},

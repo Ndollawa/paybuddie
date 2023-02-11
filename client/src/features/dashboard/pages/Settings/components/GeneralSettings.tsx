@@ -4,10 +4,8 @@ import useInput from "../../../../../app/utils/hooks/useInput";
 import { useGeneralSettingsMutation } from "../settingApiSlice";
 import { setAppGeneralSetting, useSettings } from "../settingsConfigSlice";
 import { useCompanyDetails } from "../settingsConfigSlice";
-import { toast } from "react-toastify";
+import showToast from "../../../../../app/utils/hooks/showToast";
 import 'react-toastify/dist/ReactToastify.css';
-  
-import { setPreloader } from "../../../components/PreloaderSlice";
 
 const GeneralSettings = () => {
 const dispatch = useDispatch();
@@ -15,9 +13,7 @@ const {_id} = useSelector(useSettings)
 const {email,contact,zip,description,siteName,activeHours,city,state,country,address,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
 const [generalSettings,isLoading] = useGeneralSettingsMutation();
 // alert(_id)
-// useEffect(()=>{
-// dispatch(setPreloader(isLoading? true :false))
-// },[isLoading])
+
 const [companyName, setCompanyName, companyNameAttr] = useInput(siteName)
 const [companyEmail, setCompanyEmail, companyEmailAttr] = useInput(email)
 const [companyAddress, setCompanyAddress, companyAddressAttr] = useInput(address)
@@ -57,23 +53,9 @@ const data ={
 try{
   const res = await generalSettings({_id,data}).unwrap()
 dispatch(setAppGeneralSetting(data))
-toast.success("Settings Updated!",{
-  position:"top-right",
-  autoClose: 5000,
-  hideProgressBar: false,
-  closeOnClick:true,
-  pauseOnHover:true,
-  theme:'light',
-})
+showToast('success',"Settings Updated successfully!")
 } catch (error:any) {
-  toast.error("Sorry an Error occured: "+JSON.stringify(error),{
-    position:"top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick:true,
-    pauseOnHover:true,
-    theme:'light',
-  })
+  showToast('error',error)
 }
 
 }
@@ -150,18 +132,15 @@ toast.success("Settings Updated!",{
              
                 <div className="mb-3 col-md-4">
                   <label className="form-label"><strong>State</strong></label>
-                  <select
+                  <input
                     id="inputState"
-                    className="default-select form-control wide"
+                    type='text'
+                    className="form-control"
                     value={companyState}
                     onChange={setCompanyState}
                     {...companyStateAttr}
-                  >
-                    <option value="">Choose...</option>
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
-                  </select>
+                  />
+                  
                 </div>
                 <div className="mb-3 col-md-2">
                   <label className="form-label"><strong>Zip</strong></label>
@@ -263,4 +242,4 @@ toast.success("Settings Updated!",{
   );
 };
 
-export default GeneralSettings;
+export default React.memo(GeneralSettings);

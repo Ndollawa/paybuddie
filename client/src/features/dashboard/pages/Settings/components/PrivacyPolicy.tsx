@@ -4,12 +4,13 @@ import { useDispatch,useSelector } from 'react-redux';
 import { usePagesSettingsMutation } from '../settingApiSlice';
 import { setPagesSetting, useSettings } from '../settingsConfigSlice';
 import { usePages } from '../settingsConfigSlice';
-import {toast} from 'react-toastify';
+import showToast from '../../../../../app/utils/hooks/showToast';
 
 
 const PrivacyPolicy = () => {
-  const {privacyPolicy} = useSelector(usePages)
-  const [privacy, setPrivacy] = useState(privacyPolicy) 
+
+  const pages = useSelector(usePages)
+  const [privacy, setPrivacy] = useState(pages.privacyPolicy) 
   const dispatch = useDispatch();
   const [pagesSetting,isLoading] = usePagesSettingsMutation();
   const {_id} = useSelector(useSettings)
@@ -17,18 +18,13 @@ const PrivacyPolicy = () => {
 const updateSetting:FormEventHandler = async(e:FormEvent)=>{
   e.preventDefault();
   try {
-    await  pagesSetting({_id,data:{privacyPolicy}}).unwrap();
-   dispatch(setPagesSetting({privacyPolicy})) 
+    const data = {...pages,privacyPolicy:privacy}
+    await  pagesSetting({_id,data}).unwrap();
+   dispatch(setPagesSetting({data})) ;
+   showToast('success',"Settings Updated successfully!")
 
   }  catch (error:any) {
-    toast.error(error,{
-      position:"top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick:true,
-      pauseOnHover:true,
-      theme:'light',
-    })
+    showToast('error',error)
   }
 }
 
@@ -49,10 +45,10 @@ const updateSetting:FormEventHandler = async(e:FormEvent)=>{
         tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
         value={privacy}
         onEditorChange={(newValue, editor)=>setPrivacy(newValue)}
-        initialValue=''
+        initialValue={pages.privacyPolicy}
         init={{
           height: 500,
-          menubar: false,
+          menubar: true,
           plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
@@ -68,7 +64,7 @@ const updateSetting:FormEventHandler = async(e:FormEvent)=>{
               </div>
           <div className="card-footer d-flex justify-content-end mt-10">
               <button type="submit" className="btn btn-primary">
-                Update
+                Update Page Info
               </button></div>
           </div>
           </form>
@@ -78,4 +74,4 @@ const updateSetting:FormEventHandler = async(e:FormEvent)=>{
   )
 }
 
-export default PrivacyPolicy;
+export default React.memo(PrivacyPolicy);

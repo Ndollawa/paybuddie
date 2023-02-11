@@ -4,24 +4,27 @@ import SideNav from './SideBarComponent/SideNav'
 import pageProps from '../../../app/utils/props/pageProps'
 import { useSelector } from 'react-redux';
 import { useCompanyDetails } from '../pages/Settings/settingsConfigSlice';
+import { selectCurrentUser } from '../../auth/authSlice';
+import useUserImage from '../../../app/utils/hooks/useUserImage';
 
 enum Styles{STYLE_1,STYLE_2, STYLE_3};
 
 const SideBar:React.FC<pageProps> = ({pageData,}:pageProps) => {
 
-     const {siteName,logo,logoDark,email,contact,address,activeHours,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
- 
+     const {siteName} = useSelector(useCompanyDetails);
+    const currentUser= useSelector(selectCurrentUser)
+    const userImage = useUserImage(currentUser)
     return (
         <>        
     <div className="deznav">
         <div className="deznav-scroll">
             <div className="main-profile">
                 <div className="image-bx">
-                    <img src="dashboard-assets/images/Untitled-1.jpg" alt=""/>
-                    <Link to=""><i className="fa fa-cog" aria-hidden="true"></i></Link>
+                    <img src={userImage} alt={currentUser.username}/>
+                    <Link to="/dashboard/profile/edit"><i className="fa fa-cog" aria-hidden="true"></i></Link>
                 </div>
-                <h5 className="name"><span className="font-w400">Hello,</span> Marquez</h5>
-                <p className="email">marquezzzz@mail.com</p>
+                <h5 className="name"><span className="font-w400">Hello,</span> {(currentUser.firstName && currentUser.lastName)? currentUser.firstName+" "+currentUser.lastName : currentUser.username}</h5>
+                <p className="email">{currentUser.email}</p>
             </div>
             <SideNav/>
             <div className="copyright bottom-0">

@@ -121,4 +121,4 @@ e.preventDefault();
   )
 }
 
-export default EditFaqModal
+export default React.memo(EditFaqModal)

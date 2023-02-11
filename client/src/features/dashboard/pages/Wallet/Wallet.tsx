@@ -5,7 +5,8 @@ import MainBody from '../../components/MainBody';
 const Wallet:React.FC<pageProps> = ({pageData}:pageProps) => {
   return (
     <MainBody>
-    <div className="row">
+	<div className="container-fluid">
+    		<div className="row">
 					<div className="col-xl-3 col-xxl-4">
 						<div className="swiper-box">
 							<div className="swiper-container card-swiper">
@@ -864,6 +865,7 @@ const Wallet:React.FC<pageProps> = ({pageData}:pageProps) => {
 						</div>	
 					</div>
 				</div>
+			</div>
     </MainBody>
   )
 }

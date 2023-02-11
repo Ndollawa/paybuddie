@@ -1,11 +1,11 @@
 import React from 'react';
-import OtherBody from '../../components/OtherBody';
+import MainBody from '../../components/MainBody';
 import pageProps from '../../../../app/utils/props/pageProps';
 
 const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
   return (
-    <OtherBody>
-        <div className="row">
+    <MainBody>
+		     <div className="row"style={{position:'fixed',height:'90%', width:'95%'}} >
 					<div className="col-xl-12">
 						<div className="card">
 							<div className="card-body chat-wrapper p-0">
@@ -44,7 +44,7 @@ const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
 										</ul>
 									</div>
 									<div className="card-body message-bx px-0 pt-3" >
-										<div className="tab-content dz-scroll" id="message-bx">
+										<div className="tab-content dz-scroll" id="message-bx" style={{overflowY:'scroll'}}>
 											<div className="tab-pane fade show active" id="AllMessage" role="tabpanel">
 												<div className="chat-list-area" data-chat="person1">
 													<div className="image-bx">
@@ -413,10 +413,21 @@ const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
 									</div>
 								</div>
 							</div>
+		<div className="fab-container">
+		<div className=" fab-btn fab-icon-holder"><i className="fa fa-question"></i></div>
+			<ul className="fab-options">
+				<li><span className="fab-label">Assign Task</span><div className="fab-icon-holder" id="assign-task"><i className="fa fa-edit"></i></div></li>
+				<li><span className="fab-label">Create Todo</span><div className="fab-icon-holder" id="create-todos"><i className="fa fa-calendar"></i></div></li>
+				<li><span className="fab-label">Send Memo</span><div className="fab-icon-holder rate" id="send-memo"><i className="icon icon-note "></i></div></li>
+				<li><span className="fab-label">Assign Roles</span><div className="fab-icon-holder" id="assign-roles"><i className="icon icon-badge"></i></div></li>
+				<li><span className="fab-label">Assign Courses</span><div className="fab-icon-holder" id="assign-courses"><i className="fa fa-graduation-cap"></i></div></li>
+
+					</ul>
+			</div>
 						</div>
 					</div>
 				</div> 
-    </OtherBody>
+    </MainBody>
   )
 }
 
