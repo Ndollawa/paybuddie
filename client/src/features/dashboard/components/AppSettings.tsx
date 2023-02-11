@@ -274,8 +274,8 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
   
       //change the sidebar background controller
       $('input[name="sidebar_bg"]').on('click', (e)=> { 
-         alert('clicked')
     const data = {...layoutOptions,sidebarBg:e.currentTarget.getAttribute('value')};
+    
 (async()=>{
        try {
             await dashboardConfigSetting({_id,data}).unwrap();

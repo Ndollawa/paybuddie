@@ -1,5 +1,5 @@
 import React,{useEffect,useState,useRef, FormEventHandler, FormEvent} from 'react';
-import {FaUser,FaRegUserCircle,FaKeycdn} from 'react-icons/fa';
+import {FaUser,FaRegUserCircle,FaKeycdn, FaRegEyeSlash, FaRegEye} from 'react-icons/fa';
 import { Link, useNavigate, useLocation} from 'react-router-dom';
 // import useLocalStorage from '../../app/utils/hooks/useLocalStorage';
 // import useInput from '../../app/utils/hooks/useInput';
@@ -14,6 +14,7 @@ import jwt_decode from 'jwt-decode';
 import { authProps } from '../../app/utils/props/authProps';
 import OtherBody from '../dashboard/components/OtherBody';
 import ClipLoader from 'react-spinners/ClipLoader';
+import $ from 'jquery'
 interface errMessages{
     type:string,
     msg:string
@@ -41,6 +42,7 @@ const errRef = useRef <HTMLInputElement>(null);
 
 const [user,setUser] = useState('');
 const [pwd,setPwd] = useState('');
+const [showPassword,setShowPassword] = useState(false);
 const [check,toggleCheck] = useToggle('persist',false);
 const [errMsg,setErrMsg] = useState<errMessages>();
 
@@ -84,6 +86,15 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                 }
                 errRef.current?.focus();
             }
+        }
+        const handleShowPassword = function(){
+                if($('#password').attr('type') == 'password'){
+                    setShowPassword(true)
+                    $('#password').attr('type','text');
+                }else if($('#password').attr('type') == 'text'){
+                    $('#password').attr('type','password');
+                    setShowPassword(false)
+                }
         }
 
   return (
@@ -133,13 +144,16 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                         <label className="mb-1"><strong>Password</strong></label>
                                          <div className={`input-group input-default`}>
                                             <span className="input-group-text"><FaKeycdn fontSize='1rem'/></span>
-                                            <input 
+                                          <input 
                                             autoComplete='off'
+                                            id="password"
                                             type="password" 
                                             className="form-control" 
                                             required
                                             onChange={(e)=> setPwd(e.target.value)}
                                             value={pwd}/>
+                                            <span className="input-group-text" onClick={handleShowPassword}>{showPassword?<FaRegEye fontSize='1rem'/>: <FaRegEyeSlash fontSize={'1rem'} />}</span>
+                                           
                                         </div>
                                         </div>  
                                         <div className="form-row d-flex justify-content-between mt-4 mb-2">

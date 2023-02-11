@@ -5,7 +5,7 @@ import Head from '../dashboard/components/Head';
 import pageProps from '../../app/utils/props/pageProps';
 import {  setPreloader } from '../dashboard/components/PreloaderSlice';
 import './dashboardStyles/styles.css';
-
+import $ from 'jquery'
 
 
 const Layout:React.FC<pageProps> = ({pageData}:pageProps) => { 
@@ -18,8 +18,20 @@ setTimeout(()=>{
 dispatch(setPreloader(false))
 // alert(isLoading)
 },4500)
-   
+const handleChatbox = function() {
+  $('.bell-link').on('click',function(){
+    $('.chatbox').addClass('active');
+  });
+  $('.chatbox-close').on('click',function(){
+    $('.chatbox').removeClass('active');
+  });
+}
+handleChatbox()
 
+
+return ()=>{
+
+}
   }, [])
 
 // // console.log(response) 

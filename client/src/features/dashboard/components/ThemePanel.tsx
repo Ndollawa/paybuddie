@@ -134,7 +134,7 @@ const themes = themesArray.map((themeImage:string,i:number)=>{
             Delete All Cookie
           </Link> */}
           <div className="dz-demo-header">
-            <h3 className="text-white">Select Preset Demo</h3>
+            <h3 className="text-white">Select Theme</h3>
             <Link className="dz-demo-close" to="" role="button"  onClick={()=>setToggleThemePanel(false)}>
               <span>
                 <i className="las la-times"></i>

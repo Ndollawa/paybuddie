@@ -9,7 +9,7 @@ let testimonialSection;
 switch (testimonialStyle) {
   case 1:
     testimonialSection =(
-      <section className="testimonials-one pt-120 mb--40">
+      <section className="testimonials-one pt-120 mb-40">
       <div className="container">
           <div className="block-title text-center">
               <p className="block-title__tagline">our testimonials</p>
@@ -49,7 +49,7 @@ switch (testimonialStyle) {
     break;
   case 2:
     testimonialSection = (
-      <section className="testimonials-three">
+      <section className="testimonials-three pt-120 mb-40">
     <div className="testimonials-three__shape"></div>
     <div className="container">
         <div className="row">

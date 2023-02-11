@@ -65,7 +65,7 @@ const ProfileEdit = () => {
 	 
 	const checkDuplicate = async (key:string) =>{
 	  const data ={ user:key }
-		   await checkDuplicateUser(data)
+		   await checkDuplicateUser({data})
 		
 		if(!checkDuplicateUserError  && isCheckDuplicateUserSuccess && !isCheckDuplicateUserLoading){
 			if(response.message === 'available'){
@@ -84,7 +84,7 @@ const ProfileEdit = () => {
 		}	
 			
 		}
-	
+	}
 useEffect(()=>{
     userRef.current?.focus();
 }, [])

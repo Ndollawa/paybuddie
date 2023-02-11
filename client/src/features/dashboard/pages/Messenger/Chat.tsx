@@ -1,11 +1,50 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import MainBody from '../../components/MainBody';
 import pageProps from '../../../../app/utils/props/pageProps';
+import useWindowSize from '../../../../app/utils/hooks/useWindowSize';
+import { useSelector } from 'react-redux';
+import $ from 'jquery'
+
 
 const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
+	const { height } = useSelector(useWindowSize)
+	
+	useEffect(() => {
+		const handleChatSidebar = function(){
+			$('.chat-hamburger').on('click',function(){
+				$('.chat-left-sidebar').toggleClass('show');
+			})
+		}
+		handleChatSidebar()
+		const vHeight = function(){
+			const ch = height! - 206;
+			$(".chatbox .msg_card_body").css('height',ch);
+		}
+		vHeight()
+		const handleDzChatUser = function() {
+			$('.dz-chat-user-box .dz-chat-user').on('click',function(){
+				$('.dz-chat-user-box').addClass('d-none');
+				$('.dz-chat-history-box').removeClass('d-none');
+			}); 
+			
+			$('.dz-chat-history-back').on('click',function(){
+				$('.dz-chat-user-box').removeClass('d-none');
+				$('.dz-chat-history-box').addClass('d-none');
+			}); 
+			
+			$('.dz-fullscreen').on('click',function(){
+				$('.dz-fullscreen').toggleClass('active');
+			});
+		}
+		handleDzChatUser()
+	  return () => {
+		
+	  };
+	}, [])
   return (
     <MainBody>
-		     <div className="row"style={{position:'fixed',height:'90%', width:'95%'}} >
+		<div style={{position:'relative',height:'80%', width:'auto'}}>
+		     <div className="row" >
 					<div className="col-xl-12">
 						<div className="card">
 							<div className="card-body chat-wrapper p-0">
@@ -426,7 +465,8 @@ const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
 			</div>
 						</div>
 					</div>
-				</div> 
+			</div> 
+		</div>
     </MainBody>
   )
 }

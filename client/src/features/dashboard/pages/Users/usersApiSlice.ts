@@ -68,7 +68,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         checkDuplicateUser: builder.mutation({
             query: userInfo => ({
                 url: '/checkduplicate',
-                method: 'PATCH',
+                method: 'POST',
                 body: {
                     ...userInfo,
                 }
