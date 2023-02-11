@@ -18430,3 +18430,10 @@
 2023-02-11	07:07:35	32e8e321-40fb-46df-b083-5cef850b4ecb	GET	http://localhost:3000	/auth/refresh
 2023-02-11	07:07:36	473cb490-fd28-481a-bb17-703cee1055f7	OPTIONS	http://localhost:3000	/faqs
 2023-02-11	07:07:36	e4f96329-db1f-4e38-9573-87f678f8d2c4	GET	http://localhost:3000	/faqs
+2023-02-11	07:17:16	8fa6f8aa-8323-48f7-8c93-a1a5bf1bef85	OPTIONS	http://localhost:3000	/faqs
+2023-02-11	07:17:16	09dd4dc3-5fc4-4455-8d64-bd9153b58bd0	GET	http://localhost:3000	/faqs
+2023-02-11	07:17:16	9d466724-fd31-43b6-b055-ef370c122bff	OPTIONS	http://localhost:3000	/auth/refresh
+2023-02-11	07:17:16	da07d345-df2b-4d57-8a9b-e4de78677191	GET	http://localhost:3000	/auth/refresh
+2023-02-11	07:17:16	ad6e8b0a-b331-4b21-b152-2d3923c71c81	GET	http://localhost:3000	/faqs
+2023-02-11	07:18:00	0cbbd797-9b69-4487-b919-fc28a2860cdb	OPTIONS	http://localhost:3000	/faqs
+2023-02-11	07:18:00	746debfa-fddb-4d41-bad5-36fcde604f66	GET	http://localhost:3000	/faqs

@@ -67,24 +67,24 @@ useEffect(() =>{
  if(!persist){
     content =  <Outlet/>
           }else if(isLoading){
-            content =(  <>
+            content =(
             <div className="body vh-100" data-typography={typography} data-theme-version={version} data-layout={layout} data-nav-headerbg={headerBg} data-headerbg={navheaderBg} data-sidebar-style={sidebarStyle} data-sidebarbg={sidebarBg} data-sidebar-position={sidebarPosition} data-header-position={headerPosition} data-container={containerLayout} data-direction={direction} data-primary={primary}>
                     <div className="authincation h-100">
                    <Preloader/>
                     </div>
       
-                </div></>)
+                </div>)
                 }else if(isError){
                   content = <Navigate to={`/error/401`} state={{from:location}}/>
 
-                }else if(isSuccess && trueSuccess){
+                }else if(!isLoading && isSuccess && trueSuccess){
                    content = <Outlet/> 
                 }else if(token && isUninitialized){
                      <Outlet/>
                 }
     useEffect(()=>{
 dispatch(setPreloader(isLoading? true :false))
-},[isLoading])            
+})            
     return(
         <>
         {content}
