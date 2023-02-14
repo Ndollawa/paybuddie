@@ -12,7 +12,6 @@ import {useCompanyDetails,useDashboardConfig} from '../pages/Settings/settingsCo
 import useWindowSize from "../../../app/utils/hooks/useWindowSize";
 import AppSettings from "./AppSettings";
 import ThemePanel from "./ThemePanel";
-import Breadcrum from "./Breadcrum";
 
 
 const MainBody = ({children}:any) => {

@@ -80,11 +80,11 @@ useEffect(() =>{
                 }else if(!isLoading && isSuccess && trueSuccess){
                    content = <Outlet/> 
                 }else if(token && isUninitialized){
-                     <Outlet/>
+                  content =  <Outlet/>
                 }
     useEffect(()=>{
 dispatch(setPreloader(isLoading? true :false))
-})            
+},[isLoading])            
     return(
         <>
         {content}

@@ -2,7 +2,7 @@ import {
     createSelector,
     createEntityAdapter
 } from "@reduxjs/toolkit";
-import { RootState } from "@reduxjs/toolkit/dist/query/core/apiState";
+import { RootState } from "../../../../app/stores/store";
 import { apiSlice } from "../../../../app/api/apiSlice";
 import { faqProps } from "../../../../app/utils/props/faqProps";
 
@@ -101,4 +101,4 @@ export const {
     selectById: selectFaqById,
     selectIds: selectFaqIds
     // Pass in a selector that returns the notes slice of state
-} = faqsAdapter.getSelectors((state:any) => selectFaqsData(state) ?? initialState)
+} = faqsAdapter.getSelectors((state:RootState) => selectFaqsData(state) ?? initialState)

@@ -3,16 +3,16 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 const Schema = mongoose.Schema;
 
-const MessageSchema =  new Schema({
-    sender:{
+const MessageAttachmentsSchema =  new Schema({
+    messageId:{
+        type: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
+        required: true
+    },
+    attachmentType:{
         type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         required: true
     },
-    receiver:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        required: true
-    },
-    message:{
+    attachment:{
         type:String,
         required: true
     },
@@ -26,7 +26,6 @@ const MessageSchema =  new Schema({
         default:'unread',
         required: true   
     },
-  
     status:{
         type:String,
         enum: {
@@ -39,5 +38,5 @@ const MessageSchema =  new Schema({
 
 },
 {timestamps:true});
-MessageSchema.plugin(mongoosePaginate);
-export default mongoose.model('Message',MessageSchema);
+MessageAttachmentsSchema.plugin(mongoosePaginate);
+export default mongoose.model('Message',MessageAttachmentsSchema);

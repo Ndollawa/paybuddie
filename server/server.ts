@@ -2,6 +2,8 @@ import dotenv from 'dotenv'
 dotenv.config(); 
 
 import express, { Application } from "express";
+import { Server,createServer } from "http"; 
+import socketIO, { Server as SocketIOServer, Socket } from "socket.io";  
 import path from 'path';
 import cors from 'cors';
 import  'express-async-errors'
@@ -71,8 +73,40 @@ app.use(cookieParser());
 //     res.render(path.join(__dirname,'views','index'), {posts:PostModel} );
 // });
 
+// const server = new Server(app); 
+const server = createServer(app); 
+const io = new SocketIOServer(server,{
+    cors:{
+        origin:'*',
+        methods:['GET','POST']
+    }
+    });
+ //Handle private chat 
+ io.on("connection", (socket:Socket) => {
+    // console.log(socket)
+     socket.on("privateMessage", (data) => { 
+        const { sender, receiver, message } = data;
+        console.log(data)
+        io.to(receiver).emit("message", { sender, message }); 
+            }); 
 
+    //Handle group chat 
+    socket.on("joinGroup", (groupName:string) => { 
+        socket.join(groupName);
+         socket.on("groupMessage", (message) => {
+             io.to(groupName).emit("groupMessage", message); 
+            });
+         });
+    socket.on('disconnect',(socket)=>{
+        console.log(`User disconnected: ${socket}`)
+    })
+        });
+        
 
+    //Start the server 
+    server.listen(3501, () => { console.log(`Server listening on port 3501`);
+ })
+  
 app.use('/checkduplicate', CheckDuplicateRoutes);
 app.use('/auth',AuthRoutes);
 app.use('/sliders', SlidersRoutes);

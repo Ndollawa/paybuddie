@@ -4,10 +4,11 @@ import { useUpdateFaqMutation,selectFaqById } from '../faqApiSlice'
 import { useSelector } from 'react-redux'
 import useInput from '../../../../../app/utils/hooks/useInput'
 import { faqProps } from '../../../../../app/utils/props/faqProps'
+import { RootState } from '../../../../../app/stores/store'
 
 const EditFaqModal = ({_id}:any) => {
 
-const faq:any = useSelector(state => selectFaqById(state, _id))
+const faq:any = useSelector((state:RootState) => selectFaqById(state, _id))
 const [question, setQuestion, QuestionAttr] = useInput(faq.question)
 const [response, setResponse, ResponseAttr] = useInput(faq.response)
 const [status, setStatus, StatusAttr] = useInput(faq.status)
