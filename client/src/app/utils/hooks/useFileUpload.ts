@@ -1,11 +1,11 @@
-// import {useState,useEffect} from 'react'
-// import $ from 'jquery'
-// import showToast from './showToast'
+import {useState,useEffect} from 'react'
+import $ from 'jquery'
+import showToast from './showToast'
 
 
 
 const useFileUpload = ()=>{    
-// const [files, setFiles] = useState([])
+const [files, setFiles] = useState([])
 const getFile = (fileInput:any)=>{
 
         const formData = new FormData()
@@ -14,33 +14,21 @@ const getFile = (fileInput:any)=>{
         })
         return formData
 }
-// const uploadFile =(formData:FormData, url:string)=>{
-//     if(formData?.files){
-//     $.ajax({
-//         url,
-//         method:"POST",
-//         enctype:"multipart/form-data",
-//         data:formData,
-//         contentType: false,
-//         processData: false,
-//         success:function(data){
-//           alert(data);
-//         try{
-//            data = JSON.parse(data);
-//            data.map(file=>file)
-            
-          
-//           }catch (e:any){
-//       showToast('error','Alert! warning..<br/>Caught: '+e.message)
-// ;
-//  console.log(e.message);  }
-        
-// }
-// });
-
-// }
-
-return [getFile]
+const uploadFile =(formData:FormData, url:string)=>{
+    if(formData.get('files')){
+    $.ajax({
+        url,
+        method:"POST",
+        enctype:"multipart/form-data",
+        data:formData,
+        contentType: false,
+        processData: false,
+        success:function(data){
+          alert(data);      
+}
+});}
+}
+return [getFile, uploadFile]
 }
 
 export default useFileUpload

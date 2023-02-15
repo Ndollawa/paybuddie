@@ -74,7 +74,7 @@ if (isSuccess) {
                                 
                     <CreateFaqModal/>
                                 </div>
-                        {content}
+                        {/* {content} */}
                             </div>
                         </div>
                 </div>
