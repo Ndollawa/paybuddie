@@ -1,14 +1,17 @@
-import React, {FormEvent} from 'react'
+import React, {FormEvent,useState} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { useUpdateFaqMutation,selectFaqById } from '../faqApiSlice'
 import { useSelector } from 'react-redux'
 import useInput from '../../../../../app/utils/hooks/useInput'
 import { faqProps } from '../../../../../app/utils/props/faqProps'
 import { RootState } from '../../../../../app/stores/store'
+import { Modal } from 'react-bootstrap'
+import Button from 'react-bootstrap/Button'
 
-const EditFaqModal = ({_id}:any) => {
 
-const faq:any = useSelector((state:RootState) => selectFaqById(state, _id))
+const EditFaqModal = ({id,showModal}:{id:string;showModal:boolean}) => {
+
+const faq:any = useSelector((state:RootState) => selectFaqById(state, id))
 const [question, setQuestion, QuestionAttr] = useInput(faq.question)
 const [response, setResponse, ResponseAttr] = useInput(faq.response)
 const [status, setStatus, StatusAttr] = useInput(faq.status)
@@ -21,6 +24,10 @@ const [updateFaq, {
 
 // const navigate = useNavigate()
 
+const [show, setShow] = useState(showModal);
+
+const handleClose = () => setShow(false);
+const handleShow = () => setShow(true);
 React.useEffect(() => {
   if (isSuccess) {
       setResponse('')
@@ -35,24 +42,26 @@ const canSave = [question, response, status].every(Boolean) && !isLoading
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
  if (canSave) {
-      await updateFaq({_id,question, response,status })
+      await updateFaq({id,question, response,status })
   }
 
 }
   return (
     <>
-  
-  <div className="modal fade editfaq-modal" style={{display: "none"}} aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered modal-lg">
-            <div className="modal-content">
+  <Modal 
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+        size='lg'
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit FAQ</Modal.Title>
+        </Modal.Header>
             <form onSubmit={handleSubmit}>
-                <div className="modal-header">
-                    <h3 className="modal-title">Add New FAQ</h3>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal">
-                    </button>
-                </div>
-                <div className="modal-body">
-        <div className="card-body">
+        <Modal.Body>
+             <div className="card-body">
           <div className="basic-form">
               <div className="row">
                 <div className="mb-3 col-md-9">
@@ -109,15 +118,16 @@ e.preventDefault();
           </div>
   
                     </div>
-                </div>
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-danger light" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" disabled={canSave} className="btn btn-primary">Update FAQ</button>
-                </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button type="submit" disabled={canSave} variant="primary">Update FAQ</Button>
+        </Modal.Footer>
             </form>
-            </div>
-        </div>
-    </div>
+      </Modal>
+
     </>
   )
 }

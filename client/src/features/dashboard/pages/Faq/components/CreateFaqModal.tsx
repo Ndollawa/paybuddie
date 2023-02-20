@@ -1,10 +1,13 @@
-import React, {FormEvent} from 'react'
+import React, {FormEvent,useState} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { useAddNewFaqMutation } from '../faqApiSlice'
 import useInput from '../../../../../app/utils/hooks/useInput'
-
+import { Modal } from 'react-bootstrap'
+import Button from 'react-bootstrap/Button'
+import showToast from '../../../../../app/utils/hooks/showToast'
 
 const CreateFaqModal = () => {
+  const [show, setShow] = useState(false);
 
 const [question, setQuestion, QuestionAttr] = useInput('')
 const [response, setResponse, ResponseAttr] = useInput('')
@@ -18,6 +21,9 @@ const [addNewFaq, {
 
 // const navigate = useNavigate()
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 React.useEffect(() => {
   if (isSuccess) {
       setResponse('')
@@ -25,31 +31,33 @@ React.useEffect(() => {
   }
 }, [isSuccess])
 
-const canSave = [question, response, status].every(Boolean) && !isLoading
+const canSave = [question, response, status].every(Boolean)
 
 
 
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
+alert('clicked')
  if (canSave) {
       await addNewFaq({question, response,status })
+      if(!isLoading && isSuccess)showToast('success', 'FAQ Saved successfully')
+
+      // setQuestion("")
+      // setResponse("")
   }
 
 }
   return (
     <>
-<button type="button" className="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target=".faq-creation-form">Add new FAQ</button>
-  
-  <div className="modal fade faq-creation-form" style={{display: "none"}} aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered modal-lg">
-            <div className="modal-content">
-            <form onSubmit={handleSubmit}>
-                <div className="modal-header">
-                    <h3 className="modal-title">Add New FAQ</h3>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal">
-                    </button>
-                </div>
-                <div className="modal-body">
+<button type="button" className="btn btn-primary mb-2" onClick={handleShow}>Add new FAQ</button>
+<Modal show={show} size="lg" centered
+ onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add New FAQ</Modal.Title>
+        </Modal.Header>
+         <form onSubmit={handleSubmit}>
+        <Modal.Body>
+                
         <div className="card-body">
           <div className="basic-form">
               <div className="row">
@@ -105,17 +113,20 @@ e.preventDefault();
               </div>
              
           </div>
-  
+  {/* onClick={handleClose} */}
                     </div>
-                </div>
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-danger light" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" disabled={canSave} className="btn btn-primary">Save FAQ</button>
-                </div>
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" type="submit" disabled={canSave}  >
+            Save FAQ
+          </Button>
+        </Modal.Footer>
             </form>
-            </div>
-        </div>
-    </div>
+      </Modal>
+  
     </>
   )
 }

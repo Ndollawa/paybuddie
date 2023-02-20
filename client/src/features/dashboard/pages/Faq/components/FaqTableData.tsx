@@ -1,8 +1,9 @@
-import React from 'react'
-import { selectFaqById,useGetFaqsQuery } from '../faqApiSlice'
+import React,{useState} from 'react'
+import { useGetFaqsQuery } from '../faqApiSlice'
 import EditFaqModal from './EditFaqModal'
 
 const FaqTableData = ({faqId}:any) => {
+ const [showModal, setShowModal]  = useState(false)
     const { faq } = useGetFaqsQuery("faqsList", {
         selectFromResult: ({ data }) => ({
             faq: data?.entities[faqId]
@@ -13,7 +14,7 @@ const FaqTableData = ({faqId}:any) => {
     
         const updated = new Date(faq.updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'long' })
     
-        const handleEdit = (id:string) => <EditFaqModal _id={id} />
+        const handleEdit = (id:string) => <EditFaqModal showModal={showModal} id={id} />
     
         return (
             <tr key={faqId}>
@@ -24,7 +25,7 @@ const FaqTableData = ({faqId}:any) => {
                     <td>{created}</td>
                     <td>
                         <div className="d-flex">
-                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"  data-bs-toggle="modal" data-bs-target=".edifaq-modal" onClick={()=>handleEdit(faq._id)}><i className="fas fa-pencil-alt"></i></button>
+                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>{handleEdit(faq._id); setShowModal(prev =>!prev)}}><i className="fas fa-pencil-alt"></i></button>
                             <a href="#" className="btn btn-danger shadow btn-xs sharp"><i className="fa fa-trash"></i></a>
                         </div>												
                     </td>												

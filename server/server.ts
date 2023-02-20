@@ -1,6 +1,4 @@
-import dotenv from 'dotenv'
-dotenv.config(); 
-
+import dotenv from 'dotenv';
 import express, { Application } from "express";
 // import fileUpload from 'express-fileupload';
 import { Server,createServer } from "http"; 
@@ -8,7 +6,7 @@ import socketIO, { Server as SocketIOServer, Socket } from "socket.io";
 import path from 'path';
 import cors from 'cors';
 import  'express-async-errors';
-import { logger } from './src/app/Http/Middleware/logEvents';
+// import { logger } from './src/app/Http/Middleware/logEvents';
 import errorHandler from './src/app/Http/Middleware/errorHandler';
 import corsOptions from './src/config/corsOptions';
 import verifyJWT from './src/app/Http/Middleware/verifyJWT';
@@ -29,8 +27,14 @@ import AuthRoutes from './src/app/Routes/api/auth';
 // import  PostModel from './src/app/Models/Post';
 import CheckDuplicateRoutes from './src/app/Http/Controllers/DuplicateController';
 import { Seed } from './src/app/Seeders/Seeder';
+import {fileURLToPath} from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 
+dotenv.config(); 
 
 // connect to Database
 connectDB();
@@ -39,7 +43,7 @@ const app:Application = express();
 const PORT:string |number | undefined = process.env.PORT || 3500;
 
 // custom middleware logger
-app.use(logger);
+// app.use(logger);
 
 //Handle file uploads
 // app.use(fileUpload({ createParentPath: true }));

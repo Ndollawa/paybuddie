@@ -128,7 +128,7 @@ useEffect(()=>{
     setValidMatch(match)
 }, [password,confirmPassword]);
 
-	const [uploadFile,{isSuccess:isUploadSuccess,error}]= useUploadFileMutation()
+	const [uploadFile,{isLoading:isUploadLoading,isSuccess:isUploadSuccess,error}]= useUploadFileMutation()
 const updateProfilePicture = async(e:ChangeEvent<HTMLInputElement>)=>{
 	 const files = e.target.files!
 	 const formData = new FormData()
@@ -136,7 +136,7 @@ const updateProfilePicture = async(e:ChangeEvent<HTMLInputElement>)=>{
 	 formData.append('_id',currentUser._id!);
 	//  
 	 await uploadFile({data:formData,url:'users/uploads/avatar'})
-	 if(isUploadSuccess){showToast('success','Profile Picture Uploaded successfully')}else{showToast('error',`Sorry, couldn't Upload Profile Picture: ${error}` )}
+	 if(!isUploadLoading && isUploadSuccess){showToast('success','Profile Picture Uploaded successfully')}else{showToast('error',`Sorry, couldn't Upload Profile Picture: ${error}` )}
 }
 const updateProfilePassword = async(e:FormEvent)=>{
 	if(validMatch){
