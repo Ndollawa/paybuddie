@@ -84,17 +84,17 @@ const {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true
   })
-   const {_id} = useSelector(useSettings)
+  //  const {_id} = useSelector(useSettings)
   const { setting } = useGetSettingsQuery("settingsList", {
     selectFromResult: ({ data }) => ({
-        setting: data?.entities[_id]
+        setting: data?.entities[data.ids[0]]
     }),
   })
-  // console.log(setting)
+  // console.log(_id)
   React.useEffect(() => {
-    if(!isLoading && isSuccess && !isError) dispatch(setSettings(setting))
+    if(!isLoading && isSuccess) dispatch(setSettings(setting))
    
-  }, [setting])
+  }, [setting,isSuccess,isLoading])
   return (
       
             <>

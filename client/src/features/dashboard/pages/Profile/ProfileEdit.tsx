@@ -1,4 +1,4 @@
-import React, {useState,useEffect,FormEvent, useRef} from 'react'
+import React, {useState,useEffect,FormEvent,ChangeEvent, useRef} from 'react'
 import MainBody from '../../components/MainBody'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../../../auth/authSlice'
@@ -7,7 +7,7 @@ import {FaPencilAlt} from 'react-icons/fa'
 import showToast from '../../../../app/utils/hooks/showToast'
 import { useUpdateUserMutation } from '../Users/usersApiSlice'
 import { useCheckDuplicateUserMutation } from '../Users/usersApiSlice'
-
+import { useUploadFileMutation } from '../Users/usersApiSlice'
 // username regex must start with a lowercase or uppercase laters and must be followed by lower or uppercase or digits,- or _ of 3 to 23 characters
 const USER_REGEX = /^[a-zA-Z][a-zA-z0-9-_]{3,23}$/;
 // requires atleast 0ne uppercase, lowercase,digit, special character and a total of 8 t0 24 characters
@@ -128,8 +128,15 @@ useEffect(()=>{
     setValidMatch(match)
 }, [password,confirmPassword]);
 
-const updateProfilePicture = (e:FormEvent)=>{
-
+	const [uploadFile,{isSuccess:isUploadSuccess,error}]= useUploadFileMutation()
+const updateProfilePicture = async(e:ChangeEvent<HTMLInputElement>)=>{
+	 const files = e.target.files!
+	 const formData = new FormData()
+	 formData.append("avatar", files[0]!)
+	 formData.append('_id',currentUser._id!);
+	//  
+	 await uploadFile({data:formData,url:'users/uploads/avatar'})
+	 if(isUploadSuccess){showToast('success','Profile Picture Uploaded successfully')}else{showToast('error',`Sorry, couldn't Upload Profile Picture: ${error}` )}
 }
 const updateProfilePassword = async(e:FormEvent)=>{
 	if(validMatch){
@@ -177,7 +184,7 @@ if(isError)showToast('error',updateUserError)
                                                 cursor:'pointer'
                                              }}><label style={{
                                                 cursor:'pointer' }}htmlFor='changeUserImage'><FaPencilAlt fontSize={'1rem'} color={'#ffffff'}/></label>
-                                             <input type="file" name="profileAvatar" id="changeUserImage" className="d-none" 
+                                             <input type="file" name="profileAvatar" id="changeUserImage" accept='image/*' className="d-none" 
                                              onChange={updateProfilePicture}/></div>
 										</div> 
 										
@@ -329,7 +336,7 @@ if(isError)showToast('error',updateUserError)
 												<div className="col-md-12"> 
 													<div className="form-group mb-0"> 
 														<label className="form-label">Bio</label> <textarea rows={5} className="form-control" name="bio" 
-                                                        onChange={(e)=> setBio(e.target.value)}placeholder="Enter your bio or favourite qoute">{bio}</textarea>
+                                                        onChange={(e)=> setBio(e.target.value)}placeholder="Enter your bio or favourite qoute" value={bio}></textarea>
 														 </div> 
 														</div> 
 													</div> 

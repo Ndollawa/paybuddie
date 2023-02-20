@@ -5,13 +5,13 @@ const MB = 5; // 5 MB
 const FILE_SIZE_LIMIT = MB * 1024 * 1024;
 
 const fileSizeLimiter = (req:Request, res:Response, next:NextFunction) => {
-    const files = req.files
+    const files = req.files!
 
     const filesOverLimit:any[] = []
     // Which files are over the limit?
     Object.keys(files).forEach(key => {
-        if (files[key].size > FILE_SIZE_LIMIT) {
-            filesOverLimit.push(files[key].name)
+        if (files[key]?.size > FILE_SIZE_LIMIT) {
+            filesOverLimit.push(files[key]?.name)
         }
     })
 

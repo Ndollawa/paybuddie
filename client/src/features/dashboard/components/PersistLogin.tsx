@@ -1,11 +1,11 @@
-import { Outlet ,Link, useLocation, Navigate} from "react-router-dom";
+import { Outlet , useLocation, Navigate} from "react-router-dom";
 import React,{ useState, useEffect,useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRefreshMutation } from "../../auth/authApiSlice";
 import { selectCurrentToken } from '../../auth/authSlice';
 import { setPreloader } from "./PreloaderSlice";
 import useLocalStorage from "../../../app/utils/hooks/useLocalStorage";
-import {useCompanyDetails, useDashboardConfig} from '../pages/Settings/settingsConfigSlice';
+import { useDashboardConfig } from '../pages/Settings/settingsConfigSlice';
 import Preloader from "./Preloader";
 
 const PersistLogin = () =>{
@@ -40,7 +40,6 @@ const {
     containerLayout,
     direction
 } = layoutOptions;
-const {favicon} = useSelector(useCompanyDetails)
 
 useEffect(() =>{
 

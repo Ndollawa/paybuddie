@@ -226,7 +226,7 @@ showToast('success',"Settings Updated successfully!")
                     placeholder=""
                     rows="10"
                     onChange={setCompanyDescription}
-                    {...companyDescriptionAttr}> value={companyDescription}</textarea>
+                    {...companyDescriptionAttr} value={companyDescription}></textarea>
                 
                 </div>
               </div>

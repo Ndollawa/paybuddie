@@ -109,6 +109,16 @@ export const settingsApiSlice = apiSlice.injectEndpoints({
             ]
         }),
         
+        uploadFile:builder.mutation<any, any>({
+            query:(arg:{data:FormData,url:string})=>({
+                url:arg.url,
+                method:'POST',
+                body:arg.data,
+            }),
+                invalidatesTags: (result, error, arg) => [
+                    { type: 'Setting', id: arg.id }
+                ]
+        }),
         dashboardConfigSettings:builder.mutation({
             query:data=>({
                 url:'/settings/dashboard-config',
@@ -129,6 +139,7 @@ export const {
     useAddNewSettingMutation,
     useUpdateSettingMutation,
     useDeleteSettingMutation, 
+    useUploadFileMutation,
     useGeneralSettingsMutation,
     useDashboardConfigSettingsMutation,
     useHomepageSettingsMutation,

@@ -142,24 +142,6 @@ public delete = async (req:Request, res:Response) => {
 
     res.json(reply)
 }
-public upload = async(req:Request, res:Response)=>{
-    const {uploadType} = req.params
-    const {_id} = req.body
-    const file = req?.file!
-    switch (uploadType) {
-        case 'avatar':
-            if(!file)return res.status(400).json({message:'No file uploded'})
-            await UserModel.findByIdAndUpdate(_id,{userImage:file.filename},{new:true})
-            res.status(200).json({message:'success'})
-            
-            break;
-    
-        default:
-            res.status(400).json({message:'Bad Request'})
-            break;
-    } 
-}
-
 
 }
 export default new UsersController()

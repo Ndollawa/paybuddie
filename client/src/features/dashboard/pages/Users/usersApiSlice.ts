@@ -77,6 +77,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 { type: 'User', id: arg.id }
             ]
         }),
+          
+        uploadFile:builder.mutation<any, any>({
+            query:(arg:{data:FormData,url:string})=>({
+                url:arg.url,
+                method:'POST',
+                body:arg.data,
+            }),
+                invalidatesTags: (result, error, arg) => [
+                    { type: 'User', id: arg.id }
+                ]
+        }),
         deleteUser: builder.mutation({
             query: ({ _id }) => ({
                 url: `/users`,
@@ -94,6 +105,7 @@ export const {
     useGetUsersQuery,
     useAddNewUserMutation,
     useUpdateUserMutation,
+    useUploadFileMutation,
     useCheckDuplicateUserMutation,
     useDeleteUserMutation,
 } = usersApiSlice

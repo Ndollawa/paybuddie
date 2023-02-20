@@ -2,12 +2,12 @@ import dotenv from 'dotenv'
 dotenv.config(); 
 
 import express, { Application } from "express";
+// import fileUpload from 'express-fileupload';
 import { Server,createServer } from "http"; 
 import socketIO, { Server as SocketIOServer, Socket } from "socket.io";  
 import path from 'path';
 import cors from 'cors';
-import  'express-async-errors'
-// import {fileURLToPath} from 'url';
+import  'express-async-errors';
 import { logger } from './src/app/Http/Middleware/logEvents';
 import errorHandler from './src/app/Http/Middleware/errorHandler';
 import corsOptions from './src/config/corsOptions';
@@ -21,8 +21,7 @@ import FaqsRoutes from './src/app/Routes/api/faq';
 import SlidersRoutes from './src/app/Routes/api/slider';
 import ProfileRoutes from './src/app/Routes/api/profile';
 import UsersRoutes from './src/app/Routes/api/users';
-// import UsersRoutes from './src/app/Routes/api/users';
-import RefreshRoute from './src/app/Routes/api/refresh';
+import MessagesRoutes from './src/app/Routes/api/messages';
 // import RegisterRoutes from './src/app/Routes/api/register';
 import AuthRoutes from './src/app/Routes/api/auth';
 // import AuthController from './src/app/Http/Controllers/AuthController';
@@ -31,31 +30,31 @@ import AuthRoutes from './src/app/Routes/api/auth';
 import CheckDuplicateRoutes from './src/app/Http/Controllers/DuplicateController';
 import { Seed } from './src/app/Seeders/Seeder';
 
-// const __filename = fileURLToPath(import.meta.url);
 
-// 
-// const __dirname = path.dirname(__filename);
 
 // connect to Database
 connectDB();
 
 const app:Application = express();
-const PORT:string |number | undefined = process.env.PORT || 3500
+const PORT:string |number | undefined = process.env.PORT || 3500;
 
 // custom middleware logger
 app.use(logger);
 
+//Handle file uploads
+// app.use(fileUpload({ createParentPath: true }));
+
 //Handle credentials check before cors
 app.use(credentials);
+
 
 //Cross origin Resource Sharing
 app.use(cors(corsOptions));
 
-
 // built-in middleware to handle urlencodedn data
 //in other words, form data
 //content-type: application/x-www-form-urlencoded
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({extended:true}));
 
 // built-in middleware for json
 app.use(express.json());
@@ -64,7 +63,7 @@ app.use(express.json());
 app.use(cookieParser());
 //set view engine to ejs
 // app.set("view engine",'ejs');
-// app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 ///routes
 
 //server static files
@@ -104,7 +103,7 @@ const io = new SocketIOServer(server,{
         
 
     //Start the server 
-    server.listen(3501, () => { console.log(`Server listening on port 3501`);
+    server.listen(3501, () => { console.log(`Realtime Server listening on port 3501`);
  })
   
 app.use('/checkduplicate', CheckDuplicateRoutes);

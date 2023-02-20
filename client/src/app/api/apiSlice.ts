@@ -1,7 +1,7 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { setCredentials, logOut } from '../../features/auth/authSlice';
-import { store } from '../stores/store';
+import { setCredentials } from '../../features/auth/authSlice';
+import { RootState } from '../stores/store';
 
 
 
@@ -9,9 +9,11 @@ import { store } from '../stores/store';
 const baseQuery = fetchBaseQuery({
     baseUrl: 'http://localhost:3500',
     credentials: 'include',
-    prepareHeaders:(headers) =>{
-        // const token = getState().auth.token;
-const token =  store.getState().auth.token;
+    prepareHeaders:(headers,{getState}) =>{
+        const token =(getState() as RootState).auth.token;
+        //   headers.set("Content-Type","multipart/form-data")
+        //   headers.set("Accepts","application/json")
+        //   headers.set("Accepts","multiparts/form-data")
         // console.log(token)
         if(token){
             headers.set("authorization",`Bearer ${token}`)
@@ -37,14 +39,6 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
         }else{
             if(refreshResult?.error?.status === 403){
                 refreshResult.error.data =  "Your login session has expired"
-            }else if(refreshResult?.error?.status === 401){
-                
-                const token =  store.getState().auth.token;
-                var d = new Date();
-                d.setTime(d.getTime() + (30*60*1000)); /* 30 Minutes */
-                var expires = "expires="+ d.toString();
-                document.cookie = 'jwt' + "=" + token + ";" + expires + ";path=/";
-            
             }
             return refreshResult
         }

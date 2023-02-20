@@ -2,9 +2,16 @@ import React
 ,{useEffect} from 'react';
 import MainBody from '../../components/MainBody';
 import { Link, NavLink ,Outlet} from 'react-router-dom';
-import $ from 'jquery';
+// import $ from 'jquery';
 
 const SiteSettings = () => {
+    // const handleLinkColor  = (e:any) =>{
+    //     // alert('clicked')
+    //     // e.preventDefault()
+    //     e.currentTarget.parentElement?.addClass('setting active')
+        
+    // //    console.log(e.currentTarget.parentElement) 
+    // }
  
   return (
     <MainBody>
@@ -18,13 +25,13 @@ const SiteSettings = () => {
                     <div className="card-body">
                         <div className="basic-list-group">
                             <div className="setting-nav-wrapper">
-                                <div className="setting"><NavLink className="setting-nav" to="./general">General Setttings</NavLink></div>
-                                <div className="setting"><NavLink className="setting-nav" to="./home-page">Home Page</NavLink></div>
-                                <div className="setting"><NavLink className="setting-nav" to="./about-us">About Us</NavLink></div>
-                                <div className="setting"><NavLink className="setting-nav" to="./privacy-and-policy">Privacy and Policy</NavLink></div>
-                                <div className="setting"><NavLink className="setting-nav" to="./terms-and-conditions">Terms and Conditions</NavLink></div>
-                                {/* <div className="setting"><NavLink className="setting-nav" to="./our-gallery">Our Gallery</NavLink></div> */}
-                                <div className="setting"><NavLink className="setting-nav" to="./site-images">Site Images</NavLink></div>
+                                <div className="setting"><NavLink className="setting-nav"  to="/dashboard/settings/general">General Setttings</NavLink></div>
+                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/home-page">Home Page</NavLink></div>
+                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/about-us">About Us</NavLink></div>
+                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/privacy-and-policy">Privacy and Policy</NavLink></div>
+                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/terms-and-conditions">Terms and Conditions</NavLink></div>
+                                {/* <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/our-gallery">Our Gallery</NavLink></div> */}
+                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/site-images">Site Images</NavLink></div>
                             </div>
                         </div>
                     </div>

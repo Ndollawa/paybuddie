@@ -3,11 +3,11 @@ import { Response,Request,NextFunction } from "express";
 
 const fileExtLimiter = (allowedExtArray:string[]) => {
     return (req:Request, res:Response, next:NextFunction) => {
-        const files = req.files
+        const files = req.files!
 
         const fileExtensions:string[] = []
         Object.keys(files).forEach(key => {
-            fileExtensions.push(path.extname(files[key].name))
+            fileExtensions.push(path.extname(files[key]?.name))
         })
 
         // Are the file extension allowed? 
