@@ -63,8 +63,8 @@ showToast('success',"Settings Updated successfully!")
   return (
     <>
       <div className="card">
-        <div className="card-header">
-          <h4 className="card-title">General</h4>
+        <div className="card-header bg-primary">
+          <h4 className="card-title text-white">General</h4>
         </div>
         <div className="card-body">
           <div className="basic-form">

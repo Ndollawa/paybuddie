@@ -16,10 +16,10 @@ const {siteName,favicon,description} = useSelector(useCompanyDetails);
    
     <title>{pageTitle+" - "+siteName}</title>
    
-    <link rel="apple-touch-icon" sizes="180x180" href={favicon}/>
-    <link rel="icon" type="image/png" sizes="32x32" href={favicon} />
-    <link rel="icon" type="image/png" sizes="16x16" href={favicon} />
-    {/* <link rel="manifest" href={favicon} /> */}
+    <link rel="apple-touch-icon" sizes="180x180" href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon}/>
+    <link rel="icon" type="image/png" sizes="32x32" href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon} />
+    <link rel="icon" type="image/png" sizes="16x16" href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon} />
+    {/* <link rel="manifest" href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon} /> */}
     <meta name="description" content={description} />
 
 

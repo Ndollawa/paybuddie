@@ -315,4 +315,4 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
   )
 }
 
-export default Home
+export default React.memo(Home)

@@ -1,50 +1,58 @@
-import React, {FormEvent,useState} from 'react'
+import React, {FormEvent,useState, useEffect} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { useUpdateFaqMutation,selectFaqById } from '../faqApiSlice'
-import { useSelector } from 'react-redux'
-import useInput from '../../../../../app/utils/hooks/useInput'
-import { faqProps } from '../../../../../app/utils/props/faqProps'
-import { RootState } from '../../../../../app/stores/store'
+import { useUpdateFaqMutation } from '../faqApiSlice'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
+import showToast from '../../../../../app/utils/hooks/showToast'
 
-
-const EditFaqModal = ({id,showModal}:{id:string;showModal:boolean}) => {
-
-const faq:any = useSelector((state:RootState) => selectFaqById(state, id))
-const [question, setQuestion, QuestionAttr] = useInput(faq.question)
-const [response, setResponse, ResponseAttr] = useInput(faq.response)
-const [status, setStatus, StatusAttr] = useInput(faq.status)
+interface modalDataProps {
+modalData:{
+   data:{
+      id:string | number;
+      question: string;
+      response: string;
+      status: string;
+  } | null,
+  showModal:boolean,
+} 
+}
+const EditFaqModal = ({modalData:{data,showModal}}:modalDataProps) => {
+ 
+const [question, setQuestion] = useState("")
+const [response, setResponse] = useState("")
+const [status, setStatus] = useState("")
+const [show, setShow] = useState(false);
 const [updateFaq, {
   isLoading,
   isSuccess,
   isError,
   error
-}] = useUpdateFaqMutation()
+}]:any = useUpdateFaqMutation()
 
 // const navigate = useNavigate()
-
-const [show, setShow] = useState(showModal);
-
+useEffect(() => {
+setQuestion(data?.question!)
+setResponse(data?.response!)
+setStatus(data?.status!)
+setShow(showModal)
+  return () => {
+    setShow(false)
+    
+  };
+}, [data,showModal])
 const handleClose = () => setShow(false);
-const handleShow = () => setShow(true);
-React.useEffect(() => {
-  if (isSuccess) {
-      setResponse('')
-      setQuestion('')
-  }
-}, [isSuccess])
 
-const canSave = [question, response, status].every(Boolean) && !isLoading
+const canSave = (question && response && status)? true :false
 
 
 
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
  if (canSave) {
-      await updateFaq({id,question, response,status })
-  }
-
+      await updateFaq({_id:data?.id,question, response,status })
+        if(isSuccess)showToast('success', 'FAQ Updated successfully')
+        if(isError) showToast('error',JSON.stringify(error?.data))
+    }
 }
   return (
     <>
@@ -71,8 +79,7 @@ e.preventDefault();
                     className="form-control"
                     placeholder=""
                     value={question}
-                    onChange={setQuestion}
-                    {...QuestionAttr}
+                    onChange={(e)=>setQuestion(e.target.value)}
                   />
                 </div>
                 <div className="mb-3 col-md-3">
@@ -81,8 +88,7 @@ e.preventDefault();
                     id="inputState"
                     className="default-select form-control wide"
                     value={status}
-                    onChange={setStatus}
-                    {...StatusAttr}
+                    onChange={(e)=>setStatus(e.target.value)}
                   >
                     <option value='active'>Active</option>
                     <option value='inactive'>Inactive</option>
@@ -95,7 +101,6 @@ e.preventDefault();
         tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
        onEditorChange={(newValue,editor)=>setResponse(newValue)}
        value={response}
-        initialValue=''
         init={{
           height: 400,
           menubar: false,
@@ -123,7 +128,7 @@ e.preventDefault();
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button type="submit" disabled={canSave} variant="primary">Update FAQ</Button>
+          <Button type="submit" disabled={!canSave} variant="primary">Update FAQ</Button>
         </Modal.Footer>
             </form>
       </Modal>

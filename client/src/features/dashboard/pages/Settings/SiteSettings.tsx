@@ -19,19 +19,19 @@ const SiteSettings = () => {
     <div className="row jumbotron"> 
             <div className='col-md-3 col-sm-12'>
                 <div className="card">
-                    <div className="card-header">
-                        <h4 className="card-title">Settings</h4>
+                    <div className="card-header bg-primary">
+                        <h4 className="card-title text-white">Settings</h4>
                     </div>
                     <div className="card-body">
                         <div className="basic-list-group">
-                            <div className="setting-nav-wrapper">
-                                <div className="setting"><NavLink className="setting-nav"  to="/dashboard/settings/general">General Setttings</NavLink></div>
-                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/home-page">Home Page</NavLink></div>
-                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/about-us">About Us</NavLink></div>
-                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/privacy-and-policy">Privacy and Policy</NavLink></div>
-                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/terms-and-conditions">Terms and Conditions</NavLink></div>
-                                {/* <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/our-gallery">Our Gallery</NavLink></div> */}
-                                <div className="setting"><NavLink className="setting-nav" to="/dashboard/settings/site-images">Site Images</NavLink></div>
+                            <div className="setting-nav-wrapper d-flex flex-column">
+                                <NavLink className="setting-nav"  to="/dashboard/settings/general">General Setttings</NavLink>
+                                <NavLink className="setting-nav" to="/dashboard/settings/home-page">Home Page</NavLink>
+                                <NavLink className="setting-nav" to="/dashboard/settings/about-us">About Us</NavLink>
+                                <NavLink className="setting-nav" to="/dashboard/settings/privacy-and-policy">Privacy and Policy</NavLink>
+                                <NavLink className="setting-nav" to="/dashboard/settings/terms-and-conditions">Terms and Conditions</NavLink>
+                                {/* <NavLink className="setting-nav" to="/dashboard/settings/our-gallery">Our Gallery</NavLink> */}
+                                <NavLink className="setting-nav" to="/dashboard/settings/site-images">Site Images</NavLink>
                             </div>
                         </div>
                     </div>

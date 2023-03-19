@@ -132,6 +132,7 @@ switch (testimonialStyle) {
 
 
   default:
+    testimonialSection = null
     break;
 }
 
@@ -141,4 +142,4 @@ switch (testimonialStyle) {
 }
 
 
-export default Testionial
+export default React.memo(Testionial)

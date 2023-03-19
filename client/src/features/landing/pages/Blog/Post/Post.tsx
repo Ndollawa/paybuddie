@@ -15,4 +15,4 @@ const Post:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default Post
+export default React.memo(Post)

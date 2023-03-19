@@ -1,6 +1,6 @@
 import { ReactComponentElement, ReactElement } from 'react';
-import { IoWalletOutline} from 'react-icons/io5'
-import {FaOpencart, FaRegQuestionCircle} from "react-icons/fa"
+import { IoChatbubblesOutline, IoWalletOutline} from 'react-icons/io5'
+import {FaOpencart, FaPeopleArrows, FaPodcast, FaRegQuestionCircle, FaServicestack, FaUserFriends} from "react-icons/fa"
 import {BiTransfer} from 'react-icons/bi'
 import {GiTakeMyMoney} from 'react-icons/gi'
 import {RxDashboard} from 'react-icons/rx'
@@ -61,6 +61,12 @@ export type sideBarLink ={
         title:'Messenger',
         icon:<HiOutlineChatBubbleLeftRight fontSize={"2rem"}/>,
         path:"/dashboard/messenger"
+    },
+    {
+        id:5,
+        title:'Contacts',
+        icon:<FaUserFriends fontSize={"2rem"}/>,
+        path:"/dashboard/contacts"
     }
     ]
 
@@ -75,29 +81,61 @@ export type sideBarLink ={
             id:6.0,
             title:'Users',
         // icon:
-            path: ''
+            path: '/dashboard/users'
         },
         {
             id:6.1,
             title:'Team members',
             // icon:
-                path: ''
+                path: '/dashboard/our-team'
         }],
         
     },
     {
         id:7,
-        title:'FAQ Management',
-        icon:<FaRegQuestionCircle fontSize={"2rem"}/>,
-        path:'/dashboard/faq',
+        title:'Blog Post Management',
+        icon:<FaPodcast fontSize={"2rem"}/>,
+        path:'/dashboard/posts',
         isActive:false,
         isOpen:false
     }
     ,{
         id:8,
+        title:'Rooms Management',
+        icon:<IoChatbubblesOutline fontSize={"2rem"}/>,
+        path:'/dashboard/rooms',
+        isActive:false,
+        isOpen:false
+    }
+    ,{
+        id:9,
         title:'Slider Management',
         icon:<TfiLayoutMediaCenter fontSize={"2rem"}/>,
-        path:'/dashboard/slider',
+        path:'/dashboard/slides',
+        isActive:false,
+        isOpen:false
+    }
+    ,{
+        id:10,
+        title:'Team Management',
+        icon:<FaPeopleArrows fontSize={"2rem"}/>,
+        path:'/dashboard/our-team',
+        isActive:false,
+        isOpen:false
+    }
+    ,{
+        id:11,
+        title:'Services Management',
+        icon:<FaServicestack fontSize={"2rem"}/>,
+        path:'/dashboard/services',
+        isActive:false,
+        isOpen:false
+    }
+    ,{
+        id:12,
+        title:'FAQ Management',
+        icon:<FaRegQuestionCircle fontSize={"2rem"}/>,
+        path:'/dashboard/faq',
         isActive:false,
         isOpen:false
     }

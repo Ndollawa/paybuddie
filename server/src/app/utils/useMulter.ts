@@ -42,7 +42,10 @@ upload.fields([
     {name:'chatImage',maxCount:12},
     {name:'avatar',maxCount:1},
     {name:'siteImage',maxCount:1},
+    {name:'coverImage',maxCount:1},
+    {name:'roomImage',maxCount:1},
     {name:'upload',maxCount:1},
+    {name:'sliderBg',maxCount:1},
 
 ])
     return upload;

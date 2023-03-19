@@ -26,7 +26,10 @@ router.route('/pages')
 router.route('/dashboard-config')
 .post(verifyJWT,verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV),(req:Request, res:Response, next:NextFunction) => SettingsController.updateDashboardSettings(req, res));
 
-router.route('/uploads/:uploadType')
+router.route('/remove-uploads')
+.post(verifyJWT,verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV),(req:Request, res:Response, next:NextFunction) => SettingsController.removeUploads(req, res));
+
+router.route('/uploads')
 .post(verifyJWT,verifyRoles(ROLES_LIST.ADMIN, ROLES_LIST.DEV),upload.single('siteImage'),(req:Request, res:Response, next:NextFunction) => SettingsController.uploads(req, res));
 
 

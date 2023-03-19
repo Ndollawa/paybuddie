@@ -20,7 +20,7 @@ const RequireAuth = ({allowedRoles}:allowedRolesProps) =>{
         :roles?.find((role:number) => allowedRoles?.includes(role))
         ? <Outlet/>
         : token
-        ?<Navigate to="/error/403" state={{from:location}} />
+        ?<Navigate to="/error/403" replace state={{from:location}} />
         : <Outlet/>
        
     );

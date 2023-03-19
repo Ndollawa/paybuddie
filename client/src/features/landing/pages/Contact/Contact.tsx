@@ -45,21 +45,21 @@ const Contact :React.FC<pageProps> = ({pageData}:pageProps) => {
             {/* <!-- /.col-lg-4 --> */}
             <div className="col-lg-8">
                 <form action="https://thegenius.co/html/finlon_new1/assets/sendemail.php" className="form-one contact-form-validated">
-                    <div className="row row-gutter-y-20 row-gutter-x-20">
+                    <div className="row row-gutter-y-20 row-gutter-x-20 g-4">
                         <div className="col-md-6">
-                            <input type="text" placeholder="Full name" name="name"/>
+                            <input className="form-control" type="text" placeholder="Full name" name="name"/>
                         </div>
                         {/* <!-- /.col-md-6 --> */}
                         <div className="col-md-6">
-                            <input type="email" placeholder="Email address" name="email"/>
+                            <input className="form-control" type="email" placeholder="Email address" name="email"/>
                         </div>
                         {/* <!-- /.col-md-6 --> */}
                         <div className="col-md-6">
-                            <input type="text" placeholder="Phone number" name="phone"/>
+                            <input className="form-control" type="text" placeholder="Phone number" name="phone"/>
                         </div>
                         {/* <!-- /.col-md-6 --> */}
                         <div className="col-md-6">
-                            <input type="text" placeholder="Subject" name="subject"/>
+                            <input className="form-control" type="text" placeholder="Subject" name="subject"/>
                         </div>
                         {/* <!-- /.col-md-6 --> */}
                         <div className="col-md-12">
@@ -150,4 +150,4 @@ const Contact :React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default Contact
+export default React.memo(Contact)

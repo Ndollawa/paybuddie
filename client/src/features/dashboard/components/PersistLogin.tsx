@@ -74,7 +74,7 @@ useEffect(() =>{
       
                 </div>)
                 }else if(isError){
-                  content = <Navigate to={`/error/401`} state={{from:location}}/>
+                  content = <Navigate to={'/auth/login'} replace state={{from:location}}/>
 
                 }else if(!isLoading && isSuccess && trueSuccess){
                    content = <Outlet/> 

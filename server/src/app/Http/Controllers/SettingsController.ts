@@ -1,5 +1,6 @@
 import  SettingsModel from '../../Models/Setting';
 import { Request, Response } from 'express';
+import deleteItem from '../../utils/deleteItem';
 import BaseController from './BaseController';
 
 class SettingsController extends BaseController{
@@ -8,7 +9,6 @@ class SettingsController extends BaseController{
        
 
    }
-
 updateHomepageSettings = async(req:Request, res:Response)=>{
    const {_id,data} = req.body;
 //    console.log(data)
@@ -20,7 +20,7 @@ updateHomepageSettings = async(req:Request, res:Response)=>{
 updateDashboardSettings = async(req:Request, res:Response)=>{
     const{_id,data} =  req.body
    
-    // console.log(req.body)
+    console.log(req.body)
     const result = await SettingsModel.findOneAndUpdate({_id},{dashboardConfig:{layoutOptions:{...data}}}) 
     res.status(200).json({message:'success'});
 
@@ -39,55 +39,67 @@ updateGeneralSettings = async(req:Request, res:Response)=>{
 }
 
 uploads = async(req:Request, res:Response)=>{
-    const uploadType = req.params.uploadType
-    // console.log(uploadType)
-    const {_id} = req.body
+   console.log(req.file)
+    const {_id,type} = req.body
     const file = req?.file!
+    const destination = '../../../../public/settings'
     if(file){
         try {
                     
             const result = await SettingsModel.findOne({_id}).exec() 
-            switch (uploadType) {
+            switch (type) {
                 case 'favicon':
                     if(result){
+                    const oldFile =result.companyDetails!.favicon! 
+                    if(oldFile) deleteItem(destination,oldFile)
                     result.companyDetails!.favicon! = file.filename
                     result?.save()
-                    res.status(200).json({messsage:'success'}); 
+                   return res.status(200).json({messsage:'success'});
                  }   
                     break;
                 case 'logo':
                     if(result){
+                   const oldFile = result.companyDetails!.logo! 
+                   if(oldFile) deleteItem(destination,oldFile)
                     result.companyDetails!.logo! = file.filename
                     result?.save()
-                    res.status(200).json({messsage:'success'}); 
+                   return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
                 case 'darklogo':
                     if(result){
+                   const oldFile = result.companyDetails!.logoDark! 
+                   if(oldFile) deleteItem(destination,oldFile)
                     result.companyDetails!.logoDark! = file.filename
                     result?.save()
-                    res.status(200).json({messsage:'success'}); 
+                   return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
                 case 'pageBg':
                     if(result){
+                   const oldFile = result.companyDetails!.pagesBg! 
+                   if(oldFile) deleteItem(destination,oldFile)
                     result.companyDetails!.pagesBg! = file.filename
                     result?.save()
-                    res.status(200).json({messsage:'success'}); 
+                   return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
                 case 'bgImage':
                     if(result){
+                    const oldFile =result.companyDetails!.backgroundImage! 
+                    if(oldFile) deleteItem(destination,oldFile)
                     result.companyDetails!.backgroundImage! = file.filename
                     result?.save()
-                    res.status(200).json({messsage:'success'}); 
+                   return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
                 case 'aboutUsBg':
                     if(result){
+                   const oldFile = result.companyDetails!.aboutUsBg! 
+                   if(oldFile) deleteItem(destination,oldFile)
                     result.companyDetails!.aboutUsBg! = file.filename
                     result?.save()
-                    res.status(200).json({messsage:'success'}); 
+                   return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
             
@@ -108,6 +120,76 @@ uploads = async(req:Request, res:Response)=>{
 //     image:Buffer.from(encode_img,'base64')
 // }     
 //     })   
+        } catch (error) {
+        //    next(error) 
+        console.log(error)
+        }
+
+}
+}
+removeUploads = async(req:Request, res:Response)=>{
+   
+    const {_id,type,file} = req.body
+     const destination = '../../../public/uploads/settings'
+    if(file){
+        try {
+                    
+            const result = await SettingsModel.findOne({_id}).exec() 
+            switch (type) {
+                case 'favicon':
+                    if(result){
+                    result.companyDetails!.favicon! = ''
+                    result?.save()
+                   deleteItem(destination, file)
+                   return res.status(200).json({messsage:'success'}); 
+                   
+                 }   
+                    break;
+                case 'logo':
+                    if(result){
+                    result.companyDetails!.logo! = ''
+                    result?.save()
+                   deleteItem(destination, file)
+                   return res.status(200).json({messsage:'success'}); 
+                 }   
+                    break;
+                case 'logoDark':
+                    if(result){
+                    result.companyDetails!.logoDark! = ''
+                    result?.save()
+                   deleteItem(destination, file)
+                   return res.status(200).json({messsage:'success'}); 
+                 }   
+                    break;
+                case 'pageBg':
+                    if(result){
+                    result.companyDetails!.pagesBg! = ''
+                    result?.save()
+                    deleteItem(destination, file)
+                    res.status(200).json({messsage:'success'}); 
+                 }   
+                    break;
+                case 'bgImage':
+                    if(result){
+                    result.companyDetails!.backgroundImage! = ''
+                    result?.save()
+                   deleteItem(destination, file)
+                   return res.status(200).json({messsage:'success'}); 
+                 }   
+                    break;
+                case 'aboutUsBg':
+                    if(result){
+                    result.companyDetails!.aboutUsBg! = ''
+                    result?.save()
+                   deleteItem(destination, file)
+                   return res.status(200).json({messsage:'success'}); 
+                 }   
+                    break;
+            
+                default:
+                    return res.status(400).json({message:'Bad Request'})
+                    break;
+            }   
         } catch (error) {
         //    next(error) 
         console.log(error)

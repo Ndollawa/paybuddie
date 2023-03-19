@@ -16,21 +16,7 @@ const AppSettings = () => {
 
 const dispatch = useDispatch();
 const [dashboardConfigSetting,isLoading] = useDashboardConfigSettingsMutation();
-  useEffect(()=>{
-$('.nav.nav-tabs .nav-link').on('click',(e)=>{
- const tab = e.currentTarget.getAttribute('data-tab');
- for(let i=1; i <4;i++){
-  if(tab !== `tab${i}`){
-$(`#tab${i}`).removeClass('active show');
-$(`[data-tab="tab${i}"]`).removeClass('active');
- }
- e.currentTarget.setAttribute('class','nav-link active');
-//  alert(tab)
- $(`#${tab}`).addClass('active show')
-}
-})
-  },[])
-
+ 
 //change the theme typography controller
    const typographySelect:FormEventHandler =(e:FormEvent<HTMLInputElement>)=> {
       e.persist();
@@ -62,6 +48,9 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
     }
 	
 	
+  const handleRightSidebar = ()=>$('.sidebar-right').toggleClass('show');
+  const handleRightSidebarclose = ()=>$('.sidebar-right').removeClass('show');
+
 
     //change the sidebar position controller
   const  sidebarPositionSelect:FormEventHandler = (e:FormEvent<HTMLInputElement>)=> {
@@ -239,10 +228,19 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
 		
 	}
 
-    
-  const handleRightSidebar = ()=>$('.sidebar-right').toggleClass('show');
-  const handleRightSidebarclose = ()=>$('.sidebar-right').removeClass('show');
-
+ useEffect(()=>{
+$('.nav.nav-tabs .nav-link').on('click',(e)=>{
+ const tab = e.currentTarget.getAttribute('data-tab');
+ for(let i=1; i < 4;i++){
+  if(tab !== `tab${i}`){
+$(`#tab${i}`).removeClass('active show');
+$(`[data-tab="tab${i}"]`).removeClass('active');
+ }
+ e.currentTarget.setAttribute('class','nav-link active');
+//  alert(tab)
+ $(`#${tab}`).addClass('active show')
+}
+})    
   	//change the nav-header background controller
     $('input[name="navigation_header"]').on('click',(e)=> {
   //  alert(e.currentTarget.value)  
@@ -296,8 +294,12 @@ $(`[data-tab="tab${i}"]`).removeClass('active');
          console.log(error)   
           }
     })();       });
-  
+  return ()=>{
+
+  }
  
+  },[])
+
   // const deleteAllCookie=()=>{
     
   // }

@@ -9,19 +9,19 @@ import { Request, Response } from 'express';
 
 const checkDuplicate = async (req:Request, res:Response)=>{
     const {data:{user}} = req.body;
- console.log(user)
+//  console.log(user)
     //check for duplicate username in the DB
     try{
         const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         const userType = EMAIL_REGEX.test(user);
-        console.log(userType)
+        // console.log(userType)
         let foundUser;
     if(userType){
     foundUser = await UserModel.findOne({email:user}).exec();
     }else{
     foundUser = await UserModel.findOne({username:user}).exec();
     }
-        console.log(foundUser)
+        // console.log(foundUser)
             if(foundUser){return res.status(200).json({'message':  "taken"});// conflict
         }else{
             return res.status(200).json({'message':  "available"})

@@ -15,15 +15,17 @@ import credentials from './src/app/Http/Middleware/credentials';
 import mongoose from 'mongoose';
 import connectDB from './src/config/dbConn';
 import SettingsRoutes from './src/app/Routes/api/settings'
-import FaqsRoutes from './src/app/Routes/api/faq';
-import SlidersRoutes from './src/app/Routes/api/slider';
-import ProfileRoutes from './src/app/Routes/api/profile';
-import UsersRoutes from './src/app/Routes/api/users';
-import MessagesRoutes from './src/app/Routes/api/messages';
-// import RegisterRoutes from './src/app/Routes/api/register';
+import FaqRoutes from './src/app/Routes/api/faq';
+import SlideRoutes from './src/app/Routes/api/slide';
+import ServiceRoutes from './src/app/Routes/api/service';
+import RoomRoutes from './src/app/Routes/api/room';
+import ContactsRoutes from './src/app/Routes/api/contacts';
+import UserRoutes from './src/app/Routes/api/users';
+import MessageRoutes from './src/app/Routes/api/messages';
 import AuthRoutes from './src/app/Routes/api/auth';
-// import AuthController from './src/app/Http/Controllers/AuthController';
-// import RegisterController from './src/app/Http/Controllers/RegisterController';
+import TeamRoutes from './src/app/Routes/api/team';
+import PostRoutes from './src/app/Routes/api/post';
+import CategoryRoutes from './src/app/Routes/api/postcategory';
 // import  PostModel from './src/app/Models/Post';
 import CheckDuplicateRoutes from './src/app/Http/Controllers/DuplicateController';
 import { Seed } from './src/app/Seeders/Seeder';
@@ -67,13 +69,18 @@ app.use(express.json());
 app.use(cookieParser());
 //set view engine to ejs
 // app.set("view engine",'ejs');
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public/')));
+app.use(express.static(path.join(__dirname, '/public/uploads')));
 ///routes
 
 //server static files
 // app.get("^/$|/index(.html)?", (req, res, next)=>{
 
-//     res.render(path.join(__dirname,'views','index'), {posts:PostModel} );
+//     res.render(path.join(__dirname,'views','index'), {} );
+// });
+// app.post("^/$|/index(.html)?", (req, res, next)=>{
+// console.log(req)
+//     res.send(JSON.stringify(req))
 // });
 
 // const server = new Server(app); 
@@ -81,7 +88,7 @@ const server = createServer(app);
 const io = new SocketIOServer(server,{
     cors:{
         origin:'*',
-        methods:['GET','POST']
+        methods: ['GET','POST']
     }
     });
  //Handle private chat 
@@ -112,19 +119,25 @@ const io = new SocketIOServer(server,{
   
 app.use('/checkduplicate', CheckDuplicateRoutes);
 app.use('/auth',AuthRoutes);
-app.use('/sliders', SlidersRoutes);
-app.use('/users', UsersRoutes);
+app.use('/slides', SlideRoutes);
+app.use('/users', UserRoutes);
+app.use('/faqs', FaqRoutes);
+app.use('/posts', PostRoutes);
+app.use('/categoryies', CategoryRoutes);
+app.use('/services', ServiceRoutes);
+app.use('/teams', TeamRoutes);
+app.use('/settings', SettingsRoutes);
 
 // //post routes
 // app.use('/post', PostRoutes);
 
 
 //user routes
-app.use('/settings', SettingsRoutes);
 
 app.use(verifyJWT);
-app.use('/faqs', FaqsRoutes);
-app.use('/profile', ProfileRoutes);
+app.use('/messages', MessageRoutes);
+app.use('/contacts', ContactsRoutes);
+app.use('/rooms', RoomRoutes);
 app.all('*',(req,res)=>{
     res.status(404).json({message: 'Resource not Found!'});
 });

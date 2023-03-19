@@ -21,6 +21,9 @@ const PostSchema =  new Schema({
         type:String
         
     },
+    coverImage:{
+     type:String
+    },
     tags:{
         type:[String],
         required: true
@@ -29,7 +32,7 @@ const PostSchema =  new Schema({
         type:String,
         required: true
     },
-    state:{
+    status:{
         type:String,
         enum: {
             values: ['draft', 'published'],

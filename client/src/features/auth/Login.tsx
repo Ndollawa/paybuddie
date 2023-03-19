@@ -34,8 +34,7 @@ const [login,{isLoading:isLoadingLogin, isSuccess}] = useLoginMutation();
  
 const dispatch = useDispatch();
 
-const from = location.state?.from?.pathname || '/dashboard';
-
+const from = (location.state?.from)? location.state.from.pathname : '/dashboard';
 
 const userRef = useRef <HTMLInputElement>(null);
 const errRef = useRef <HTMLInputElement>(null);
@@ -88,10 +87,10 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
             }
         }
         const handleShowPassword = function(){
-                if($('#password').attr('type') == 'password'){
+                if($('#password').attr('type') === 'password'){
                     setShowPassword(true)
                     $('#password').attr('type','text');
-                }else if($('#password').attr('type') == 'text'){
+                }else if($('#password').attr('type') === 'text'){
                     $('#password').attr('type','password');
                     setShowPassword(false)
                 }
@@ -108,7 +107,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                 <div className="auth-form">
 									<div className="text-center mb-3">
 										<Link to="/" className="brand-logo">
-											<img src={logo} alt={siteName} width='150'/>
+											<img src={process.env.REACT_APP_UPLOAD_URL+"/settings/"+logo} alt={siteName} width='150'/>
 										</Link>
 									</div>
                                     <h4 className="text-center mb-4">Sign in your account</h4>

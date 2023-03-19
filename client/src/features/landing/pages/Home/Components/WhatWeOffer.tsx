@@ -393,4 +393,4 @@ switch (serviceStyle) {
   )
 }
 
-export default WhatWeOffer
+export default React.memo(WhatWeOffer)

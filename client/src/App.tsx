@@ -43,10 +43,15 @@ import Wallet from './features/dashboard/pages/Wallet/Wallet';
 import Transaction from './features/dashboard/pages/Transaction/Transaction';
 import Chat from './features/dashboard/pages/Messenger/Chat';
 import CoinDetail from './features/dashboard/pages/CoinDetail/CoinDetail';
-import User from './features/dashboard/pages/Users/User';
 import Users from './features/dashboard/pages/Users/Users';
-import FaqAdmin from './features/dashboard/pages/Faq/Faq';
-import Slider from './features/dashboard/pages/Slider/Slider';
+import Contacts from './features/dashboard/pages/Contact/Contacts';
+import User from './features/dashboard/pages/Users/User';
+import FaqManagement from './features/dashboard/pages/Faq/Faq';
+import TeamManagement from './features/dashboard/pages/Team/Team';
+import PostManagement from './features/dashboard/pages/Post/Post';
+import Slide from './features/dashboard/pages/Slide/Slide';
+import RoomsManagement from './features/dashboard/pages/Rooms/Rooms';
+import ServicesManagement from './features/dashboard/pages/Service/Services';
 
 // auth routes
 import Login from './features/auth/Login';
@@ -124,7 +129,7 @@ const {
                 <Route path="contact" element={<Contact pageData={{pageTitle:"Contact",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="careers" element={<Career pageData={{pageTitle:"Careers",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="career/apply-now" element={<Form pageData={{pageTitle:"Apply Now",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="faq" element={<Faq pageData={{pageTitle:"FAQ",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="faqs" element={<Faq pageData={{pageTitle:"FAQs",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="terms-and-condition" element={<TermsConditions pageData={{pageTitle:"Terms and Conditions",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="our-blog" element={<Blog pageData={{pageTitle:"Blog",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="our-blog/:id" element={<Post pageData={{pageTitle:"Post",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
@@ -154,19 +159,20 @@ const {
                   <Route path="wallet" element={<Wallet pageData={{pageTitle:"Wallet",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="market" element={<Market pageData={{pageTitle:"Market",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="transaction" element={<Transaction pageData={{pageTitle:"Transaction",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="user" element={<Users pageData={{pageTitle:"Users",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="user/:userId" element={<User pageData={{pageTitle:"User",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="contacts" element={<Contacts pageData={{pageTitle:"Contacts",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="users" element={<Users pageData={{pageTitle:"Users",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="users/user/:userId" element={<User pageData={{pageTitle:"User",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="messenger" element={<Chat pageData={{pageTitle:"Messenger",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="coin-Detail/:id" element={<CoinDetail pageData={{pageTitle:"Coin Data",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                  
             <Route element={<RequireAuth allowedRoles={[1000,1001]} />} >
                   <Route path="privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="faq" element={<FaqAdmin pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="our-team" element={<Team pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="our-team/:id/member/" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="services/:id/service/" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                  <Route path="slider" element={<Slider />} />
+                  <Route path="faq" element={<FaqManagement pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="our-team" element={<TeamManagement pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="rooms" element={<RoomsManagement pageData={{pageTitle:"All Rooms",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="services" element={<ServicesManagement pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="posts" element={<PostManagement pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="slides" element={<Slide />} />
                   <Route path="settings/" element={<SiteSettings/>} >
                       <Route index element={<GeneralSettings/>} />
                       <Route path="general" element={<GeneralSettings/>} />

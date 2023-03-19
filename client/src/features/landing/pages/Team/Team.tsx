@@ -12,7 +12,7 @@ const Team:React.FC<pageProps> = ({pageData}:pageProps) => {
 
 <section className="team-grid pt-120 pb-120">
     <div className="container">
-        <div className="row row-gutter-y-30">
+        <div className="row row-gutter-y-30 g-5">
             <div className="col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="000ms">
                 <div className="team-card">
                     <div className="team-card__image">

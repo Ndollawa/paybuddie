@@ -120,7 +120,7 @@ handleHeaderHight()
     ***********************************--> */}
            <div className="nav-header">
             <Link to="/dashboard" className="brand-logo">
-              {(isToggled || width! < 728) ?<img src={favicon} alt={siteName} width='30'/> :<img src={version === 'dark'? logoDark : logo} alt={siteName} width='150'/>} 
+              {(isToggled || width! < 728 || sidebarStyle === 'mini') ?<img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon} alt={siteName} width='30'/> :<img src={version === 'dark'? process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoDark : process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} alt={siteName} width='150'/>} 
             </Link>
 
             <div className="nav-control">

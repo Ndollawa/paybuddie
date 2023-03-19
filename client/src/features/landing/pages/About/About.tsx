@@ -512,4 +512,4 @@ const About:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default About
+export default React.memo(About)

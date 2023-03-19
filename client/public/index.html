@@ -7,9 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
    <!--<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />--> 
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossOrigin="anonymous"/>
-    -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/metismenu/dist/metisMenu.min.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossOrigin="anonymous"/> -->
+    
+ <link rel="stylesheet" href="public/assets/vendors/animate/animate.min.css"/>
+ <link rel="stylesheet" href="public/assets/vendors/jquery-magnific-popup/jquery-magnific-popup.min.css"/>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/metismenu/dist/metisMenu.min.css"/>
 </head>
       
   <body>
@@ -21,9 +23,12 @@
   </body>
   <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
  <script src="https://cdn.jsdelivr.net/npm/metismenu"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
- <script>
+ <script src="public/assets/vendors/jquery-appear/jquery-appear.min.js" type="text/babel"></script>
+ <script src="public/assets/vendors/wow/wow.js" type="text/babel"></script>
+ <script src="public/assets/vendors/wnumb/wNumb.min.js" type="text/babel"></script>
+ <script src="public/assets/vendors/jquery-magnific-popup/jquery-magnific-popup.min.js" type="text/babel"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+ <script  type="text/javascript">
   var handleMetisMenu = function() {
     if($('#menu').length > 0 ){
       $("#menu").metisMenu();
@@ -36,5 +41,111 @@
     });
   }
   handleMetisMenu()
+  if ($(".wow").length) {
+    var wow = new WOW({
+      boxClass: "wow", // animated element css class (default is wow)
+      animateClass: "animated", // animation css class (default is animated)
+      mobile: true, // trigger animations on mobile devices (default is true)
+      live: true // act on asynchronously loaded content (default is true)
+    });
+    wow.init();
+  }
+  
+  if ($(".video-popup").length) {
+    $(".video-popup").magnificPopup({
+      type: "iframe",
+      mainClass: "mfp-fade",
+      removalDelay: 160,
+      preloader: true,
+
+      fixedContentPos: false
+    });
+  }
+  if ($(".scroll-to-target").length) {
+    $(".scroll-to-target").on("click", function () {
+      var target = $(this).attr("data-target");
+      // animate
+      $("html, body").animate(
+        {
+          scrollTop: $(target).offset().top
+        },
+        1000
+      );
+
+      return false;
+    });
+  }
+
+  
+  //Fact Counter + Text Count
+  if ($(".count-box").length) {
+    $(".count-box").appear(
+      function () {
+        var $t = $(this),
+          n = $t.find(".count-text").attr("data-stop"),
+          r = parseInt($t.find(".count-text").attr("data-speed"), 10);
+
+        if (!$t.hasClass("counted")) {
+          $t.addClass("counted");
+          $({
+            countNum: $t.find(".count-text").text()
+          }).animate(
+            {
+              countNum: n
+            },
+            {
+              duration: r,
+              easing: "linear",
+              step: function () {
+                $t.find(".count-text").text(Math.floor(this.countNum));
+              },
+              complete: function () {
+                $t.find(".count-text").text(this.countNum);
+              }
+            }
+          );
+        }
+      },
+      {
+        accY: 0
+      }
+    );
+  }
+
+  if ($(".count-bar").length) {
+    $(".count-bar").appear(
+      function () {
+        var el = $(this);
+        var percent = el.data("percent");
+        $(el).css("width", percent).addClass("counted");
+      },
+      {
+        accY: -50
+      }
+    );
+  }
+  if ($(".img-popup").length) {
+    var groups = {};
+    $(".img-popup").each(function () {
+      var id = parseInt($(this).attr("data-group"), 10);
+
+      if (!groups[id]) {
+        groups[id] = [];
+      }
+
+      groups[id].push(this);
+    });
+
+    $.each(groups, function () {
+      $(this).magnificPopup({
+        type: "image",
+        closeOnContentClick: true,
+        closeBtnInside: false,
+        gallery: {
+          enabled: true
+        }
+      });
+    });
+  }
  </script>
   </html>

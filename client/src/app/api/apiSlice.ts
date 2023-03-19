@@ -1,6 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { setCredentials } from '../../features/auth/authSlice';
+import { logOut, setCredentials } from '../../features/auth/authSlice';
 import { RootState } from '../stores/store';
 
 
@@ -29,8 +29,8 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
     if(result?.error?.status === 403){
 
         //request to get a new token
-        const refreshResult =  await baseQuery('/auth/refresh',api,extraOptions);
-        // console.log(refreshResult)
+        const refreshResult = await baseQuery('/auth/refresh',api,extraOptions);
+        const resp:any = refreshResult
         if(refreshResult?.data){
             // stores a new token
             api.dispatch(setCredentials({...refreshResult.data}))
@@ -39,6 +39,11 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
         }else{
             if(refreshResult?.error?.status === 403){
                 refreshResult.error.data =  "Your login session has expired"
+                // api.dispatch(logOut())
+            }else
+            if(refreshResult?.error?.status === 401 &&  resp?.error?.data?.message === 'expired'){
+                refreshResult.error.data =  "Your login session has expired"
+                api.dispatch(logOut())
             }
             return refreshResult
         }
@@ -48,7 +53,7 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
-    tagTypes:['User','Profile','Blog','Faq','Setting','Slider','Message'],
+    tagTypes:['User','Post','Faq','Setting','Slide','Message','Team','Service','Notification','Contact','Room','PostCategory'],
     endpoints: (builders) =>({})
 
 })

@@ -1,7 +1,10 @@
 import React from 'react'
 import OtherBody from '../dashboard/components/OtherBody'
+import { useNavigate } from 'react-router-dom'
+
 
 const Error400 = () => {
+    const navigate =useNavigate()
   return (
    <OtherBody>
         <div className="container h-100">
@@ -12,7 +15,7 @@ const Error400 = () => {
                         <h4><i className="fa fa-thumbs-down text-danger"></i> Bad Request</h4>
                         <p>Your Request resulted in an error</p>
 						<div>
-                            <button className="btn btn-primary" onClick={()=>window.history.back()}>Click to go Back</button>
+                            <button className="btn btn-primary" onClick={()=>navigate(-2)}>Click to go Back</button>
                         </div>
                     </div>
                 </div>

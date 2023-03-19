@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import SideNav from './SideBarComponent/SideNav'
 import pageProps from '../../../app/utils/props/pageProps'
@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 import { useCompanyDetails } from '../pages/Settings/settingsConfigSlice';
 import { selectCurrentUser } from '../../auth/authSlice';
 import useUserImage from '../../../app/utils/hooks/useUserImage';
+import PerfectScroll from 'react-perfect-scrollbar'
+import $ from 'jquery'
 
 enum Styles{STYLE_1,STYLE_2, STYLE_3};
 
@@ -14,10 +16,23 @@ const SideBar:React.FC<pageProps> = ({pageData,}:pageProps) => {
      const {siteName} = useSelector(useCompanyDetails);
     const currentUser= useSelector(selectCurrentUser)
     const userImage = useUserImage(currentUser)
+
+    useEffect(()=>{
+        const handleMetisMenu = () =>{
+           $('.metismenu > .mm-active ').each(function(){
+              if($(this).children('ul').length > 0)
+              {
+                 $(this).addClass('active-no-child');
+              }
+           });
+        }
+     handleMetisMenu();
+     
+     },[])
     return (
         <>        
     <div className="deznav">
-        <div className="deznav-scroll">
+        <PerfectScroll className='mm-active ps ps--active-y h-80'>
             <div className="main-profile">
                 <div className="image-bx">
                     <img src={userImage} alt={currentUser.username}/>
@@ -31,7 +46,7 @@ const SideBar:React.FC<pageProps> = ({pageData,}:pageProps) => {
                 <p><strong>{siteName}</strong><br/> © 2022 -  All Rights Reserved</p>
                 <p className="fs-12">Made with <span className="fa fa-heart"></span> by <a href="mailto:foundictsolutions@gmail.com">Found ICT Solutions</a></p>
             </div>
-        </div>
+        </PerfectScroll>
     </div>
                </>
   )

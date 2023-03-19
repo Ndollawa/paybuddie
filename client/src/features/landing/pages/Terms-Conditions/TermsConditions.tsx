@@ -17,4 +17,4 @@
   
 
 
-export default TermsConditions
+export default React.memo(TermsConditions)

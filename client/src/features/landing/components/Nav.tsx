@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import NavBar from './NavBar'
 import { useSelector } from 'react-redux';
 import {useCompanyDetails,useLandingPageConfig} from '../../dashboard/pages/Settings/settingsConfigSlice';
+import { selectCurrentUser } from '../../auth/authSlice';
 
  enum Styles{STYLE_1,STYLE_2, STYLE_3};
 
 const Nav = () => {
    const {email,address,facebookHandle,twitterHandle,instagram,whatsapp}   = useSelector(useCompanyDetails); 
-  
+const currentUser = useSelector(selectCurrentUser)
     const {navStyle} = useSelector(useLandingPageConfig);
   return (
     <>
@@ -25,7 +26,7 @@ const Nav = () => {
         {/* 
         // <!-- /.topbar__info --> */}
        {!navStyle && <div className="topbar__links">
-            <Link to="/login">Login</Link>
+          {!currentUser && <><Link to="/auth/login">Login</Link> <Link to="/auth/register">Sign Up</Link></>}
             <Link to="/blog">Company News</Link>
             <Link to="/faqs">FAQs</Link>
         </div>}
@@ -60,4 +61,4 @@ const Nav = () => {
   )
 }
 
-export default Nav
+export default React.memo(Nav)

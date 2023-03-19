@@ -12,13 +12,13 @@ const Footer = () => {
 
   return (
     <>
-              <footer className="main-footer">
+              <footer className="main-footer footer-top">
             <div className="container">
-                <div className="row row-gutter-y-30">
-                    <div className="col-lg-4 col-md-6">
+                <div className="row row-gutter-y-30 justify-content-between">
+                    <div className="col-xs-12 col-lg-4 col-md-6 footer-widget-area">
                         <div className="footer-widget footer-widget--about">
                             <a href="/" className="footer-widget__logo">
-                                <img src={logoDark} alt="finlon" width="140" height="51" />
+                                <img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoDark} alt={siteName} width="140" height="51" />
                             </a>
                             <p className="footer-widget__text">{description}</p>
                             <ul className="list-unstyled footer-widget__info">
@@ -36,7 +36,7 @@ const Footer = () => {
                         {/* <!-- /.footer-widget --> */}
                     </div>
                     {/* <!-- /.col-lg-4 --> */}
-                    <div className="col-lg-2 col-md-6">
+                    <div className="col-xs-12 col-lg-2 col-md-6 footer-widget-area">
                         <div className="footer-widget footer-widget--links">
                             <h3 className="footer-widget__title">
                                 Explore
@@ -53,7 +53,7 @@ const Footer = () => {
                         {/* <!-- /.footer-widget --> */}
                     </div>
                     {/* <!-- /.col-lg-2 --> */}
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-xs-12 col-lg-3 col-md-6 footer-widget-area">
                         <div className="footer-widget footer-widget--time">
                             <h3 className="footer-widget__title">
                                 Timing
@@ -71,24 +71,20 @@ const Footer = () => {
                         {/* <!-- /.footer-widget --> */}
                     </div>
                     {/* <!-- /.col-lg-3 --> */}
-                    <div className="col-lg-3 col-md-6">
-                        <div className="footer-widget footer-widget--newsletter">
-                            <h3 className="footer-widget__title">
-                                Newsletter
-                            </h3>
-                            {/* <!-- /.footer-widget__title --> */}
-                            <form className="footer-widget__mailchimp">
-                                <input type="email" placeholder="Email address" />
-                                <p className="footer-widget__mailchimp__text">
-                                    <i className="fa fa-check"></i>
-                                    I agree to all your terms and policies
-                                </p>
-                                {/* <!-- /.footer-widget__mailchimp --> */}
-                            </form>
-                            {/* <!-- /.footer-widget__mailchimp --> */}
+                    <div className="footer-widget col-xs-12 col-md-6 col-sm-6 col-lg-3 footer-widget-area"><div  className="widget footer-widget"><h3 className="footer-widget__title">Newsletter</h3>
+                    <form >
+                        <div className="mc4wp-form-fields">
+                            <div className="footer-widget__mailchimp">
+                                <div className="footer-widget__mailchimp_inner d-flex justify-content-between"> 
+                                <input type="email" name="email" placeholder="Email address"/> 
+                                <button type="submit" className="thm-btn btn-md d-flex justify-content-center flex-shrink-1">Send</button>
+                                </div>
+                                <p className="footer-widget__mailchimp__text"> <span>I agree to all your terms and policies</span></p>
+                                </div>
                         </div>
-                        {/* <!-- /.footer-widget --> */}
+                    </form>
                     </div>
+                </div>
                     {/* <!-- /.col-lg-3 --> */}
                 </div>
                 {/* <!-- /.row --> */}

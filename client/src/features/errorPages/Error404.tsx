@@ -1,7 +1,13 @@
 import React from 'react'
 import OtherBody from '../dashboard/components/OtherBody'
+import { useNavigate, useLocation } from 'react-router-dom'
+
+
 
 const Error404 = () => {
+    const navigate =useNavigate()   
+const location = useLocation();
+const from = location.state?.from ?? location.state?.from?.pathname ?? '/dashboard';
   return (
   <OtherBody>
         <div className="container h-100">
@@ -12,7 +18,7 @@ const Error404 = () => {
                         <h4><i className="fa fa-exclamation-triangle text-warning"></i> The page you were looking for is not found!</h4>
                         <p>You may have mistyped the address or the page may have moved.</p>
 						<div>
-                            <button className="btn btn-primary" onClick={()=>window.history.back()}>Click to go Back</button>
+                            <button className="btn btn-primary" onClick={()=>navigate(from)}>Click to go Back</button>
                         </div>
                     </div>
                 </div>

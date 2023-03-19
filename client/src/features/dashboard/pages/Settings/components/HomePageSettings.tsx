@@ -84,8 +84,8 @@ const handleTestimonialToggle =  async()=>{
   return (
     <>
     <div className="card">
-      <div className="card-header">
-        <h4 className="card-title">Home Page</h4>
+      <div className="card-header bg-primary">
+        <h4 className="card-title text-white">Home Page</h4>
       </div>
       <div className="card-body">
         <div className="basic-form">
@@ -104,7 +104,7 @@ const handleTestimonialToggle =  async()=>{
                   handleAffiliateToggle()}}
                 />
                  </div>
-              </div>
+              </div><br/>
             <div className="mb-15 col-md-12 d-flex justify-content-between align-center">
               <div><strong>Show Blog Section</strong></div>
               <div>
@@ -119,7 +119,7 @@ const handleTestimonialToggle =  async()=>{
                   }}
                 />
                  </div>
-              </div>
+              </div><br/>
             <div className="my-20 col-md-12 d-flex justify-content-between">
               <div><strong>Show Testimonial Section</strong></div>
               <div>

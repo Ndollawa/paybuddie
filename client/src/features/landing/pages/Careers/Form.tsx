@@ -237,4 +237,4 @@ const Form:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default Form
+export default React.memo(Form)

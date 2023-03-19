@@ -1,7 +1,7 @@
 import React ,{ReactNode, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {UserLinks, AdminLinks} from './Links';
-import $ from 'jquery';
+
 
 
 interface sideBarLink{
@@ -33,18 +33,7 @@ const SideNav = () => {
 let [userLink, setUserLink] = React.useState(UserLinks)
 let [adminLink, setAdminLink] = React.useState(AdminLinks)
 
-useEffect(()=>{
-   const handleMetisMenu = () =>{
-      $('.metismenu > .mm-active ').each(function(){
-         if($(this).children('ul').length > 0)
-         {
-            $(this).addClass('active-no-child');
-         }
-      });
-   }
-handleMetisMenu();
 
-},[])
 const toggleMenu = (id:number,type:string)=>{
    console.log(id+" "+type)
    if(type === "user-main-menu"){
@@ -82,7 +71,7 @@ const toggleMenu = (id:number,type:string)=>{
 }
    const userLinks:ReactNode = userLink.map((link:sideBarLink)=>{
          
-      return(<li key={link.id} onClick={link.children?()=>toggleMenu(link.id,"user-main-menu"): undefined} className={link.isOpen? "mm-active":undefined}><Link className={link.children?"has-arrow ai-icon":"ai-icon"} to={link.path? link.path : ""} aria-expanded={link.isOpen?"true" : "false"}>
+      return(<li key={link.id} onClick={ link.children? ()=>toggleMenu(link.id,"user-main-menu"): undefined} className={link.isOpen? "mm-active":undefined}><Link className={link.children?"has-arrow ai-icon":"ai-icon"} to={link.path? link.path : ""} aria-expanded={link.isOpen?"true" : "false"}>
                         {link.icon}
                         <span className="nav-text">{link.title}</span>
                     </Link>

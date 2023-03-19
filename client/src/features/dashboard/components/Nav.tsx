@@ -10,7 +10,6 @@ import { selectCurrentUser } from '../../auth/authSlice'
 import {useCompanyDetails} from '../pages/Settings/settingsConfigSlice'
 import { useSendLogoutMutation } from '../../auth/authApiSlice'
 import useUserImage from '../../../app/utils/hooks/useUserImage'
-
 // const DASH_RREGEX = /^\/dashboard(\/)?$/
 // const DASH_RREGEX = /^\/dashboard\/path(\/)?$/
 

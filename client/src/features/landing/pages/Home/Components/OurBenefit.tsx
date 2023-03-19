@@ -217,7 +217,7 @@ switch (ourBenefitStyle) {
     break;
 
   default:
-
+        ourBenefitSection = null
     break;
 }
 
@@ -226,4 +226,4 @@ switch (ourBenefitStyle) {
   )
 }
 
-export default OurBenefit
+export default React.memo(OurBenefit)

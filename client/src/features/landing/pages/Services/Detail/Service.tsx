@@ -191,4 +191,4 @@ const Service:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default Service
+export default React.memo(Service)

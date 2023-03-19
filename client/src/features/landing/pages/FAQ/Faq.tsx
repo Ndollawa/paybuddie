@@ -197,4 +197,4 @@ const Faq:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default Faq
+export default React.memo(Faq)

@@ -90,7 +90,7 @@ const UserSchema=  new Schema({
     accountStatus:{
          type:String,
     enum: {
-        values: ['active', 'banned','disabled','deactivated','deleted'],
+        values: ['pending','active', 'banned','disabled','deactivated','deleted'],
         message: '{VALUE} is not supported'
       },
     default:'active',

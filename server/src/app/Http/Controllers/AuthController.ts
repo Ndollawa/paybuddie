@@ -173,7 +173,7 @@ const refreshToken = cookies.jwt;
 refreshTokenHandler = async (req:Request, res:Response)=>{
     const cookies = req.cookies;
     // console.log(JSON.stringify(cookies))
-    if(!cookies?.jwt)return res.status(401).json({message:'No cookie'});
+    if(!cookies?.jwt) return res.status(401).json({message:'expired'});
     const refreshToken = cookies.jwt;
    res.clearCookie('jwt',{httpOnly:true, secure:true, sameSite:'none' })   
     //check for user  in the DB
@@ -190,9 +190,11 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
         // delete all tokens on reuse
             if(error) return res.status(403).json({message:'Access Forbidden'}); //Forbidden
             const hackedUser = await UserModel.findOne({email:decodedToken.userInfo.email}).exec();
-            hackedUser!.refreshToken = [];
-            const result = await hackedUser!.save();
-            // console.log(result)
+            if(hackedUser){
+            hackedUser.refreshToken = []
+            const result = await hackedUser.save();
+            console.log(result)
+            }
         }
         )
        return res.status(403).json({message:'Access Forbidden'});// Forbidden  

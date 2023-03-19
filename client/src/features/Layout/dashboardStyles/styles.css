@@ -9002,11 +9002,12 @@ a {
 .hamburger:hover .line {
   width: 26px; }
 
-/*
+
     .hamburger.is-active {
-      left: 60px;
+      /* left: 60px;   */
+ color: invert(var(--primary)) !important; 
     }
-    */
+   
 .hamburger.is-active .line:nth-child(1),
 .hamburger.is-active .line:nth-child(3) {
   width: 10px;
@@ -11006,7 +11007,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nav-header .nav-control {
     right: -42px; }
     [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nav-header .nav-control .hamburger .line {
-      background-color: var(--primary); }
+      background-color: var(--primary);
+     }
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .copyright,
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .main-profile {
@@ -26356,7 +26358,7 @@ table.dataTable.display tbody td {
   .star-rating li i {
     color: gold; }
 
-.user-card .dz-media {
+.user-card .dz-media{
   height: 80px;
   width: 80px;
   min-width: 80px;
@@ -26364,7 +26366,7 @@ table.dataTable.display tbody td {
   overflow: hidden;
   border: 4px solid #fff;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.1); }
-  .user-card .dz-media img {
+  .user-card .dz-media img{
     height: 100%;
     width: 100%;
     object-fit: cover; }
@@ -28550,20 +28552,29 @@ html[dir="rtl"] [data-direction="rtl"][data-sidebar-style="compact"]:not([data-l
 /*# sourceMappingURL=style.css.map */
 div.setting-nav-wrapper{
 width:100%;
+/* border: 1px solid var(--primary);
+border-collapse: collapse; */
+
 }
-div.setting{
-width:100%;
-padding:0.7rem 0;
-}
+
 a.setting-nav{
   width:100% !important;
-  margin: 0
+  margin: 0;
+  font-weight:bold;
+  padding:0.7rem 1.5rem;
+  border-right: 2px solid var(--primary) ;
+  border-left :2px solid var(--primary); 
+  border-bottom :2px solid var(--primary) ;
+}
+a.setting-nav:first-child{
+  border-top: 2px solid var(--primary);
 }
 div a.setting-nav.active  { 
 width:100%;
 color:#ffffff;
 background:var(--primary);
 font-weight:bold;
+
 padding:0.7rem 1.5rem;
 }
 /*********************************************************************

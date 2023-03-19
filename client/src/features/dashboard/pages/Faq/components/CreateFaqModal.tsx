@@ -1,7 +1,6 @@
 import React, {FormEvent,useState} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { useAddNewFaqMutation } from '../faqApiSlice'
-import useInput from '../../../../../app/utils/hooks/useInput'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
@@ -9,48 +8,41 @@ import showToast from '../../../../../app/utils/hooks/showToast'
 const CreateFaqModal = () => {
   const [show, setShow] = useState(false);
 
-const [question, setQuestion, QuestionAttr] = useInput('')
-const [response, setResponse, ResponseAttr] = useInput('')
-const [status, setStatus, StatusAttr] = useInput('')
+const [question, setQuestion] = useState('')
+const [response, setResponse] = useState('')
+const [status, setStatus] = useState('active')
 const [addNewFaq, {
+  data,
   isLoading,
   isSuccess,
   isError,
   error
-}] = useAddNewFaqMutation()
+}]:any = useAddNewFaqMutation()
 
 // const navigate = useNavigate()
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-React.useEffect(() => {
-  if (isSuccess) {
-      setResponse('')
-      setQuestion('')
-  }
-}, [isSuccess])
-
-const canSave = [question, response, status].every(Boolean)
+const canSave = (question && response && status)? true : false
 
 
 
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
-alert('clicked')
  if (canSave) {
       await addNewFaq({question, response,status })
-      if(!isLoading && isSuccess)showToast('success', 'FAQ Saved successfully')
-
-      // setQuestion("")
-      // setResponse("")
+      if(isSuccess)showToast('success', 'FAQ Saved successfully')
+      if(isError) showToast('error',JSON.stringify(error?.data))
+      setQuestion("")
+      setResponse("")
   }
 
 }
   return (
     <>
 <button type="button" className="btn btn-primary mb-2" onClick={handleShow}>Add new FAQ</button>
-<Modal show={show} size="lg" centered
+<Modal show={show} size="lg" centered backdrop='static'
  onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Add New FAQ</Modal.Title>
@@ -68,8 +60,7 @@ alert('clicked')
                     className="form-control"
                     placeholder=""
                     value={question}
-                    onChange={setQuestion}
-                    {...QuestionAttr}
+                    onChange={(e)=>setQuestion(e.target.value)}
                   />
                 </div>
                 <div className="mb-3 col-md-3">
@@ -78,8 +69,7 @@ alert('clicked')
                     id="inputState"
                     className="default-select form-control wide"
                     value={status}
-                    onChange={setStatus}
-                    {...StatusAttr}
+                    onChange={(e)=>setStatus(e.target.value)}
                   >
                     <option value='active'>Active</option>
                     <option value='inactive'>Inactive</option>
@@ -92,7 +82,6 @@ alert('clicked')
         tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
        onEditorChange={(newValue,editor)=>setResponse(newValue)}
        value={response}
-        initialValue=''
         init={{
           height: 400,
           menubar: false,
@@ -120,7 +109,7 @@ alert('clicked')
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={canSave}  >
+          <Button variant="primary" type="submit" disabled={!canSave}  >
             Save FAQ
           </Button>
         </Modal.Footer>

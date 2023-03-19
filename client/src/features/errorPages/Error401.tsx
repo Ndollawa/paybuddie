@@ -1,9 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink,useLocation } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import OtherBody from '../dashboard/components/OtherBody'
 
 const Error401 = () => {
+    
+const location = useLocation();
+const from = location.state?.from ?? location.state?.from?.pathname 
+
   return (
    <OtherBody>
     <Helmet>
@@ -17,7 +21,9 @@ const Error401 = () => {
                         <h4><i className="fa fa-thumbs-down text-danger"></i> Bad Request</h4>
                         <p>Oppps!!!, Your Login session has expired.<br/> Please log back in</p>
 						<div>
-                            <Link className="btn btn-primary" to="/auth/login">Login Here</Link>
+                            <NavLink className="btn btn-primary" to="/auth/login" replace state={{ from: location.pathname }}>
+                                Login
+                            </NavLink>
                         </div>
                     </div>
                 </div>

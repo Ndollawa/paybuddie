@@ -162,4 +162,4 @@ const Career:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default Career
+export default React.memo(Career)

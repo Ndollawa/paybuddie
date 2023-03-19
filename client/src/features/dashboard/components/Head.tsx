@@ -24,7 +24,7 @@ const {pageTitle} = pageData!;
     <base href='/'/>
     <title>{pageTitle}</title>
     {/* <!-- Favicon icon --> */}
-    <link rel="icon" type="image/png" sizes="16x16" href={favicon} />
+    <link rel="icon" type="image/png" sizes="16x16" href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon} />
 	
 </Helmet>
   )

@@ -230,6 +230,7 @@ aboutUsSection = (<section className="about-four pt-120 pb-120">
     break;
 
   default:
+    aboutUsSection = null
     break;
 }
 
@@ -240,4 +241,4 @@ aboutUsSection = (<section className="about-four pt-120 pb-120">
   )
 }
 
-export default AboutUs
+export default React.memo(AboutUs)

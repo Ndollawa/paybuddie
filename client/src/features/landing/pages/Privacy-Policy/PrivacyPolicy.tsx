@@ -16,4 +16,4 @@ const PrivacyPolicy:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default PrivacyPolicy
+export default React.memo(PrivacyPolicy)

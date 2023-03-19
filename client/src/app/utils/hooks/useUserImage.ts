@@ -8,14 +8,13 @@ import defaultUser from '../../../images/user/defaultUser.jpeg'
 import defaultUser2 from '../../../images/user/defaultUser2.jpeg'
 
 const useUserImage = (user:any)=>{
-    const {gender, userImage, verificationStatus} = user
-    if(verificationStatus && userImage && userImage !== ''){
-        return userImage
-    }else if(verificationStatus && gender === 'male'){
+    if(user?.verificationStatus && user?.userImage && user?.userImage !== ''){
+        return user?.userImage
+    }else if(user?.verificationStatus && user?.gender === 'male'){
         return defaultUserMale
-    }else if(verificationStatus && gender === 'female'){
+    }else if(user?.verificationStatus && user?.gender === 'female'){
         return defaultUserFemale
-    }else if(verificationStatus && !gender){
+    }else if(user?.verificationStatus && !user?.gender){
         return defaultUser2
     }else{
         return defaultUnknownUser

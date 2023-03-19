@@ -1,66 +1,20 @@
-import React from 'react'
+import React,{useEffect,useState,useMemo} from 'react'
 import MainBody from '../../components/MainBody'
 import CreateFaqModal from './components/CreateFaqModal'
-import EditFaqModal from './components/EditFaqModal'
-import { useSelector } from 'react-redux'
-import { useGetFaqsQuery, selectFaqById } from './faqApiSlice'
-import pageProps from '../../../../app/utils/props/pageProps'
 import FaqTableData from './components/FaqTableData'
+import pageProps from '../../../../app/utils/props/pageProps'
 
+// console.log(tableContent)
+// console.log(tableContent)
+//   useEffect(() => {
+//  $('#table').DataTable()
+//       return () => {
+//        $('#table').DataTable().clear().destroy()
+//       };
+//     }, [])
 
 const Faq = ({pageData}:pageProps)  => {
- 
-const {
-    data: faqs,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-} = useGetFaqsQuery('faqList', {
-    pollingInterval: 15000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true
-})
-
-let content
-
-if (isLoading) content = <p>Loading...</p>
-
-if (isError) {
-    // content = <p className="errmsg">{error?.data?.message}</p>
-}
-
-if (isSuccess) {
-    const { ids } = faqs
-
-    const tableContent = ids?.length
-        ? ids.map((faqId:string|number ,i:number) => <FaqTableData key={faqId} faqId={faqId} />
-    )
-        : null
-      content= (<div className="table-responsive">
-                                    <table id="example5" className="display" style={{minWidth: '845px'}}>
-                                        <thead>
-                                            <tr>
-                                                <th>S/N</th>
-                                                <th>Question</th>
-                                                <th>Answer</th>
-                                                <th>Status</th>
-                                                <th>Date Created</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                           
-                                           
-                                           {tableContent}
-                                        
-                                        </tbody>
-                                    </table>
-                                </div>)
-}
-
  return (
-    <>
     <MainBody>
     <div className="container-fluid">
             <div className="col-12">
@@ -74,13 +28,13 @@ if (isSuccess) {
                                 
                     <CreateFaqModal/>
                                 </div>
-                        {/* {content} */}
+                        <FaqTableData/>
+               
                             </div>
                         </div>
                 </div>
             </div>
     </MainBody>
-    </>
   )
 }
 

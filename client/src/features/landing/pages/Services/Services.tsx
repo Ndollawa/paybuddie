@@ -13,7 +13,7 @@ const Services:React.FC<pageProps> = ({pageData}:pageProps) => {
 
 <section className="service-grid pt-120 pb-140">
     <div className="container">
-        <div className="row row-gutter-y-50">
+        <div className="row row-gutter-y-50 g-5">
             <div className="col-lg-4 col-md-6 col-sm-12">
                 <div className="service-card">
                     <div className="service-card__image">
@@ -217,4 +217,4 @@ const Services:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default Services
+export default React.memo(Services)

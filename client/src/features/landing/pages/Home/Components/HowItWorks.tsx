@@ -59,4 +59,4 @@ const HowItWorks = () => {
   )
 }
 
-export default HowItWorks
+export default React.memo(HowItWorks)

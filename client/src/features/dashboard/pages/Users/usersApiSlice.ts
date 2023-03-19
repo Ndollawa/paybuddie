@@ -4,7 +4,7 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "@reduxjs/toolkit/dist/query/core/apiState";
 import { apiSlice } from "../../../../app/api/apiSlice";
-import { userInterface } from "../../../auth/authSlice";
+import userInterface from "../../../../app/utils/props/userProps";
 
 
 
@@ -77,15 +77,24 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 { type: 'User', id: arg.id }
             ]
         }),
-          
-        uploadFile:builder.mutation<any, any>({
-            query:(arg:{data:FormData,url:string})=>({
-                url:arg.url,
+        upload:builder.mutation<any, any>({
+            query:data=>({
+                url:'users/uploads/avatar',
                 method:'POST',
-                body:arg.data,
+                body:data,
             }),
                 invalidatesTags: (result, error, arg) => [
-                    { type: 'User', id: arg.id }
+                    { type: 'Setting', id: arg.id }
+                ]
+        }),
+        removeFile:builder.mutation<any, any>({
+            query:data =>({
+                url:'/users/remove-uploads',
+                method:'POST',
+                body:data,
+            }),
+                invalidatesTags: (result, error, arg) => [
+                    { type: 'Setting', id: arg.id }
                 ]
         }),
         deleteUser: builder.mutation({
@@ -105,7 +114,8 @@ export const {
     useGetUsersQuery,
     useAddNewUserMutation,
     useUpdateUserMutation,
-    useUploadFileMutation,
+    useUploadMutation,
+    useRemoveFileMutation,
     useCheckDuplicateUserMutation,
     useDeleteUserMutation,
 } = usersApiSlice

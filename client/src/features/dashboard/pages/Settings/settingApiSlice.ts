@@ -109,11 +109,21 @@ export const settingsApiSlice = apiSlice.injectEndpoints({
             ]
         }),
         
-        uploadFile:builder.mutation<any, any>({
-            query:(arg:{data:FormData,url:string})=>({
-                url:arg.url,
+        upload:builder.mutation<any, any>({
+            query:data=>({
+                url:'/settings/uploads',
                 method:'POST',
-                body:arg.data,
+                body:data,
+            }),
+                invalidatesTags: (result, error, arg) => [
+                    { type: 'Setting', id: arg.id }
+                ]
+        }),
+        removeFile:builder.mutation<any, any>({
+            query:data =>({
+                url:'/settings/remove-uploads',
+                method:'POST',
+                body:data,
             }),
                 invalidatesTags: (result, error, arg) => [
                     { type: 'Setting', id: arg.id }
@@ -139,7 +149,8 @@ export const {
     useAddNewSettingMutation,
     useUpdateSettingMutation,
     useDeleteSettingMutation, 
-    useUploadFileMutation,
+    useUploadMutation,
+    useRemoveFileMutation,
     useGeneralSettingsMutation,
     useDashboardConfigSettingsMutation,
     useHomepageSettingsMutation,

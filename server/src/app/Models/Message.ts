@@ -4,11 +4,11 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const Schema = mongoose.Schema;
 
 const MessageSchema =  new Schema({
-    sender:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    conversation:{
+        type: [{ type: Schema.Types.ObjectId, ref: 'Coversation' }],
         required: true
     },
-    receiver:{
+    sender:{
         type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         required: true
     },

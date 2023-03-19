@@ -1,9 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {useCompanyDetails} from '../../dashboard/pages/Settings/settingsConfigSlice';
+import useWindowSize from '../../../app/utils/hooks/useWindowSize';
 
 const MobileNav = () => {
-    const {siteName,logo,email,contact,description,activeHours,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
+    const {width} = useWindowSize()
+    const {favicon,siteName,logo,email,contact,description,activeHours,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
   return (
     <div className="mobile-nav__wrapper">
     <div className="mobile-nav__overlay mobile-nav__toggler"></div>
@@ -13,7 +15,7 @@ const MobileNav = () => {
         <span className="mobile-nav__close mobile-nav__toggler"><i className="fa fa-times"></i></span>
 
         <div className="logo-box">
-            <a href="/" aria-label="logo image"><img src={logo} width="155" alt="" /></a>
+            <a href="/" aria-label="logo image"><img src={width! < 660? process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon : process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} width="150" alt={siteName} /></a>
         </div>
         
         {/* <!-- /.logo-box --> */}

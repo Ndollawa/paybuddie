@@ -14,4 +14,4 @@ const Blog:React.FC<pageProps> = ({pageData}:pageProps) => {
   )
 }
 
-export default Blog
+export default React.memo(Blog)

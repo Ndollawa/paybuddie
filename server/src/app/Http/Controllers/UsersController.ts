@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 // import {fileURLToPath} from 'url';
 import { Request, Response } from 'express';
 import BaseController from './BaseController';
+import deleteItem from '../../utils/deleteItem';
 
 class UsersController extends BaseController{
     constructor(){
@@ -134,6 +135,26 @@ public upload = async(req:Request, res:Response)=>{
     } 
 }
 
+removeUploads = async(req:Request, res:Response)=>{
+   
+    const {_id,type,file} = req.body
+     const destination = '../../../public/uploads/users'
+    if(file){
+        try {
+                    
+            const result = await UserModel.findOne({_id}).exec() 
+                    if(result){
+                    result.userImage! = ''
+                    result?.save()
+                   deleteItem(destination, file)
+                   return res.status(200).json({messsage:'success'}); 
+                   
+                 }   }catch(error){
+                    
+                   return res.status(500).json({messsage:JSON.stringify(error)}); 
+                 }
+                }
+            }
 
 }
 export default new UsersController()

@@ -3,12 +3,12 @@ const fsPromise = fs.promises;
 import path from 'path';
 import { format } from 'date-fns';
 import { v4 as uuid } from 'uuid';
-// import {fileURLToPath} from 'url';
+import {fileURLToPath} from 'url';
 import {Request,Response, NextFunction } from 'express';
-// const __filename = fileURLToPath(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 
-// 
-// const __dirname = path.dirname(__filename);
+
+const __dirname = path.dirname(__filename);
 
 
  const logEvents = async(message:string, logName:string) =>{

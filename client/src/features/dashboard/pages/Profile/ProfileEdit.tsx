@@ -3,11 +3,11 @@ import MainBody from '../../components/MainBody'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../../../auth/authSlice'
 import useUserImage from '../../../../app/utils/hooks/useUserImage'
-import {FaPencilAlt} from 'react-icons/fa'
+import {FaPencilAlt, FaRegTimesCircle} from 'react-icons/fa'
 import showToast from '../../../../app/utils/hooks/showToast'
 import { useUpdateUserMutation } from '../Users/usersApiSlice'
 import { useCheckDuplicateUserMutation } from '../Users/usersApiSlice'
-import { useUploadFileMutation } from '../Users/usersApiSlice'
+import {useUploadMutation , useRemoveFileMutation  } from '../Users/usersApiSlice'
 // username regex must start with a lowercase or uppercase laters and must be followed by lower or uppercase or digits,- or _ of 3 to 23 characters
 const USER_REGEX = /^[a-zA-Z][a-zA-z0-9-_]{3,23}$/;
 // requires atleast 0ne uppercase, lowercase,digit, special character and a total of 8 t0 24 characters
@@ -48,20 +48,27 @@ const ProfileEdit = () => {
     const [invalidNameInput,setInvalidNameInput] = useState(false);
 
     const [validPwd,setValidPwd] = useState(false);
-
+	const [removeFile,
+		{
+		  data:removeFileRes,
+		  isSuccess:removeFileIsSuccess,
+		  isError:removeFileIsError,
+		  error:removeFileError
+		}]:any= useRemoveFileMutation()
+	
 	const [updateUser, {
         isLoading,
         isSuccess,
         isError,
         error:updateUserError
-    }] = useUpdateUserMutation()
+    }]:any = useUpdateUserMutation()
 	const [checkDuplicateUser,{
 		error:checkDuplicateUserError,
 		data:response,
 		isLoading:isCheckDuplicateUserLoading,
 		isError:isCheckDuplicateUserError,
 		isSuccess:isCheckDuplicateUserSuccess
-	}] = useCheckDuplicateUserMutation();
+	}]:any = useCheckDuplicateUserMutation();
 	 
 	const checkDuplicate = async (key:string) =>{
 	  const data ={ user:key }
@@ -80,7 +87,7 @@ const ProfileEdit = () => {
 				}
 	
 			}else if(isCheckDuplicateUserError){  
-			showToast('error',checkDuplicateUserError) 
+			showToast('error',checkDuplicateUserError.data.message) 
 		}	
 			
 		}
@@ -128,21 +135,22 @@ useEffect(()=>{
     setValidMatch(match)
 }, [password,confirmPassword]);
 
-	const [uploadFile,{isLoading:isUploadLoading,isSuccess:isUploadSuccess,error}]= useUploadFileMutation()
+	const [upload,{isError:isUploadError,isSuccess:isUploadSuccess,error:uploadError}]:any= useUploadMutation()
 const updateProfilePicture = async(e:ChangeEvent<HTMLInputElement>)=>{
 	 const files = e.target.files!
 	 const formData = new FormData()
 	 formData.append("avatar", files[0]!)
 	 formData.append('_id',currentUser._id!);
 	//  
-	 await uploadFile({data:formData,url:'users/uploads/avatar'})
-	 if(!isUploadLoading && isUploadSuccess){showToast('success','Profile Picture Uploaded successfully')}else{showToast('error',`Sorry, couldn't Upload Profile Picture: ${error}` )}
+	 await upload(formData)
+	 if(isUploadError){ return showToast('error',`Sorry, couldn't Upload Profile Picture: ${uploadError?.data?.message}` )}
+	showToast('success','Profile Picture Uploaded successfully')
 }
 const updateProfilePassword = async(e:FormEvent)=>{
 	if(validMatch){
 		await updateUser({_id:currentUser._id,type:'passwordUpdate',data:{password}})
-		if(isSuccess && !isLoading)showToast('success', 'Profile updated successfully!')
-		if(isError)showToast('error',updateUserError)
+		if(isError) return showToast('error',updateUserError?.data?.message)
+		showToast('success', 'Profile updated successfully!')
 	}
 }
 const updateProfile = async(e:FormEvent)=>{
@@ -151,12 +159,18 @@ if(USER_REGEX.test(username!) && EMAIL_REGEX.test(email!)){
 	const data={email,firstName,lastName,username,phone,dob,gender,address,city,state,country,occupation,bio,
 	}
 await updateUser({_id:currentUser._id,data,type:'profileUpdate'})
-if(isSuccess && !isLoading)showToast('success', 'Profile updated successfully!')
-if(isError)showToast('error',updateUserError)
-}
-
-}
-    
+if(isError)return showToast('error',updateUserError?.data?.message)
+showToast('success', 'Profile updated successfully!')
+}}
+  
+const removeImage = async(file:string,type:string)=>{
+	if(file){
+  await removeFile({_id:currentUser._id,file,type})
+  if(removeFileIsError){ return showToast('error',`Sorry, couldn't remove Image: ${removeFileError.data.message}` )}
+  showToast('success',' Image removed successfully')
+   
+	}
+   }
   return (
     <MainBody>
 		<div className="container-fluid">
@@ -174,6 +188,16 @@ if(isError)showToast('error',updateUserError)
 									<div className="row mb-2 d-flex justify-content-center align-center"> 
 										<div className="col-auto position-relative rounded-circle"> 
 											 <img className="avatar avatar-xl" src={userImage} alt="Avatar-img" style={{width:'14rem'}}/>
+                                             <div className='  rounded-circle bg-danger p-2 d-flex justify-content-center align-center' style={{
+                                                position:'absolute',
+                                                width:'2.5rem',
+                                                height:'2.5rem',
+                                                right:'1rem',
+                                                top:'5rem',
+                                                userSelect:'none',
+                                                cursor:'pointer'
+                                             }} onClick={()=>removeImage(currentUser?.userImage!,"avatar")}><FaRegTimesCircle fontSize={'1rem'} color={'#ffffff'}/>
+                                             </div>
                                              <div className='  rounded-circle bg-primary p-2 d-flex justify-content-center align-center' style={{
                                                 position:'absolute',
                                                 width:'2.5rem',
@@ -236,7 +260,7 @@ if(isError)showToast('error',updateUserError)
 											</div> 
 											<div className="col-sm-6 col-md-4"> 
 												<div className="form-group"> 
-													 <label className="form-label">Email address</label> <div className={validPwd? "input-group input-success":"input-group input-default"}>
+													 <label className="form-label">Email address</label> <div className={validEmail? "input-group input-success":"input-group input-default"}>
                                          <input type="email" className="form-control invalid-input" name="email" placeholder="Email" 
 										 value={email} 
 										 ref={emailRef}
