@@ -77,7 +77,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 { type: 'User', id: arg.id }
             ]
         }),
-        upload:builder.mutation<any, any>({
+        userUpload:builder.mutation<any, any>({
             query:data=>({
                 url:'users/uploads/avatar',
                 method:'POST',
@@ -87,7 +87,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                     { type: 'Setting', id: arg.id }
                 ]
         }),
-        removeFile:builder.mutation<any, any>({
+        userRemoveFile:builder.mutation<any, any>({
             query:data =>({
                 url:'/users/remove-uploads',
                 method:'POST',
@@ -114,8 +114,8 @@ export const {
     useGetUsersQuery,
     useAddNewUserMutation,
     useUpdateUserMutation,
-    useUploadMutation,
-    useRemoveFileMutation,
+    useUserUploadMutation,
+    useUserRemoveFileMutation,
     useCheckDuplicateUserMutation,
     useDeleteUserMutation,
 } = usersApiSlice

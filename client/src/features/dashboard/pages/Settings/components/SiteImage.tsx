@@ -1,6 +1,14 @@
 import React, { ChangeEvent } from "react";
+import LightGallery from 'lightgallery/react'
+import 'lightgallery/css/lightgallery.css'
+import 'lightgallery/css/lg-zoom.css'
+// import 'lightgallery/css/lg-thumbnail.css'
+import lgThumbnail from 'lightgallery/plugins/thumbnail'
+import lgZoom from 'lightgallery/plugins/zoom'
+// import 'lightgallery/css/lg-thumbnail.css'
 import {
-  useUploadMutation,useRemoveFileMutation
+  useSettingsUploadMutation,
+  useSettingsRemoveFileMutation
 } from "../settingApiSlice";
 import { useSettings } from "../settingsConfigSlice";
 import { useSelector } from "react-redux";
@@ -11,9 +19,10 @@ const SiteImage = () => {
   const settings = useSelector(useSettings);
   const {
     _id,
-    companyDetails: {
+    siteImages: {
       favicon,
       logo,
+      logoIcon,
       logoDark,
       aboutUsBg,
       pagesBg,
@@ -21,7 +30,7 @@ const SiteImage = () => {
     },
   } = settings;
   // const {uploadFile} = useFileUpload()
-  const [upload, { isSuccess, isError, error }]: any = useUploadMutation();
+  const [settingsUpload, { isSuccess, isError, error }]: any = useSettingsUploadMutation();
   const [
     removeFile,
     {
@@ -29,7 +38,7 @@ const SiteImage = () => {
       isError: removeFileIsError,
       error: removeFileError,
     },
-  ]: any = useRemoveFileMutation();
+  ]: any = useSettingsRemoveFileMutation();
 
   const handleFaviconUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files!;
@@ -38,7 +47,7 @@ const SiteImage = () => {
     formData.append("_id", _id);
     formData.append("type", "favicon");
     //
-    await upload(formData);
+    await settingsUpload(formData);
     if (isError) {
     return  showToast(
         "error",
@@ -46,7 +55,33 @@ const SiteImage = () => {
       );
     }
     showToast("success", "Favicon Uploaded successfully");
-  };
+  }
+  const handleLogoIconUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files!;
+    const formData = new FormData();
+    formData.append("siteImage", files[0]!);
+    formData.append("_id", _id);
+    formData.append("type", "logoIcon");
+    await settingsUpload(formData);
+    if (isError) {
+   return   showToast("error", `Sorry, couldn't Upload Logo Icon: ${error.data.message}`);
+    }
+
+      showToast("success", "Logo Icon Uploaded successfully");
+  }
+  const handleLogoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files!;
+    const formData = new FormData();
+    formData.append("siteImage", files[0]!);
+    formData.append("_id", _id);
+    formData.append("type", "logo");
+    await settingsUpload(formData);
+    if (isError) {
+   return   showToast("error", `Sorry, couldn't Upload Logo: ${error.data.message}`);
+    }
+
+      showToast("success", "Logo Uploaded successfully");
+  }
   const handleDarkLogoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files!;
     const formData = new FormData();
@@ -54,7 +89,7 @@ const SiteImage = () => {
     formData.append("_id", _id);
     formData.append("type", "darklogo");
     //
-    await upload(formData);
+    await settingsUpload(formData);
     if (isError) {
     return  showToast(
         "error",
@@ -64,20 +99,7 @@ const SiteImage = () => {
    
       showToast("success", "Dark Logo Uploaded successfully");
   
-  };
-  const handleLogoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files!;
-    const formData = new FormData();
-    formData.append("siteImage", files[0]!);
-    formData.append("_id", _id);
-    formData.append("type", "logo");
-    await upload(formData);
-    if (isError) {
-   return   showToast("error", `Sorry, couldn't Upload Logo: ${error.data.message}`);
-    }
-
-      showToast("success", "Logo Uploaded successfully");
-  };
+  }
   const handleAboutUsImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files!;
     const formData = new FormData();
@@ -85,7 +107,7 @@ const SiteImage = () => {
     formData.append("_id", _id);
     formData.append("type", "aboutUsBg");
     //
-    await upload(formData);
+    await settingsUpload(formData);
     if (isError) {
     return  showToast(
         "error",
@@ -95,16 +117,17 @@ const SiteImage = () => {
 
       showToast("success", "About us Image Uploaded successfully");
   
-  };
+  }
   const handlePageBackgroundUpload = async (
     e: ChangeEvent<HTMLInputElement>
   ) => {
     const files = e.target.files!;
     const formData = new FormData();
+    formData.append("_id", _id);
     formData.append("siteImage", files[0]!);
     formData.append("type", "pageBg");
     //
-    await upload(formData);
+    await settingsUpload(formData);
     if (isError) {
      return showToast(
         "error",
@@ -113,7 +136,7 @@ const SiteImage = () => {
     }
       showToast("success", "Pages Background Image Uploaded successfully");
    
-  };
+  }
 
   const handleBackgroundUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files!;
@@ -122,7 +145,7 @@ const SiteImage = () => {
     formData.append("_id", _id);
     formData.append("type", "bgImage");
     //
-    await upload(formData);
+    await settingsUpload(formData);
     if (isError) {
     return  showToast(
         "error",
@@ -131,7 +154,7 @@ const SiteImage = () => {
     }
     showToast("success", "Background Image Uploaded successfully");
     
-  };
+  }
 
   const removeImage = async (file: string, type: string) => {
     if (file) {
@@ -144,7 +167,7 @@ const SiteImage = () => {
       }
       showToast("success", " Image removed successfully");
     }
-  };
+  }
 
   return (
     <div className="card">
@@ -179,8 +202,8 @@ const SiteImage = () => {
                     borderRadius: "2%",
                   }}
                   className="container position-relative w-100"
-                >
-                  <img
+                ><LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon}   data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon} data-src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon} data-title='favicon'>
+                <img
                     className="img-responsive offset-1"
                     src={
                       process.env.REACT_APP_BASE_URL +
@@ -189,7 +212,8 @@ const SiteImage = () => {
                     }
                     alt="favicon"
                     width="50"
-                  />
+                  /></a></LightGallery>
+                 
                   <div
                     className="position-absolute top-0"
                     onClick={() => removeImage(favicon, "favicon")}
@@ -198,6 +222,57 @@ const SiteImage = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Logo Icon</label>
+            <div className="input-group mb-3 col-md-5">
+              <div className="form-file">
+                <input
+                  type="file"
+                  id="logoIcon"
+                  accept=".jpeg, .jpg, .png, .gif"
+                  name="logoIcon"
+                  onChange={handleLogoIconUpload}
+                  className="form-file-input form-control"
+                />
+              </div>
+              <span className="input-group-text">Upload</span>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div id="sitelogo">
+              {" "}
+              {logoIcon && (
+                <div
+                  style={{
+                    backgroundColor: "#ccc",
+                    padding: "10px",
+                    border: "2px solid #f68600",
+                    borderRadius: "2%",
+                  }}
+                  className="container position-relative w-100"
+                >
+                  <LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoIcon}   data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoIcon} data-src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoIcon} data-title='logoIcon'>
+                <img
+                    className="img-responsive offset-1"
+                    src={
+                      process.env.REACT_APP_BASE_URL +
+                      "/uploads/settings/" +
+                      logoIcon
+                    }
+                    alt="logoIcon"
+                    width="50"
+                  /></a></LightGallery>
+ 
+                  <div
+                    className="position-absolute top-0"
+                    onClick={() => removeImage(logoIcon, "logoIcon")}
+                  >
+                    <FaTrash color="red" cursor={"pointer"} fontSize={"1rem"} />
+                  </div>
+                </div>
+              )}{" "}
             </div>
           </div>
           <div className="col-md-6">
@@ -228,8 +303,8 @@ const SiteImage = () => {
                     borderRadius: "2%",
                   }}
                   className="container position-relative w-100"
-                >
-                  <img
+                ><LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo}   data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} data-src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} data-title='logo'>
+                <img
                     className="img-responsive offset-1"
                     src={
                       process.env.REACT_APP_BASE_URL +
@@ -238,7 +313,8 @@ const SiteImage = () => {
                     }
                     alt="logo"
                     width="200"
-                  />
+                  /></a></LightGallery>
+
                   <div
                     className="position-absolute top-0"
                     onClick={() => removeImage(logo, "logo")}
@@ -276,8 +352,8 @@ const SiteImage = () => {
                     borderRadius: "2%",
                   }}
                   className="container position-relative w-100"
-                >
-                  <img
+                ><LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoDark}   data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoDark} data-src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoDark} data-title='logoDark'>
+                <img
                     className="img-responsive offset-1"
                     src={
                       process.env.REACT_APP_BASE_URL +
@@ -286,7 +362,7 @@ const SiteImage = () => {
                     }
                     alt="logoDark"
                     width="200"
-                  />
+                  /></a></LightGallery>
                   <div
                     className="position-absolute top-0"
                     onClick={() => removeImage(logoDark, "logoDark")}
@@ -324,8 +400,8 @@ const SiteImage = () => {
                     borderRadius: "2%",
                   }}
                   className="container position-relative w-100"
-                >
-                  <img
+                ><LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+aboutUsBg}   data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+aboutUsBg} data-src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+aboutUsBg} data-title='aboutUsBg'>
+                <img
                     className="img-responsive offset-1"
                     src={
                       process.env.REACT_APP_BASE_URL +
@@ -334,7 +410,7 @@ const SiteImage = () => {
                     }
                     alt="aboutUsBg"
                     width="200"
-                  />
+                  /></a></LightGallery>
                   <div
                     className="position-absolute top-0"
                     onClick={() => removeImage(aboutUsBg, "aboutUsBg")}
@@ -372,8 +448,8 @@ const SiteImage = () => {
                     borderRadius: "2%",
                   }}
                   className="container position-relative w-100"
-                >
-                  <img
+                ><LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+pagesBg}   data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+pagesBg} data-src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+pagesBg} data-title='pagesBg'>
+                <img
                     className="img-responsive offset-1"
                     src={
                       process.env.REACT_APP_BASE_URL +
@@ -382,7 +458,7 @@ const SiteImage = () => {
                     }
                     alt="pagesBg"
                     width="200"
-                  />
+                  /></a></LightGallery>
                   <div
                     className="position-absolute top-0"
                     onClick={() => removeImage(pagesBg, "pagesBg")}
@@ -420,8 +496,8 @@ const SiteImage = () => {
                     borderRadius: "2%",
                   }}
                   className="container position-relative w-100"
-                >
-                  <img
+                ><LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+backgroundImage}   data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+backgroundImage} data-src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+backgroundImage} data-title='backgroundImage'>
+                <img
                     className="img-responsive offset-1"
                     src={
                       process.env.REACT_APP_BASE_URL +
@@ -430,7 +506,7 @@ const SiteImage = () => {
                     }
                     alt="backgroundImage"
                     width="200"
-                  />
+                  /></a></LightGallery>
                   <div
                     className="position-absolute top-0"
                     onClick={() =>

@@ -1,5 +1,4 @@
 import React, {FormEvent,useState, useEffect} from 'react'
-import { Editor } from '@tinymce/tinymce-react'
 import { useUpdateFaqMutation } from '../faqApiSlice'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
@@ -70,23 +69,16 @@ e.preventDefault();
         </Modal.Header>
             <form onSubmit={handleSubmit}>
         <Modal.Body>
-             <div className="card-body">
-                 <div className="basic-form">
-                     <div className="row">
-                        <div className="col-12">
-                            <label className="form-label"><strong>Response</strong></label>
-                        
-                        </div>
-               
-                    </div>
-                </div>
-            </div>
+             <fieldset>
+              <legend><label className="fs-15 text-black"> Response:</label></legend>
+              <div className="paragraph border-1 p-3 border-primary" dangerouslySetInnerHTML={{__html: response}}></div>
+                       
+            </fieldset>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" size='sm' onClick={handleClose}>
             Close
           </Button>
-          <Button type="submit" disabled={!canSave} variant="primary">Update FAQ</Button>
         </Modal.Footer>
             </form>
       </Modal>

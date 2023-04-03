@@ -10,12 +10,11 @@ const Js = () => {
     "dashboard-assetsvendor/peity/jquery.peity.min.js",
     "dashboard-assets/vendor/apexchart/apexchart.js",
     "dashboard-assets/js/dashboard/dashboard-1.js",
-    "dashboard-assets/vendor/owl-carousel/owl.carousel.js",
   ]	
   return (
     <>
       {
-    // useImportScript(javascript)
+    useImportScript(javascript)
    
     }
     </>

@@ -1,17 +1,15 @@
 import React,{useState,useEffect} from 'react'
 import $ from 'jquery'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import useWindowSize from '../../../app/utils/hooks/useWindowSize'
 import Notification from './NavComponents/Notification'
 import pageProps from '../../../app/utils/props/pageProps'
 import Notice from './NavComponents/Notice'
 import { useSelector} from 'react-redux'
 import { selectCurrentUser } from '../../auth/authSlice'
-import {useCompanyDetails} from '../pages/Settings/settingsConfigSlice'
+import {useCompanyDetails,useSiteImages} from '../pages/Settings/settingsConfigSlice'
 import { useSendLogoutMutation } from '../../auth/authApiSlice'
 import useUserImage from '../../../app/utils/hooks/useUserImage'
-// const DASH_RREGEX = /^\/dashboard(\/)?$/
-// const DASH_RREGEX = /^\/dashboard\/path(\/)?$/
 
 
 const Nav:React.FC<pageProps> = ({pageData}:pageProps) => {
@@ -19,7 +17,6 @@ const Nav:React.FC<pageProps> = ({pageData}:pageProps) => {
     const [toggleAlert,setToggleAlert]= useState(false)
     const [toggleUserDropdwn,setToggleUserDropdwn]= useState(false)
    const navigate = useNavigate()
-   const {pathname} = useLocation()
     const currentUser = useSelector(selectCurrentUser);
     const userImage = useUserImage(currentUser);
     // console.log(currentUser)
@@ -38,7 +35,8 @@ const Nav:React.FC<pageProps> = ({pageData}:pageProps) => {
 //    if(isError) 
 
    const {width, height} = useWindowSize()
-   const {siteName,logo,logoDark} = useSelector(useCompanyDetails)
+   const {siteName} = useSelector(useCompanyDetails)
+   const {logo,logoDark} = useSelector(useSiteImages)
 
    const toggleFullscreen = ()=>{
     if(document.fullscreenElement||(document as any).webkitFullscreenElement||(document as any).mozFullScreenElement||(document as any).msFullscreenElement) { 

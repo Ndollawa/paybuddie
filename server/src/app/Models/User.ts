@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 
 const Schema = mongoose.Schema;
 
 
-export interface userInterface{
+export interface userInterface extends Document{
         _id:string | undefined;
         firstName: string | undefined;
         lastName: string | undefined;
@@ -24,7 +24,7 @@ export interface userInterface{
         userImage: string | undefined;
         accountStatus:string | number;
         verificationStatus: number | boolean;
-        accountSecurity_2FA: boolean | string;
+        accountSecurity_2FA: boolean | number;
         roles:  {
             User: number;
             Admin?: number | undefined;
@@ -34,7 +34,7 @@ export interface userInterface{
         refreshToken: string[];
 }
 // :userInterface 
-const UserSchema=  new Schema({
+const UserSchema=  new Schema<userInterface>({
     firstName:{
         type:String,
     },
@@ -107,12 +107,8 @@ const UserSchema=  new Schema({
     required: true   
     },
     accountSecurity_2FA:{
-        type:Number,
-        enum: {
-            values: [0, 1],
-            message: '{VALUE} is not supported'
-          },
-        default:0,
+        type:Boolean,
+        default:false,
         required: true   
     },
     roles:{
@@ -130,4 +126,4 @@ const UserSchema=  new Schema({
 {timestamps:true});
 UserSchema.plugin(mongoosePaginate);
 
-export default mongoose.model('User',UserSchema);
+export default mongoose.model<userInterface>('User',UserSchema);

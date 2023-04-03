@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import {useGetSlidesQuery,useDeleteSlideMutation } from '../slideApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
-
+import Swal from 'sweetalert2'
+import LightGallery from 'lightgallery/react'
+import 'lightgallery/css/lightgallery.css'
+import 'lightgallery/css/lg-zoom.css'
+// import 'lightgallery/css/lg-thumbnail.css'
+import lgThumbnail from 'lightgallery/plugins/thumbnail'
+import lgZoom from 'lightgallery/plugins/zoom'
+// import 'lightgallery/css/lg-thumbnail.css'
 
 interface modalDataProps {
     modalData:{
@@ -10,7 +17,7 @@ interface modalDataProps {
           title: string;
           description: string;
           body: string;
-          slideImage: string;
+          image: string;
           status: string;
       } | null,
       showModal:boolean,
@@ -22,7 +29,6 @@ const SlideTableData = ({slideId,index,showEditForm}:any) => {
             slide: data?.entities[slideId]
         }),
     })
-const [slideInfo, setSlideInfo] = useState(slide)
 
     const [deleteSlide, {
         isSuccess: isDelSuccess,
@@ -30,35 +36,85 @@ const [slideInfo, setSlideInfo] = useState(slide)
         error: delerror
     }]:any = useDeleteSlideMutation()
     const onDeleteSlide = async () => {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-sm m-2 btn-success',
+              cancelButton: 'btn btn-sm m-2 btn-danger'
+            },
+            buttonsStyling: false
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then(async(result) => {
+            if (result.isConfirmed) {
         await deleteSlide({ _id: slideId })
         if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
-        showToast('success', 'SLIDE Updated successfully')
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Slide  has been deleted.',
+                'success'
+              )
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Operation aborted, entry is safe  :)',
+                'error'
+              )
+            }
+          })
     }
 // 
   
-    if (slideInfo.length) {
-        const created = new Date(slideInfo.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
+    if (slide) {
+        const created = new Date(slide.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
       const slideData = {
         data:{
-        id:slideInfo._id,
-        title:slideInfo.title,
-        description:slideInfo.description,
-        slideInfoImage:slideInfo.slideInfoImage,
-        body:slideInfo.body,
-        status:slideInfo.status
+        id:slide._id,
+        title:slide.title,
+        description:slide.description,
+        image:slide.image,
+        body:slide.body,
+        status:slide.status
 
         },
         showModal:true
     }
-    
+    let slideStatus;
+    switch (slide.status) {
+    case 'pending':
+        slideStatus =<span className="badge badge-primary">{slide.status}</span>
+        break;
+    case 'active':
+        slideStatus =<span className="badge badge-success">{slide.status}</span>
+        break;
+    case 'inactive':
+        slideStatus =<span className="badge badge-danger">{slide.status}</span>
+        break;
+    default:
+        slideStatus = ""
+        break;
+}
+
         return (
-            <tr key={slideId}>
+            <><tr key={slideId}>
                     <td>{++index}</td>
-                    <td><div><img src={process.env.REACT_APP_BASE_URL+"uploads/slide"+slide.slideImage} alt="" /></div></td>
-                    <td>{slideInfo.title}</td>
-                    <td>{slideInfo.description}</td>
-                    <td>{slideInfo.body}</td>
-                    <td>{slideInfo.status}</td>
+                    <td>
+                    <LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/slide/"+slide.image}  data-lightbox={`image-${++index}`} data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/slide/"+slide.image} data-src={process.env.REACT_APP_BASE_URL+"/uploads/slide/"+slide.image} data-title={slide.title}>
+                        <img src={process.env.REACT_APP_BASE_URL+"/uploads/slide/"+slide.image} alt={slide.title} width="150" /></a></LightGallery></td>
+                    <td>{slide.title}</td>
+                    <td>{slide.description}</td>
+                    <td  dangerouslySetInnerHTML={{__html:slide.body}} ></td>
+                    <td align="center">{slideStatus}</td>
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">
@@ -66,7 +122,7 @@ const [slideInfo, setSlideInfo] = useState(slide)
                             <button className="btn btn-danger shadow btn-xs sharp" onClick={onDeleteSlide}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
-                </tr>
+                </tr></>
         )
     
     } else return null

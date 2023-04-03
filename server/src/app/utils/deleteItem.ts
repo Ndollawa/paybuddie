@@ -6,8 +6,7 @@ const __dirname = path.dirname(__filename);
 const fsPromise = fs.promises
 
 const deleteItem = async(destination:string,item:string)=>{
-    console.log(destination)
-    if(!fs.existsSync(path.join(__dirname, destination, item))){
+    if(fs.existsSync(path.join(__dirname, destination, item))){
         await fsPromise.unlink(path.join(__dirname, destination, item));
     }
 }

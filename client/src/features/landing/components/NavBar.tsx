@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {useCompanyDetails,useLandingPageConfig} from '../../dashboard/pages/Settings/settingsConfigSlice';
+import {useCompanyDetails,useLandingPageConfig,useSiteImages} from '../../dashboard/pages/Settings/settingsConfigSlice';
 import useWindowSize from '../../../app/utils/hooks/useWindowSize';
 import useUserImage from '../../../app/utils/hooks/useUserImage';
 import { selectCurrentUser } from '../../auth/authSlice';
@@ -21,7 +21,8 @@ enum Styles{STYLE_1,STYLE_2, STYLE_3};
 const NavBar = () => {
 const {width} = useWindowSize()
 const currentUser = useSelector(selectCurrentUser)
-const {siteName,logo,favicon,contact,activeHours}  = useSelector(useCompanyDetails);
+const {siteName,contact,activeHours}  = useSelector(useCompanyDetails);
+const {logo,favicon}  = useSelector(useSiteImages);
 const {navStyle} = useSelector(useLandingPageConfig);
 const userImage = useUserImage(currentUser)
     return (
@@ -38,7 +39,7 @@ const userImage = useUserImage(currentUser)
                         }
 
                     <Link to="/">
-                        <img src={width! < 320? process.env.REACT_APP_UPLOAD_URL+"/settings/"+favicon : process.env.REACT_APP_UPLOAD_URL+"/settings/"+logo} width={width! <320?"50" :"150"} alt={siteName} />
+                        <img src={width! < 320? process.env.REACT_APP_BASE_URL+"/uploads/settings/"+favicon : process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} width={width! <320?"50" :"150"} alt={siteName} />
                     </Link>
                 </div>
                 {/* <!-- /.main-menu__logo --> */}
@@ -66,8 +67,8 @@ const userImage = useUserImage(currentUser)
                     <Link to="#" className="main-menu__search search-toggler">
                         <i className="icon-magnifying-glass"></i>
                     </Link>
-                    {!currentUser._id?<><Button href="auth/register" className="thm-btn main-menu__btn" size="sm">Sign Up</Button>
-                    <Button href="auth/login" className="thm-btn main-menu__btn" size="sm">Login</Button></>
+                    {!currentUser._id?<><Button href="auth/register" className="thm-btn main-menu__btn mx-2" size="sm">Sign Up</Button>
+                    <Button href="auth/login" className="thm-btn main-menu__btn mx-2" size="sm">Login</Button></>
                     :  
             <NavDropdown title={<img src={userImage} width='30' className='border-color-primary border-1 rounded-circle' height={'30'} alt='avatar'/>} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1"><RxDashboard fontSize={'1.2rem'}/> Dashboard</NavDropdown.Item>

@@ -8,7 +8,7 @@ import { selectCurrentUser } from '../../auth/authSlice';
  enum Styles{STYLE_1,STYLE_2, STYLE_3};
 
 const Nav = () => {
-   const {email,address,facebookHandle,twitterHandle,instagram,whatsapp}   = useSelector(useCompanyDetails); 
+   const {email,address,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}}   = useSelector(useCompanyDetails); 
 const currentUser = useSelector(selectCurrentUser)
     const {navStyle} = useSelector(useLandingPageConfig);
   return (

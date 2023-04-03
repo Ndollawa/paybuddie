@@ -27,7 +27,9 @@ React.useEffect(() => {
   if (isSuccess) {
       setTitle('')
       setDescription('')
+      setPreviewImage("")
       setRoomBg(null)
+      setShow(false)
   }
 }, [isSuccess])
 
@@ -44,10 +46,10 @@ const formData = new FormData()
 formData.append("title",title)
 formData.append("description",description)
 formData.append("status",status)
-formData.append("roomBg",roomBg)
+formData.append("roomImage",roomBg)
       await addNewRoom(formData)
-      if(isSuccess)showToast('success', 'Roomcreated successfully')
-      if(isError) showToast('error',JSON.stringify(error?.data?.message))
+      if(isError) return showToast('error',JSON.stringify(error?.data?.message))
+     showToast('success', 'Room created successfully')
   }
 
 }
@@ -117,7 +119,6 @@ setPreviewImage(fileurl)
                 id="uploadbg"
                 accept=".jpeg, .jpg, .png, .gif"
                 name="uploadbg"
-                value={roomBg}
                 onChange={uploadBg}
                 className="form-file-input form-control"/>
                       </div>

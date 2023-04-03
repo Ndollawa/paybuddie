@@ -4,7 +4,7 @@ import { useUpdateServiceMutation} from '../serviceApiSlice'
 import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
-
+import Swal from 'sweetalert2'
 
 
 
@@ -44,6 +44,12 @@ const [updateService, {
 React.useEffect(() => {
   if (isSuccess) {
       setServiceBg(null)
+      setShow(false)
+      setTitle("")
+      setDescription("")
+      setBody("")
+      setStatus("")
+      setPreviewImage("")
   }
 }, [isSuccess])
 useEffect(() => {
@@ -71,8 +77,8 @@ formData.append("status",status)
 formData.append("serviceBg",serviceBg)
 
       await updateService(formData)
-      if(isSuccess)showToast('success', 'Service created successfully')
-      if(isError) showToast('error',JSON.stringify(error?.data?.message))
+      if(isError) return showToast('error',JSON.stringify(error?.data?.message))
+      showToast('success', 'Service updated successfully')
   }
 
 }
@@ -101,7 +107,7 @@ setPreviewImage(fileurl)
           <div className="basic-form">
               <div className="row">
                 <div className="mb-3 col-md-9">
-                  <label className="form-label"><strong>Title or Heading</strong></label>
+                  <label className="form-label"><strong>Name or Title</strong></label>
                   <input
                     type="text"
                     className="form-control"
@@ -142,7 +148,6 @@ setPreviewImage(fileurl)
                 id="uploadbg"
                 accept=".jpeg, .jpg, .png, .gif"
                 name="uploadbg"
-                value={serviceBg}
                 onChange={uploadBg}
                 className="form-file-input form-control"/>
                       </div>

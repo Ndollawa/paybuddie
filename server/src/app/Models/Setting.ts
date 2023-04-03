@@ -49,12 +49,6 @@ const SettingSchema =  new Schema({
     },
     companyDetails:{
         siteName:{type:String},
-        logo:{type:String},
-        logoDark:{type:String},
-        favicon:{type:String},
-        backgroundImage:{type:String},
-        aboutUsBg:{type:String},
-        pagesBg:{type:String},
         description:{type:String},
         email:{type:[String]},
         contact:{type:[String]},
@@ -64,11 +58,22 @@ const SettingSchema =  new Schema({
         state:{type:String},
         country:{type:String},
         activeHours:{type:String},
+        socialMedia:{
         facebookHandle:{type:String},
         twitterHandle:{type:String},
         instagram:{type:String},
         whatsapp:{type:String }
+        }
 
+    },
+    siteImages:{
+        logo:{type:String},
+        logoIcon:{type:String},
+        logoDark:{type:String},
+        favicon:{type:String},
+        backgroundImage:{type:String},
+        aboutUsBg:{type:String},
+        pagesBg:{type:String},
     },
     pages:{
         aboutUs:{type:String},

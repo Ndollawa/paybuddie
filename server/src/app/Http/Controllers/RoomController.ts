@@ -38,10 +38,11 @@ class RoomController extends BaseController {
 // @route POST /room
 // @access authorized user
  public create = async (req:Request, res:Response) => {
-    const { title, description, body, status } = req.body
+    const { title, description, status } = req.body
     const file = req.file!
+    console.log(req.body)
     // Confirm data
-    if (!body || !title || !status || !req.file) {
+    if (!description || !title || !status || !req.file) {
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -53,7 +54,7 @@ class RoomController extends BaseController {
     }
 
     // Create and store the new user 
-    const room = await RoomModel.create({ title,description,body,image:file.filename })
+    const room = await RoomModel.create({ title,description,image:file.filename,status })
 
     if (room) { // Created 
         return res.status(201).json({ message: 'New room created' })
@@ -67,7 +68,7 @@ class RoomController extends BaseController {
 // @route PATCH /room
 // @access authorized user
 public update = async (req:Request, res:Response) => {
-    const {title, description,_id,status,body } = req.body
+    const {title, description,_id,status} = req.body
 const image = req?.file!
     // Confirm data
     if (!title || !description) {
@@ -89,7 +90,6 @@ const image = req?.file!
         return res.status(409).json({ message: 'Duplicate note title' })
     }
 
-    room.body = body
     room.title = title
     if(image)room.image = image.filename
     

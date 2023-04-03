@@ -7,7 +7,7 @@ import {FaPencilAlt, FaRegTimesCircle} from 'react-icons/fa'
 import showToast from '../../../../app/utils/hooks/showToast'
 import { useUpdateUserMutation } from '../Users/usersApiSlice'
 import { useCheckDuplicateUserMutation } from '../Users/usersApiSlice'
-import {useUploadMutation , useRemoveFileMutation  } from '../Users/usersApiSlice'
+import {useUserUploadMutation , useUserRemoveFileMutation  } from '../Users/usersApiSlice'
 // username regex must start with a lowercase or uppercase laters and must be followed by lower or uppercase or digits,- or _ of 3 to 23 characters
 const USER_REGEX = /^[a-zA-Z][a-zA-z0-9-_]{3,23}$/;
 // requires atleast 0ne uppercase, lowercase,digit, special character and a total of 8 t0 24 characters
@@ -48,13 +48,13 @@ const ProfileEdit = () => {
     const [invalidNameInput,setInvalidNameInput] = useState(false);
 
     const [validPwd,setValidPwd] = useState(false);
-	const [removeFile,
+	const [userRemoveFile,
 		{
 		  data:removeFileRes,
 		  isSuccess:removeFileIsSuccess,
 		  isError:removeFileIsError,
 		  error:removeFileError
-		}]:any= useRemoveFileMutation()
+		}]:any= useUserRemoveFileMutation()
 	
 	const [updateUser, {
         isLoading,
@@ -135,14 +135,14 @@ useEffect(()=>{
     setValidMatch(match)
 }, [password,confirmPassword]);
 
-	const [upload,{isError:isUploadError,isSuccess:isUploadSuccess,error:uploadError}]:any= useUploadMutation()
+	const [userUpload,{isError:isUploadError,isSuccess:isUploadSuccess,error:uploadError}]:any= useUserUploadMutation()
 const updateProfilePicture = async(e:ChangeEvent<HTMLInputElement>)=>{
 	 const files = e.target.files!
 	 const formData = new FormData()
 	 formData.append("avatar", files[0]!)
 	 formData.append('_id',currentUser._id!);
 	//  
-	 await upload(formData)
+	 await userUpload(formData)
 	 if(isUploadError){ return showToast('error',`Sorry, couldn't Upload Profile Picture: ${uploadError?.data?.message}` )}
 	showToast('success','Profile Picture Uploaded successfully')
 }
@@ -165,7 +165,7 @@ showToast('success', 'Profile updated successfully!')
   
 const removeImage = async(file:string,type:string)=>{
 	if(file){
-  await removeFile({_id:currentUser._id,file,type})
+  await userRemoveFile({_id:currentUser._id,file,type})
   if(removeFileIsError){ return showToast('error',`Sorry, couldn't remove Image: ${removeFileError.data.message}` )}
   showToast('success',' Image removed successfully')
    

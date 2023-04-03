@@ -42,7 +42,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         addNewTeam: builder.mutation({
             query: team => ({
                 url: '/teams',
-                method: 'TEAM',
+                method: 'POST',
                 body: team
             }),
             invalidatesTags: [

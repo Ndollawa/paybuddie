@@ -6,6 +6,7 @@ import pageProps from '../../app/utils/props/pageProps';
 import {  setPreloader } from '../dashboard/components/PreloaderSlice';
 import './dashboardStyles/styles.css';
 import $ from 'jquery'
+import Js from '../dashboard/components/Js';
 
 
 const Layout:React.FC<pageProps> = ({pageData}:pageProps) => { 
@@ -40,6 +41,7 @@ return ()=>{
         <Head pageData={pageData}/>
       
           <Outlet/>
+          <Js/>
     </>
   )
 }

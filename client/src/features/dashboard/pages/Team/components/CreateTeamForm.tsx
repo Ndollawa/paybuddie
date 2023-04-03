@@ -48,6 +48,19 @@ const CreateTeamForm = () => {
 
   React.useEffect(() => {
     if (isSuccess) {
+setEmail("")
+setFirstName("")
+setLastName('')
+setPhone("")
+setPosition("")
+setBio("")
+setUserFacebookHandle("")
+setUserTwitterHandle("")
+setUserInstagramHandle("")
+setUserWhatsapp("")
+setValidEmail(false)
+setUserImage("")
+      setPreviewImage('')
     }
   }, [isSuccess]);
 
@@ -73,7 +86,7 @@ const CreateTeamForm = () => {
       formData.append("whatsapp",userWhatsapp)
       formData.append("userImage",userImage)
       await addNewTeam(formData); 
-      if (isError) showToast("error", JSON.stringify(error?.data?.message));
+      if (isError) return showToast("error", JSON.stringify(error?.data?.message));
       showToast("success", "Team member created successfully");
     }
   };

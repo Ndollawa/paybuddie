@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../../dashboard/pages/Settings/settingsConfigSlice';
+import {useCompanyDetails,useSiteImages} from '../../dashboard/pages/Settings/settingsConfigSlice';
 
 
 
 const Footer = () => {
 
-  const {siteName,logoDark,email,contact,description,activeHours,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
+  const {siteName,email,contact,description,activeHours,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}} = useSelector(useCompanyDetails);
+  const {logoDark} = useSelector(useSiteImages);
 
 
 
@@ -18,7 +19,7 @@ const Footer = () => {
                     <div className="col-xs-12 col-lg-4 col-md-6 footer-widget-area">
                         <div className="footer-widget footer-widget--about">
                             <a href="/" className="footer-widget__logo">
-                                <img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoDark} alt={siteName} width="140" height="51" />
+                                <img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoDark} alt={siteName} width="150" height="51" />
                             </a>
                             <p className="footer-widget__text">{description}</p>
                             <ul className="list-unstyled footer-widget__info">

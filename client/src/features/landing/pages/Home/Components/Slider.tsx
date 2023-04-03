@@ -2,6 +2,7 @@ import React, { useEffect,ReactElement, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useLandingPageConfig } from '../../../../dashboard/pages/Settings/settingsConfigSlice';
 import { useSelector } from 'react-redux';
+import { useGetSlidesQuery } from '../../../../dashboard/pages/Slide/slideApiSlice';
 import $ from 'jquery'
 import 'owl.carousel/dist/assets/owl.carousel.css';
 // import 'owl.carousel';
@@ -9,7 +10,6 @@ import 'owl.carousel.es6'
 
 
 const Slider = () => {
-
     useEffect(() => {
         let thmOwlCarousels = $(".thm-owl__carousel");
         if (thmOwlCarousels.length) {
@@ -44,6 +44,17 @@ const Slider = () => {
       };
     }, [])
  const {sliderStyle} = useSelector(useLandingPageConfig);
+    // const {
+    //     data: slides,
+    //     isLoading,
+    //     isSuccess,
+    //     isError,
+    //     error
+    // } = useGetSlidesQuery('faqList', {
+    //     pollingInterval: 15000,
+    //     refetchOnFocus: true,
+    //     refetchOnMountOrArgChange: true
+    // })
 const slides:{
     id:number;
     heading:string|ReactElement;

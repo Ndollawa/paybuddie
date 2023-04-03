@@ -4,14 +4,7 @@ import CreateFaqModal from './components/CreateFaqModal'
 import FaqTableData from './components/FaqTableData'
 import pageProps from '../../../../app/utils/props/pageProps'
 
-// console.log(tableContent)
-// console.log(tableContent)
-//   useEffect(() => {
-//  $('#table').DataTable()
-//       return () => {
-//        $('#table').DataTable().clear().destroy()
-//       };
-//     }, [])
+
 
 const Faq = ({pageData}:pageProps)  => {
  return (

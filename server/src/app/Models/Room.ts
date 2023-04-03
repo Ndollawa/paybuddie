@@ -11,11 +11,6 @@ const RoomSchema =  new Schema({
         type:String,
         required: true
     },
-    body:{
-        type:String,
-        required: true,
-        unique: true
-    },
     members:Array,
     status:{
         type:String,

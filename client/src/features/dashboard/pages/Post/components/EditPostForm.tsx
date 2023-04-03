@@ -24,7 +24,7 @@ interface modalDataProps {
     showModal:boolean,
   } 
   }
-const EditPostModal = ({modalData:{data,showModal}}:modalDataProps) => {
+const EditPostForm = ({modalData:{data,showModal}}:modalDataProps) => {
 
 const [title, setTitle] = useState("")
 const [description, setDescription] = useState("")
@@ -104,7 +104,7 @@ formData.append("coverImage",postBg)
 
       await updatePost(formData)
       if(isError)return  showToast('error',JSON.stringify(error?.data?.message))
-     showToast('success', 'Post created successfully')
+     showToast('success', 'Post updated successfully')
   }
 
 }
@@ -257,4 +257,4 @@ setPreviewImage(fileurl)
   )
 }
 
-export default React.memo(EditPostModal)
+export default React.memo(EditPostForm)

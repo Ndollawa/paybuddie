@@ -67,8 +67,8 @@ const CreateContactForm = () => {
       // formData.append("status",status)
       // formData.append("contactImage",contactImage)
       await addNewContact(formData);
-      if (isSuccess) showToast("success", "Contactcreated successfully");
-      if (isError) showToast("error", JSON.stringify(error?.data?.message));
+      if (isError) return showToast("error", JSON.stringify(error?.data?.message));
+     showToast("success", "Contactcreated successfully");
     }
   };
   const uploadBg = (e: ChangeEvent<HTMLInputElement>) => {

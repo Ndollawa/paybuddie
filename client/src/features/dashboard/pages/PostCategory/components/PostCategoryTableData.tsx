@@ -1,7 +1,7 @@
 import React from 'react'
 import {useGetPostCategoryQuery,useDeletePostCategoryMutation } from '../postCategoryApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
-
+import Swal from 'sweetalert2'
 
 interface modalDataProps {
     modalData:{
@@ -30,9 +30,43 @@ const PostCategoryTableData = ({categoryId,index,showEditForm}:any) => {
         error: delerror
     }]:any = useDeletePostCategoryMutation()
     const onDeleteCategory = async () => {
-        await deleteCategory({ _id: categoryId })
-        if(isDelSuccess)showToast('success', 'CATEGORY Updated successfully')
-        if(isDelError) showToast('error',JSON.stringify(delerror?.data))
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-sm m-2 btn-success',
+              cancelButton: 'btn btn-sm m-2 btn-danger'
+            },
+            buttonsStyling: false
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+                await deleteCategory({ _id: categoryId })
+        if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Category has been deleted.',
+                'success'
+              )
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Operation aborted, entry is safe :)',
+                'error'
+              )
+            }
+          })
+      
     }
 // 
     const categoryData = {

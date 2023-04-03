@@ -4,10 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const Schema = mongoose.Schema;
 
 const PostCategorySchema =  new Schema({
-    author:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        required: true
-    },
+   
     title:{
         type:String,
         required: true,
@@ -19,7 +16,7 @@ const PostCategorySchema =  new Schema({
             values: ['active', 'inactive'],
             message: '{VALUE} is not supported'
           },
-        default:'draft',
+        default:'active',
         required: true   
     }
 

@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 
 const useImportScript = (resourceUrl:string[])=> {
+ 
+      const scriptHolder = document.createElement('div');
+      scriptHolder.id='scriptHolder';
+      document.body.appendChild(scriptHolder);
+      
   useEffect(
     () => {
+      // let scripts
       let script:HTMLScriptElement;
     resourceUrl.map(url=>{
     script = document.createElement('script');
     script.src = url;
-    script.type='text/javascript';
-    script.async = false;
+    // script.type='text/javascript';
+    // script.async = true;
     script.defer = true;
-    // script.type = 'module';
+    script.type = 'text/barbel';
 
   script.onload = () => {
   // console.log(`The script '${url}'has loaded.'`);
@@ -20,14 +26,13 @@ const useImportScript = (resourceUrl:string[])=> {
   console.log('Error occurred while loading script');
   };
 
-    
-    document.body.appendChild(script);
-    // console.log(script)
-    return null
+  document?.getElementById('scriptHolder')?.appendChild(script);
+   
+    // console.log(scriptHolder)
       })
-  
 return () => {
-      document.body.removeChild(script);
+  
+      document?.getElementById('scriptHolder')?.remove();
     }
   }, []);
 };

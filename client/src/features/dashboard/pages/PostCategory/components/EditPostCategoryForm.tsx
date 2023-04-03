@@ -20,7 +20,7 @@ interface modalDataProps {
     showModal:boolean,
   } 
   }
-const EditPostCategoryModal = ({modalData:{data,showModal}}:modalDataProps) => {
+const EditPostCategoryForm = ({modalData:{data,showModal}}:modalDataProps) => {
 
 const author = useSelector(selectCurrentUser);
 const [title, setTitle] = useState(data?.title!)
@@ -61,8 +61,8 @@ formData.append("status",status)
 formData.append("_id",author._id!)
 
       await updatePostCategory(formData)
-      if(isSuccess)showToast('success', 'Post created successfully')
-      if(isError) showToast('error',JSON.stringify(error?.data?.message))
+      if(isError) return showToast('error',JSON.stringify(error?.data?.message))
+      showToast('success', 'Post category updated successfully')
   }
 
 }
@@ -127,4 +127,4 @@ formData.append("_id",author._id!)
   )
 }
 
-export default React.memo(EditPostCategoryModal)
+export default React.memo(EditPostCategoryForm)

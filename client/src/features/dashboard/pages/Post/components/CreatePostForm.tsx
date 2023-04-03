@@ -82,7 +82,7 @@ formData.append("coverImage",postBg)
 
       await addNewPost(formData)
       if(isError) return showToast('error',JSON.stringify(error?.data?.message))
-    showToast('success', 'Postcreated successfully')
+    showToast('success', 'Post created successfully')
   }
 
 }

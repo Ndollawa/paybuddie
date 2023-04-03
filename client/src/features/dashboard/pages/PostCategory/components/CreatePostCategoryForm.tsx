@@ -44,7 +44,7 @@ formData.append("author",author._id!)
 
       await addNewPostCategory(formData)
       if(isError) return showToast('error',JSON.stringify(error?.data?.message))
-    showToast('success', 'Postcreated successfully')
+    showToast('success', 'Post category created successfully')
   }
 
 }

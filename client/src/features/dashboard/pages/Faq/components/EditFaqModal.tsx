@@ -50,8 +50,9 @@ const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
  if (canSave) {
       await updateFaq({_id:data?.id,question, response,status })
-        if(isSuccess)showToast('success', 'FAQ Updated successfully')
-        if(isError) showToast('error',JSON.stringify(error?.data))
+        if(isError) return showToast('error',JSON.stringify(error?.data))
+        showToast('success', 'FAQ Updated successfully')
+        setShow(false)
     }
 }
   return (

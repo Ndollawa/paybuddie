@@ -31,6 +31,7 @@ React.useEffect(() => {
       setDescription('')
       setBody('')
       setServiceBg(null)
+      setShow(false)
   }
 }, [isSuccess])
 
@@ -48,10 +49,10 @@ formData.append("title",title)
 formData.append("description",description)
 formData.append("body",body)
 formData.append("status",status)
-formData.append("serviceBg",serviceBg)
+formData.append("upload",serviceBg)
       await addNewService(formData)
-      if(isSuccess)showToast('success', 'Servicecreated successfully')
-      if(isError) showToast('error',JSON.stringify(error?.data?.message))
+      if(isError) return showToast('error',JSON.stringify(error?.data?.message))
+      showToast('success', 'Service created successfully')
   }
 
 }
@@ -80,7 +81,7 @@ setPreviewImage(fileurl)
           <div className="basic-form">
               <div className="row">
                 <div className="mb-3 col-md-9">
-                  <label className="form-label"><strong>Title or Heading</strong></label>
+                  <label className="form-label"><strong>Name or Title</strong></label>
                   <input
                     type="text"
                     className="form-control"
@@ -121,7 +122,6 @@ setPreviewImage(fileurl)
                 id="uploadbg"
                 accept=".jpeg, .jpg, .png, .gif"
                 name="uploadbg"
-                value={serviceBg}
                 onChange={uploadBg}
                 className="form-file-input form-control"/>
                       </div>

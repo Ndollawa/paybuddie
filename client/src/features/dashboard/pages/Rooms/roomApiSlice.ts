@@ -42,7 +42,7 @@ export const roomsApiSlice = apiSlice.injectEndpoints({
         addNewRoom: builder.mutation({
             query: room => ({
                 url: '/rooms',
-                method: 'ROOM',
+                method: 'POST',
                 body: room
             }),
             invalidatesTags: [

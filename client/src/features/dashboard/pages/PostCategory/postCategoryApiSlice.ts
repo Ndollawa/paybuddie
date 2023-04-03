@@ -42,7 +42,7 @@ export const postCategoryApiSlice = apiSlice.injectEndpoints({
         addNewPostCategory: builder.mutation({
             query: postCategory => ({
                 url: '/postCategory',
-                method: 'POSTCATEGORY',
+                method: 'POST',
                 body: postCategory
             }),
             invalidatesTags: [

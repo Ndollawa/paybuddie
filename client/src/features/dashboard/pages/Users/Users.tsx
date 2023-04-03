@@ -4,7 +4,7 @@
     import { useGetUsersQuery } from './usersApiSlice'
     import { setPreloader } from '../../components/PreloaderSlice'
     import pageProps from '../../../../app/utils/props/pageProps'
-    import UsersTable from './components/UsersTable'
+    import UsersTableData from './components/UsersTableData'
     import useToggle from '../../../../app/utils/hooks/useToggle'
 import UserCard from './components/UserCard'
 import { FaListAlt } from 'react-icons/fa'
@@ -12,7 +12,12 @@ import { IoGridOutline } from 'react-icons/io5'
     
 
     
-
+interface modalDataProps {
+    data:{
+       user:any;
+   } | null,
+   showModal:boolean,
+ }
 
     const Users = ({pageData}:pageProps)  => {
 
@@ -36,9 +41,25 @@ import { IoGridOutline } from 'react-icons/io5'
             dispatch(setPreloader(isLoading?true:false)) 
              
             }, [isLoading])
+
+            const [modalData,setModalData] = useState<modalDataProps>({
+                data:null, 
+                showModal:false,
+                })
+          const showEditForm = (modalData:modalDataProps)=>{
+                 setModalData(modalData);
+                 }
+         
+          let tableContent
+        
 let usersCard
    if(isSuccess){
-  usersCard = users.ids? users?.ids.map((userId:any)=> <UserCard key={userId}  userId={userId} />): null
+usersCard = users.ids? users?.ids.map((userId:any)=> <UserCard key={userId}  userId={userId} />): null 
+tableContent = users?.ids?.length
+    ? users?.ids.map((userId:string|number ,i:number) => <UsersTableData key={userId} userId={userId} index={i}
+    showEditForm={showEditForm} />
+)
+    : null
    }
     const setView = ()=>{
         if(viewType){
@@ -62,7 +83,39 @@ let usersCard
 							</div>
                             </div>
                        {viewType? 
-                        isSuccess &&< UsersTable users={users} />
+                        (
+                            <>  <div className="card">
+                            <div className="mb-5 d-flex">
+                                               
+                                               {/* <CreateUserForm/> */}
+                                               </div>
+                                    <div className="card-body">
+                                       <div className="table-responsive table-scrollable">
+                                                   <table id="dataTable" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
+                                                       <thead>
+                                                           <tr>
+                                                               <th>S/N</th>
+                                                               <th>Name</th>
+                                                               <th>Username</th>
+                                                               <th>Verification Status</th>
+                                                               <th>Country</th>
+                                                               <th>Account Status</th>
+                                                               <th>Date Created</th>
+                                                               <th>Action</th>
+                                                           </tr>
+                                                       </thead>
+                                                       <tbody>
+                                                          
+                                                          
+                                                          {tableContent}
+                                                       
+                                                       </tbody>
+                                                   </table>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </>
+                        )
                         :
                           <>{ usersCard}</>
                           } 

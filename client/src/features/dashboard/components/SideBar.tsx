@@ -32,7 +32,7 @@ const SideBar:React.FC<pageProps> = ({pageData,}:pageProps) => {
     return (
         <>        
     <div className="deznav">
-        <PerfectScroll className='mm-active ps ps--active-y h-80'>
+        <PerfectScroll className='mm-active ps ps--active-y'>
             <div className="main-profile">
                 <div className="image-bx">
                     <img src={userImage} alt={currentUser.username}/>

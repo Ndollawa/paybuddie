@@ -42,7 +42,7 @@ export const servicesApiSlice = apiSlice.injectEndpoints({
         addNewService: builder.mutation({
             query: service => ({
                 url: '/services',
-                method: 'SERVICE',
+                method: 'POST',
                 body: service
             }),
             invalidatesTags: [

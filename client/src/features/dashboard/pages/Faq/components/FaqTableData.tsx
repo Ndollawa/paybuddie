@@ -1,15 +1,16 @@
 import React,{useState,useEffect,useMemo} from 'react'
+import Swal from 'sweetalert2'
 import { useGetFaqsQuery, useDeleteFaqMutation } from '../faqApiSlice'
-import showToast from '../../../../../app/utils/hooks/showToast';
-import useLocalStorage from '../../../../../app/utils/hooks/useLocalStorage';
+import showToast from '../../../../../app/utils/hooks/showToast'
+import useLocalStorage from '../../../../../app/utils/hooks/useLocalStorage'
 import EditFaqModal from './EditFaqModal'
 import ViewModal from './ViewModal'
 import { setPreloader } from '../../../components/PreloaderSlice'
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'
 import  'datatables.net'
-import { faqProps } from '../../../../../app/utils/props/faqProps';
-
+import { faqProps } from '../../../../../app/utils/props/faqProps'
+import useDataTables from '../../../../../app/utils/hooks/useDataTables'
 
 interface modalDataProps {
     data:{
@@ -22,6 +23,7 @@ interface modalDataProps {
 }
 
 const FaqTableData = () => {
+   useDataTables($('#dataTable'))
     const dispatch = useDispatch()
   const [modalData,setModalData] = useState<modalDataProps>({
    data:null, 
@@ -65,9 +67,43 @@ if (isError) {
         error: delerror
     }]:any = useDeleteFaqMutation()
     const onDeleteFaq = async (id:string) => {
-        await deleteFaq({ _id: id })
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn m-2  btn-sm btn-success',
+              cancelButton: 'btn m-2  btn-sm btn-danger'
+            },
+            buttonsStyling: false
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+                  await deleteFaq({ _id: id })
         if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
-        showToast('success', 'FAQ Updated successfully')
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'FAQ has been Updated.',
+                'success'
+              )
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Your entry is safe :)',
+                'error'
+              )
+            }
+          })
+      
     }
 //  console.log(faq)
 if (isSuccess && !isLoading) {
@@ -76,12 +112,26 @@ if (isSuccess && !isLoading) {
    tableContent = Object.values(entities)?.length
         ? Object.values(entities)?.map((faqId:any) =>{
         const created = new Date(faqId.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long' ,year:'numeric'})
+
+        let faqStatus
+    switch (faqId.status) {
+    case 'active':
+        faqStatus =<span className="badge badge-success">{faqId.status}</span>
+        break;
+    case 'inactive':
+        faqStatus =<span className="badge badge-warning">{faqId.status}</span>
+        break;
+   
+    default:
+        faqStatus = ""
+        break;
+}
     return (
             <tr key={faqId._id}>
                     <td>{++index}</td>
                     <td>{faqId.question}</td>
-                    <td>{faqId.response}</td>
-                    <td>{faqId.status}</td>
+                    <td dangerouslySetInnerHTML={{__html: faqId.response}} ></td>
+                    <td align="center">{faqStatus}</td>
                     <td>{created}</td>
                     <td>
                         <div className="d-flex">
@@ -119,7 +169,7 @@ if (isSuccess && !isLoading) {
     <EditFaqModal modalData={modalData} />
     <ViewModal viewData={viewData}  />
     <div className="mt-20 table-responsive table-scrollable" >
-    <table id="table" className="table table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
+    <table id="dataTable" className="table mt-10 table-bordered table-hover table-responsive table-striped table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
         <thead>
             <tr>
                 <th>S/N</th>

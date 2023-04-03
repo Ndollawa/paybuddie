@@ -107,7 +107,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                 <div className="auth-form">
 									<div className="text-center mb-3">
 										<Link to="/" className="brand-logo">
-											<img src={process.env.REACT_APP_UPLOAD_URL+"/settings/"+logo} alt={siteName} width='150'/>
+											<img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} alt={siteName} width='150'/>
 										</Link>
 									</div>
                                     <h4 className="text-center mb-4">Sign in your account</h4>

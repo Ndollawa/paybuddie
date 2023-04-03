@@ -239,7 +239,7 @@ const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
     <Link to="#" data-target="html" className="scroll-to-target scroll-to-top"><i className="fa fa-angle-up"></i></Link>
         </div>
 
-        {/* <Js/> */}
+        <Js/>
     </>
   )
 }

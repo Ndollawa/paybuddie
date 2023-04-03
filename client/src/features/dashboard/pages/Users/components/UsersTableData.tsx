@@ -4,6 +4,7 @@ import showToast from '../../../../../app/utils/hooks/showToast'
 import useUserImage from '../../../../../app/utils/hooks/useUserImage'
 import { Link } from 'react-router-dom'
 import { FaEye } from 'react-icons/fa'
+import Swal from 'sweetalert2'
 
 interface modalDataProps {
     modalData:{
@@ -13,8 +14,12 @@ interface modalDataProps {
       showModal:boolean,
     } 
     }
-const UserTableData = ({user,index,showEditForm}:any) => {
-   
+const UserTableData = ({userId,index,showEditForm}:any) => {
+    const { user } = useGetUsersQuery("usersList", {
+        selectFromResult: ({ data }) => ({
+            user: data?.entities[userId]
+        }),
+      })   
 
     const userImage = useUserImage(user)
 
@@ -24,18 +29,54 @@ const UserTableData = ({user,index,showEditForm}:any) => {
         error: delerror
     }]:any = useDeleteUserMutation()
     const onDeleteUser = async () => {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-sm m-2 btn-success',
+              cancelButton: 'btn btn-sm m-2 btn-danger'
+            },
+            buttonsStyling: false
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then(async(result) => {
+            if (result.isConfirmed) {  
         await deleteUser({ _id: user._id })
-        if(isDelSuccess)showToast('success', 'USER Updated successfully')
-        if(isDelError) showToast('error',JSON.stringify(delerror?.data))
+        if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'User has been deleted.',
+                'success'
+              )
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Operation aborted, entry is safe  :)',
+                'error'
+              )
+            }
+          })
+      
     }
 // 
-    const userData = {
+console.log(user)
+    
+    if (user) {
+        const userData = {
         data:{
        user
         },
         showModal:true
     }
-    if (user) {
         const created = new Date(user.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
         let acctStatus;
         switch (user.accountStatus) {
@@ -86,7 +127,7 @@ const UserTableData = ({user,index,showEditForm}:any) => {
 										</td>
 										<td>
 											<div className="media style-1">
-												<img src={userImage} className="img-fluid me-2" alt=""/>
+												<img src={userImage} className="img-fluid me-2" alt={user.username}/>
 												<div className="media-body">
 													<h6>{user?.firstName && user?.lastName && user?.firstName+" "+user?.lastName}</h6>
 													<span><a href={`mailto:${user.email}}`}>{user.email}</a></span>

@@ -1,7 +1,7 @@
 import React from 'react'
 import {useGetRoomsQuery,useDeleteRoomMutation } from '../roomApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
-
+import Swal from 'sweetalert2'
 
 interface modalDataProps {
     modalData:{
@@ -9,7 +9,7 @@ interface modalDataProps {
           id:string | number;
           title: string;
           description: string;
-          roomImage: string;
+          image: string;
           status: string;
       } | null,
       showModal:boolean,
@@ -29,34 +29,80 @@ const RoomTableData = ({roomId,index,showEditForm}:any) => {
         error: delerror
     }]:any = useDeleteRoomMutation()
     const onDeleteRoom = async () => {
-        await deleteRoom({ _id: roomId })
-        if(isDelSuccess)showToast('success', 'ROOM Updated successfully')
-        if(isDelError) showToast('error',JSON.stringify(delerror?.data))
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-sm m-2 btn-success',
+              cancelButton: 'btn btn-sm m-2 btn-danger'
+            },
+            buttonsStyling: false
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then(async(result) => {
+            if (result.isConfirmed) {  
+              await deleteRoom({ _id: roomId })
+        if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Room has been deleted.',
+                'success'
+              )
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Operation aborted, entry is safe  :)',
+                'error'
+              )
+            }
+          })
+      
     }
 // 
-    const roomData = {
+
+    if (room) {
+        const created = new Date(room.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
+        const roomData = {
         data:{
         id:roomId,
         title:room.title,
         description:room.description,
-        roomImage:room.roomImage,
+        image:room.image,
         status:room.status
 
         },
         showModal:true
     }
-    if (room) {
-        const created = new Date(room.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
-    
-    
+    let roomStatus
+    switch (room.status) {
+    case 'active':
+        roomStatus =<span className="badge badge-success">{room.status}</span>
+        break;
+    case 'inactive':
+        roomStatus =<span className="badge badge-warning">{room.status}</span>
+        break;
+   
+    default:
+        roomStatus = ""
+        break;
+}
         return (
             <tr key={roomId}>
                     <td>{++index}</td>
-                    <td><img src={process.env.REACT_APP_BASE_URL+"uploads/room"+room.roomImage} alt="" /></td>
+                    <td><img src={process.env.REACT_APP_BASE_URL+"/uploads/room/"+room.image} alt="" width="40" /></td>
                     <td>{room.title}</td>
                     <td>{room.description}</td>
-                    <td>{room.status}</td>
-                    <td>{room.member.len}</td>
+                    <td>{roomStatus}</td>
+                    <td><i className="fa fa-users"></i>&ensp; ({room.members.length})</td>
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">

@@ -6,7 +6,7 @@ import socketIO, { Server as SocketIOServer, Socket } from "socket.io";
 import path from 'path';
 import cors from 'cors';
 import  'express-async-errors';
-// import { logger } from './src/app/Http/Middleware/logEvents';
+import { logger } from './src/app/Http/Middleware/logEvents';
 import errorHandler from './src/app/Http/Middleware/errorHandler';
 import corsOptions from './src/config/corsOptions';
 import verifyJWT from './src/app/Http/Middleware/verifyJWT';
@@ -45,7 +45,7 @@ const app:Application = express();
 const PORT:string |number | undefined = process.env.PORT || 3500;
 
 // custom middleware logger
-// app.use(logger);
+app.use(logger);
 
 //Handle file uploads
 // app.use(fileUpload({ createParentPath: true }));

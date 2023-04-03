@@ -19,7 +19,6 @@ updateHomepageSettings = async(req:Request, res:Response)=>{
 
 updateDashboardSettings = async(req:Request, res:Response)=>{
     const{_id,data} =  req.body
-   
     console.log(req.body)
     const result = await SettingsModel.findOneAndUpdate({_id},{dashboardConfig:{layoutOptions:{...data}}}) 
     res.status(200).json({message:'success'});
@@ -39,7 +38,6 @@ updateGeneralSettings = async(req:Request, res:Response)=>{
 }
 
 uploads = async(req:Request, res:Response)=>{
-   console.log(req.file)
     const {_id,type} = req.body
     const file = req?.file!
     const destination = '../../../../public/settings'
@@ -50,54 +48,63 @@ uploads = async(req:Request, res:Response)=>{
             switch (type) {
                 case 'favicon':
                     if(result){
-                    const oldFile =result.companyDetails!.favicon! 
+                    const oldFile =result.siteImages!.favicon! 
                     if(oldFile) deleteItem(destination,oldFile)
-                    result.companyDetails!.favicon! = file.filename
+                    result.siteImages!.favicon! = file.filename
                     result?.save()
                    return res.status(200).json({messsage:'success'});
                  }   
                     break;
                 case 'logo':
                     if(result){
-                   const oldFile = result.companyDetails!.logo! 
+                   const oldFile = result.siteImages!.logo! 
                    if(oldFile) deleteItem(destination,oldFile)
-                    result.companyDetails!.logo! = file.filename
+                    result.siteImages!.logo! = file.filename
+                    result?.save()
+                   return res.status(200).json({messsage:'success'}); 
+                 }   
+                    break;
+                case 'logoIcon':
+                    if(result){
+                   const oldFile = result.siteImages!.logoIcon! 
+                   if(oldFile) deleteItem(destination,oldFile)
+                    result.siteImages!.logoIcon! = file.filename
                     result?.save()
                    return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
                 case 'darklogo':
                     if(result){
-                   const oldFile = result.companyDetails!.logoDark! 
+                   const oldFile = result.siteImages!.logoDark! 
                    if(oldFile) deleteItem(destination,oldFile)
-                    result.companyDetails!.logoDark! = file.filename
+                    result.siteImages!.logoDark! = file.filename
                     result?.save()
                    return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
                 case 'pageBg':
                     if(result){
-                   const oldFile = result.companyDetails!.pagesBg! 
+                   const oldFile = result.siteImages!.pagesBg! 
                    if(oldFile) deleteItem(destination,oldFile)
-                    result.companyDetails!.pagesBg! = file.filename
+                    result.siteImages!.pagesBg! = file.filename
                     result?.save()
                    return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
                 case 'bgImage':
                     if(result){
-                    const oldFile =result.companyDetails!.backgroundImage! 
+                    const oldFile =result.siteImages!.backgroundImage! 
                     if(oldFile) deleteItem(destination,oldFile)
-                    result.companyDetails!.backgroundImage! = file.filename
+                    result.siteImages!.backgroundImage! = file.filename
                     result?.save()
                    return res.status(200).json({messsage:'success'}); 
                  }   
                     break;
                 case 'aboutUsBg':
                     if(result){
-                   const oldFile = result.companyDetails!.aboutUsBg! 
+                   const oldFile = result.siteImages!.aboutUsBg! 
                    if(oldFile) deleteItem(destination,oldFile)
-                    result.companyDetails!.aboutUsBg! = file.filename
+                    result.siteImages!.aboutUsBg! = file.filename
                     result?.save()
                    return res.status(200).json({messsage:'success'}); 
                  }   
@@ -138,7 +145,7 @@ removeUploads = async(req:Request, res:Response)=>{
             switch (type) {
                 case 'favicon':
                     if(result){
-                    result.companyDetails!.favicon! = ''
+                    result.siteImages!.favicon! = ''
                     result?.save()
                    deleteItem(destination, file)
                    return res.status(200).json({messsage:'success'}); 
@@ -147,7 +154,7 @@ removeUploads = async(req:Request, res:Response)=>{
                     break;
                 case 'logo':
                     if(result){
-                    result.companyDetails!.logo! = ''
+                    result.siteImages!.logo! = ''
                     result?.save()
                    deleteItem(destination, file)
                    return res.status(200).json({messsage:'success'}); 
@@ -155,7 +162,7 @@ removeUploads = async(req:Request, res:Response)=>{
                     break;
                 case 'logoDark':
                     if(result){
-                    result.companyDetails!.logoDark! = ''
+                    result.siteImages!.logoDark! = ''
                     result?.save()
                    deleteItem(destination, file)
                    return res.status(200).json({messsage:'success'}); 
@@ -163,7 +170,14 @@ removeUploads = async(req:Request, res:Response)=>{
                     break;
                 case 'pageBg':
                     if(result){
-                    result.companyDetails!.pagesBg! = ''
+                    result.siteImages!.pagesBg! = ''
+                    result?.save()
+                    deleteItem(destination, file)
+                    res.status(200).json({messsage:'success'}); 
+                 }   
+                case 'logoIcon':
+                    if(result){
+                    result.siteImages!.logoIcon! = ''
                     result?.save()
                     deleteItem(destination, file)
                     res.status(200).json({messsage:'success'}); 
@@ -171,7 +185,7 @@ removeUploads = async(req:Request, res:Response)=>{
                     break;
                 case 'bgImage':
                     if(result){
-                    result.companyDetails!.backgroundImage! = ''
+                    result.siteImages!.backgroundImage! = ''
                     result?.save()
                    deleteItem(destination, file)
                    return res.status(200).json({messsage:'success'}); 
@@ -179,7 +193,7 @@ removeUploads = async(req:Request, res:Response)=>{
                     break;
                 case 'aboutUsBg':
                     if(result){
-                    result.companyDetails!.aboutUsBg! = ''
+                    result.siteImages!.aboutUsBg! = ''
                     result?.save()
                    deleteItem(destination, file)
                    return res.status(200).json({messsage:'success'}); 

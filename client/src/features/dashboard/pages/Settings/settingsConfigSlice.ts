@@ -33,12 +33,6 @@ const initialState = {
         },
         companyDetails:{
             siteName:null,
-            logo:"",
-            logoDark:"",
-            favicon:null,
-            pagesBg:"",
-            aboutUsBg:'',
-            backgroundImage:'',
             city:null,
             state:null,
             country:null,
@@ -48,10 +42,21 @@ const initialState = {
             contact:[],
             address:null,
             activeHours:null,
+            socialMedia:{
             facebookHandle:null,
             twitterHandle:null,
             instagram:null,
             whatsapp:null
+        }
+        },  
+        siteImages:{
+            logo:'',
+            logoIcon:'',
+            logoDark:'',
+            favicon:'',
+            backgroundImage:'',
+            aboutUsBg:'',
+            pagesBg:'',
         },
         pages:{
             aboutUs:null,
@@ -94,6 +99,7 @@ export const settingsConfigSlice = createSlice({
 export const useCompanyDetails = (state:any)=>state.settingsConfig.companyDetails;
 export const useLandingPageConfig = (state:any)=>state.settingsConfig.landingPageConfig;
 export const useDashboardConfig = (state:any)=>state.settingsConfig.dashboardConfig;
+export const useSiteImages = (state:any)=>state.settingsConfig.siteImages;
 export const usePages = (state:any)=>state.settingsConfig.pages;
 export const useSettings = (state:any)=>state.settingsConfig
 export const {setAppGeneralSetting,setDashboardSetting,setPagesSetting,setAppHomepageSetting,setSettings} = settingsConfigSlice.actions;

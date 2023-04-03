@@ -2,15 +2,16 @@ import React from 'react';
 import {Helmet} from 'react-helmet-async'
 import pageProps from "../../../app/utils/props/pageProps";
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../pages/Settings/settingsConfigSlice';
+import {useCompanyDetails,useSiteImages} from '../pages/Settings/settingsConfigSlice';
 
 
 const Head:React.FC<pageProps> = ({pageData}:pageProps) => {
-const {siteName,favicon,description} = useSelector(useCompanyDetails); 
+const {siteName,description} = useSelector(useCompanyDetails); 
+const {favicon} = useSelector(useSiteImages); 
 const {pageTitle} = pageData!;
   return (
     <Helmet>
-    <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
+   <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
 	<meta charSet="utf-8"/>
   <meta name="keywords" content="" />
 	<meta name="author" content="" />
