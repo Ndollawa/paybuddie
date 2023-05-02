@@ -28495,3 +28495,4 @@
 2023-05-03	00:34:26	2bb83962-f535-40d0-886a-b0ab27dffd6f	GET	http://localhost:3000	/settings/
 2023-05-03	00:36:16	f70004f8-26fd-493d-84fb-a4564122c276	OPTIONS	http://localhost:3000	/teams
 2023-05-03	00:36:16	be40530a-ed16-4089-8b7b-60f5015e9d8f	GET	http://localhost:3000	/teams
+2023-05-03	00:36:21	71818c78-3b63-4876-a88f-7d89e9983d10	GET	http://localhost:3000	/settings/
