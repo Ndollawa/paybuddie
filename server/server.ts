@@ -22,6 +22,7 @@ import RoomRoutes from './src/app/Routes/api/room';
 import ContactsRoutes from './src/app/Routes/api/contacts';
 import UserRoutes from './src/app/Routes/api/users';
 import MessageRoutes from './src/app/Routes/api/messages';
+import MessageModel from './src/app/Models/Message';
 import AuthRoutes from './src/app/Routes/api/auth';
 import TeamRoutes from './src/app/Routes/api/team';
 import PostRoutes from './src/app/Routes/api/post';
@@ -93,10 +94,12 @@ const io = new SocketIOServer(server,{
     });
  //Handle private chat 
  io.on("connection", (socket:Socket) => {
-    // console.log(socket)
-     socket.on("privateMessage", (data) => { 
+    console.log(socket)
+     socket.on("privateMessage", async(data) => { 
         const { sender, receiver, message } = data;
         console.log(data)
+        const sendMsg = await MessageModel.create({...data,conversation:[sender,receiver]})
+        // sendMsg.save()
         io.to(receiver).emit("message", { sender, message }); 
             }); 
 
@@ -123,7 +126,7 @@ app.use('/slides', SlideRoutes);
 app.use('/users', UserRoutes);
 app.use('/faqs', FaqRoutes);
 app.use('/posts', PostRoutes);
-app.use('/categoryies', CategoryRoutes);
+app.use('/categories', CategoryRoutes);
 app.use('/services', ServiceRoutes);
 app.use('/teams', TeamRoutes);
 app.use('/settings', SettingsRoutes);

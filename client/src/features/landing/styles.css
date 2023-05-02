@@ -1596,7 +1596,10 @@ h6 {
 
 .main-menu {
 	position: relative;
+	display:flex;
+	justify-content:space-between;
 	z-index: 91;
+
 }
 
 .main-menu .container-fluid {
@@ -1640,6 +1643,7 @@ h6 {
 
 .main-menu__nav {
 	padding-left: 375px;
+	
 }
 
 @media (max-width: 1199px) {

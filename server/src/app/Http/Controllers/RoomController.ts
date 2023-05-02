@@ -2,7 +2,7 @@ import RoomModel from '../../Models/Room'
 // import UserModel from '../../Models/User'
 import {Request, Response} from 'express'
 import BaseController from './BaseController'
-
+import deleteItem from '../../utils/deleteItem'
 
 
 class RoomController extends BaseController {
@@ -91,8 +91,12 @@ const image = req?.file!
     }
 
     room.title = title
-    if(image)room.image = image.filename
-    
+    if(image){
+        const destination = '../../../../public/room'
+        const oldFile = room.image! 
+        if(oldFile) deleteItem(destination,oldFile)
+        room.image = image.filename
+    }
     room.description = description
     room.status = status
 
@@ -118,7 +122,9 @@ public delete = async (req:Request, res:Response) => {
     if (!room) {
         return res.status(400).json({ message: 'room not found' })
     }
-
+    const destination = '../../../../public/room'
+    const oldFile = room.image! 
+    if(oldFile) deleteItem(destination,oldFile)
     const result = await RoomModel.deleteOne()
 
     res.status(200).json({message:"success"})

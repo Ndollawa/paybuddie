@@ -4,9 +4,11 @@
     import EditRoomForm from './components/EditRoomForm'
     import { useDispatch } from 'react-redux'
     import { useGetRoomsQuery } from './roomApiSlice'
+    import $ from 'jquery'
     import { setPreloader } from '../../components/PreloaderSlice'
     import pageProps from '../../../../app/utils/props/pageProps'
     import RoomTableData from './components/RoomsTableData'
+    import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'
     
     
 
@@ -47,7 +49,14 @@ interface modalDataProps {
             dispatch(setPreloader(isLoading?true:false)) 
              
             }, [isLoading])
-console.log(rooms)
+            useEffect(() => {
+
+                destroyDataTables($('#dataTable'))
+                  initDataTables($('#dataTable'),"FAQs")
+                return () => {
+                 destroyDataTables($('#dataTable'))
+                }
+              }, [rooms])
     let tableContent
     if (isSuccess) {
         const { ids } = rooms
@@ -76,7 +85,7 @@ console.log(rooms)
                         <CreateRoomModal/>
                                     </div>
                             <div className="table-responsive table-scrollable">
-                                        <table id="table" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
+                                        <table id="dataTable" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>

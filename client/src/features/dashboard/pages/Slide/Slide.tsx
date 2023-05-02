@@ -7,28 +7,29 @@
     import { setPreloader } from '../../components/PreloaderSlice'
     import pageProps from '../../../../app/utils/props/pageProps'
     import SlideTableData from './components/SlideTableData'
-    
+    import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'
+    import $ from 'jquery'
     
 
     
 interface modalDataProps {
        data:{
-          id:string | number;
+          _id:string | number;
           title: string;
           description: string;
           body: string;
-          slideImage: string;
+          cto:{
+            cto_text?:string;
+            link?:string;
+          }
+          image: string;
           status: string;
       } | null,
       showModal:boolean,
     }
     const Slide = ({pageData}:pageProps)  => {
         const dispatch =useDispatch()
-        const [modalData,setModalData] = useState<modalDataProps>({
-            data:null, 
-            showModal:false,
-           })
-    const {
+       const {
         data:slides,
         isLoading,
         isSuccess,
@@ -39,6 +40,11 @@ interface modalDataProps {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
+     const [modalData,setModalData] = useState<modalDataProps>({
+            data:null, 
+            showModal:false,
+           })
+    
     const showEditForm = (modalData:modalDataProps)=>{
         setModalData(modalData);
         }
@@ -47,6 +53,14 @@ interface modalDataProps {
             dispatch(setPreloader(isLoading?true:false)) 
              
             }, [isLoading])
+            useEffect(() => {
+
+                destroyDataTables($('#dataTable'))
+                  initDataTables($('#dataTable'),"FAQs")
+                return () => {
+                 destroyDataTables($('#dataTable'))
+                }
+              }, [slides])
 
     let tableContent
     if (isSuccess && !isLoading) {
@@ -56,7 +70,6 @@ interface modalDataProps {
             ? ids.map((slideId:string ,i:number) =><SlideTableData key={slideId} slideId={slideId} index={i} showEditForm={showEditForm} />) 
             : null
     }
-    console.log(tableContent)
      return (
         <>
         <MainBody>
@@ -74,7 +87,7 @@ interface modalDataProps {
                                     </div>
                             <EditSlideForm modalData={modalData} />
                             <div className="table-responsive table-scrollable">
-                                        <table id="table" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
+                                        <table id="dataTable" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>

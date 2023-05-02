@@ -2,7 +2,7 @@ import ServiceModel from '../../Models/Service'
 // import UserModel from '../../Models/User'
 import {Request, Response} from 'express'
 import BaseController from './BaseController'
-
+import deleteItem from '../../utils/deleteItem'
 
 
 class ServiceController extends BaseController {
@@ -78,7 +78,7 @@ const image = req?.file!
     const service = await ServiceModel.findById({_id}).exec()
 
     if (!service) {
-        return res.status(400).json({ message: 'service not found' })
+        return res.status(400).json({ message: 'Service not found' })
     }
 
     // Check for duplicate title
@@ -86,12 +86,16 @@ const image = req?.file!
 
     // Allow renaming of the original note 
     if (duplicate && duplicate?._id.toString() !== _id) {
-        return res.status(409).json({ message: 'Duplicate note title' })
+        return res.status(409).json({ message: 'Duplicate Service title' })
     }
 
     service.body = body
     service.title = title
-    if(image)service.image = image.filename
+    if(image){
+        const destination = '../../../../public/service'
+        const oldFile = service.image! 
+        if(oldFile) deleteItem(destination,oldFile)
+        service.image = image.filename}
     
     service.description = description
     service.status = status
@@ -118,7 +122,9 @@ public delete = async (req:Request, res:Response) => {
     if (!service) {
         return res.status(400).json({ message: 'service not found' })
     }
-
+    const destination = '../../../../public/service'
+    const oldFile = service.image! 
+    if(oldFile) deleteItem(destination,oldFile)
     const result = await ServiceModel.deleteOne()
 
     res.status(200).json({message:"success"})

@@ -18,7 +18,7 @@ export const postCategoryApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getPostCategory: builder.query<any, any>({
             query: () => ({
-                url: '/postCategory',
+                url: '/categories',
                 validateStatus: (response:any, result:any) => {
                     return response.status === 200 && !result.isError
                 },
@@ -41,7 +41,7 @@ export const postCategoryApiSlice = apiSlice.injectEndpoints({
         }),
         addNewPostCategory: builder.mutation({
             query: postCategory => ({
-                url: '/postCategory',
+                url: '/categories',
                 method: 'POST',
                 body: postCategory
             }),
@@ -51,7 +51,7 @@ export const postCategoryApiSlice = apiSlice.injectEndpoints({
         }),
         updatePostCategory: builder.mutation({
             query: postCategory => ({
-                url: '/postCategory',
+                url: '/categories',
                 method: 'PATCH',
                 body: postCategory,
                 
@@ -62,7 +62,7 @@ export const postCategoryApiSlice = apiSlice.injectEndpoints({
         }),
         deletePostCategory: builder.mutation({
             query: ({ _id }) => ({
-                url: `/postCategory`,
+                url: `/categories`,
                 method: 'DELETE',
                 body: { _id }
             }),

@@ -6,7 +6,7 @@ import Slider from './Components/Slider';
 import AboutUs from './Components/AboutUs';
 import WhatWeOffer from './Components/WhatWeOffer';
 import OurBenefit from './Components/OurBenefit';
-import Testionial from './Components/Testionial';
+import Testimonial from './Components/Testimonial';
 import HowItWorks from './Components/HowItWorks';
 
 const Home:React.FC<pageProps>=({pageData}:pageProps) => {
@@ -77,7 +77,7 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
             {/* <!-- /.container --> */}
         </section>
         {/* <!-- /.loan-calculator --> */}
-       <Testionial/>
+       <Testimonial/>
         {/* <!-- /.testimonials-one --> */}
         <section className="fact-one pt-140 pb-100">
             <div className="container">

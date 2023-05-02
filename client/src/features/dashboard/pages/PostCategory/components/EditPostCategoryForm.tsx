@@ -1,10 +1,6 @@
 import React, {ChangeEvent,FormEvent,useState,useEffect} from 'react'
 import { useUpdatePostCategoryMutation} from '../postCategoryApiSlice'
-import {Modal} from 'react-bootstrap'
-import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
-import { useSelector } from 'react-redux'
-import { selectCurrentUser } from '../../../../auth/authSlice'
 
 
 
@@ -13,23 +9,19 @@ import { selectCurrentUser } from '../../../../auth/authSlice'
 interface modalDataProps {
   modalData:{
      data:{
-        id:string | number;
+        id:string;
         title: string;
         status: string;
     } | null,
-    showModal:boolean,
+    showModal:boolean;
   } 
+  showEditForm:any
   }
-const EditPostCategoryForm = ({modalData:{data,showModal}}:modalDataProps) => {
+const EditPostCategoryForm = ({modalData:{data,showModal},showEditForm}:modalDataProps) => {
 
-const author = useSelector(selectCurrentUser);
 const [title, setTitle] = useState(data?.title!)
 const [status, setStatus] = useState(data?.status!)
-const [show, setShow] = useState(false) 
 
-
-const handleClose = () => setShow(false);
-const handleShow = () => setShow(true);
 const [updatePostCategory, {
   isLoading,
   isSuccess,
@@ -43,24 +35,12 @@ React.useEffect(() => {
       setTitle('')
   }
 }, [isSuccess])
-useEffect(() => {
-  setShow(showModal)
-    return () => {
-      setShow(false)
-      
-    };
-  }, [data])
 const canSave = [title,status].every(Boolean) && !isLoading
 
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
-const formData = new FormData()
  if (canSave) {
-formData.append("title",title)
-formData.append("status",status)
-formData.append("_id",author._id!)
-
-      await updatePostCategory(formData)
+      await updatePostCategory({title,status,_id:data?.id})
       if(isError) return showToast('error',JSON.stringify(error?.data?.message))
       showToast('success', 'Post category updated successfully')
   }
@@ -69,20 +49,10 @@ formData.append("_id",author._id!)
 
   return (
     <>
-  
-  
-  <Modal show={show} size="sm" centered backdrop='static'
- onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Category</Modal.Title>
-        </Modal.Header>
+
          <form onSubmit={handleSubmit}>
-        <Modal.Body>
-                
-        <div className="card-body">
           <div className="basic-form">
-              <div className="row">
-                <div className="mb-3 col-md-9">
+                <div className="form-group">
                   <label className="form-label"><strong>Title or Category</strong></label>
                   <input
                     type="text"
@@ -92,7 +62,7 @@ formData.append("_id",author._id!)
                     onChange={(e)=>setTitle(e.target.value)}
                   />
                 </div>
-                <div className="mb-3 col-md-3">
+                <div className="form-group">
                   <label className="form-label"><strong>Status</strong></label>
                   <select
                     id="inputState"
@@ -106,23 +76,13 @@ formData.append("_id",author._id!)
                   </select>
                 </div>
                
-               
-              </div>
-             
-          </div>
-  
-                    </div>
-                    </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
-            Update Category
-          </Button>
-        </Modal.Footer>
+                <div className='text-right'>
+                    <button type='button' className='btn btn-dark btn-sm m-2' onClick={()=>showEditForm({data:null,showModal:false})}  >Cancel</button>
+                    <button type='submit' className='btn btn-secondary btn-sm m-2' disabled={!canSave}  >Update</button>
+                </div>
+             </div>
+
             </form>
-      </Modal>
     </>
   )
 }

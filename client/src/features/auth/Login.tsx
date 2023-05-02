@@ -7,7 +7,7 @@ import useToggle from '../../app/utils/hooks/useToggle';
 
 // react-reduct rtkquery approach
 import {useDispatch, useSelector} from 'react-redux';
-import {useCompanyDetails} from '../dashboard/pages/Settings/settingsConfigSlice';
+import {useCompanyDetails,useSiteImages} from '../dashboard/pages/Settings/settingsConfigSlice';
 import {useLoginMutation} from './authApiSlice';
 import { setCredentials } from './authSlice';
 import jwt_decode from 'jwt-decode';
@@ -23,7 +23,8 @@ interface errMessages{
 const Login:React.FC = () => {
 
     
-    const {siteName,logo} = useSelector(useCompanyDetails);
+    const {siteName} = useSelector(useCompanyDetails);
+    const {logo} = useSelector(useSiteImages);
 
 
 const navigate = useNavigate();
@@ -105,7 +106,8 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                         <div className="row no-gutters">
                             <div className="col-xl-12">
                                 <div className="auth-form">
-									<div className="text-center mb-3">
+									<div className="text-cente d-flex justify-content-center 
+ align-items-center mb-3">
 										<Link to="/" className="brand-logo">
 											<img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} alt={siteName} width='150'/>
 										</Link>

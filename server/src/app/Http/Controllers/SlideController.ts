@@ -2,7 +2,7 @@ import SlideModel from '../../Models/Slide'
 // import UserModel from '../../Models/User'
 import {Request, Response} from 'express'
 import BaseController from './BaseController'
-
+import deleteItem from '../../utils/deleteItem'
 
 
 class SlideController extends BaseController {
@@ -38,8 +38,9 @@ class SlideController extends BaseController {
 // @route POST /slide
 // @access authorized user
  public create = async (req:Request, res:Response) => {
-    const { title, description, body, status } = req.body
+    const { title, description, body, status,cto_option, link, cto_text } = req.body
     const file = req.file!
+    console.log(req.body)
     // Confirm data
     if (!body || !title || !status || !req.file) {
         return res.status(400).json({ message: 'All fields are required' })
@@ -51,9 +52,10 @@ class SlideController extends BaseController {
     if (duplicate) {
         return res.status(409).json({ message: 'Duplicate slide title' })
     }
-
-    // Create and store the new user 
-    const slide = await SlideModel.create({ title,description,body,image:file.filename })
+    var reqdata:any = { title,description,body,image:file.filename }
+    const cto = {cto_text, link}
+    if(cto_option) reqdata = {...reqdata,cto}    // Create and store the new user 
+    const slide = await SlideModel.create(reqdata)
 
     if (slide) { // Created 
         return res.status(201).json({ message: 'New slide created' })
@@ -67,8 +69,9 @@ class SlideController extends BaseController {
 // @route PATCH /slide
 // @access authorized user
 public update = async (req:Request, res:Response) => {
-    const {title, description,_id,status,body } = req.body
+    const {title, description,_id,status,body,cto_option, link, cto_text } = req.body
 const image = req.file
+console.log(req.body)
     // Confirm data
     if (!title || !description) {
         return res.status(400).json({ message: 'All fields are required' })
@@ -91,13 +94,19 @@ const image = req.file
 
     slide.body = body
     slide.title = title
-    if(image) slide.image = image.filename
+    if(cto_option) slide.cto = {link,cto_text}
+    if(image){
+       const destination = '../../../../public/slide'
+       const oldFile = slide.image! 
+       if(oldFile) deleteItem(destination,oldFile)
+       slide.image = image.filename 
+    } 
     slide.description = description
     slide.status = status
 
     const updatedSlide = await slide.save()
 
-    res.json(`'${updatedSlide.title}' updated`)
+    res.json(`${updatedSlide.title} updated`)
 }
 
 // @desc Delete a slide
@@ -118,7 +127,11 @@ public delete = async (req:Request, res:Response) => {
         return res.status(400).json({ message: 'slide not found' })
     }
 
-    const result = await SlideModel.deleteOne()
+    const destination = '../../../../public/slide'
+
+    const oldFile = slide.image! 
+    if(oldFile) deleteItem(destination,oldFile)
+     const result = await SlideModel.deleteOne()
 
     res.status(200).json({message:"success"})
 }

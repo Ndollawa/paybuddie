@@ -2,6 +2,7 @@ import TeamModel from '../../Models/Team'
 // import UserModel from '../../Models/User'
 import {Request, Response} from 'express'
 import BaseController from './BaseController'
+import deleteItem from '../../utils/deleteItem'
 
 
 
@@ -40,11 +41,12 @@ class TeamController extends BaseController {
  public create = async (req:Request, res:Response) => {
     const { email, firstName, lastName, phone, bio, status } = req.body
     const file = req.file!
+    console.log(req.body)
     // Confirm data
-    if (!email || !firstName || !lastName || !bio || !status || !req.file) {
+    if (!email || !firstName || !lastName || !bio || !status || !file) {
         return res.status(400).json({ message: 'All fields are required' })
     }
-    const userObj = {...req.body,userImage:file}
+    const userObj = {...req.body,userImage:file.filename}
     // Create and store the new user 
     const team = await TeamModel.create(userObj)
 
@@ -60,21 +62,40 @@ class TeamController extends BaseController {
 // @route PATCH /team
 // @access authorized user
 public update = async (req:Request, res:Response) => {
-    const { email, firstName, lastName, phone, bio, status ,_id} = req.body
+    const { email, firstName, lastName, phone, bio, status ,_id,facebookHandle,twitterHandle,instagram,whatsapp,position} = req.body
     const file = req.file!
     // Confirm data
-    if (!email || !firstName || !lastName || !bio || !status || !req.file) {
+    console.log(req.body)
+    if (!email || !firstName || !lastName || !bio || !status) {
         return res.status(400).json({ message: 'All fields are required' })
     }
-  const userObj = file?  {...req.body,userImage:file}: {...req.body}
     // Confirm team exists to update
-    const team = await TeamModel.findByIdAndUpdate(_id,userObj,{new:true})
+    const team = await TeamModel.findById({_id}).exec()
 
     if (!team) {
         return res.status(400).json({ message: 'Team member not found' })
     }
 
+    team.firstName = firstName
+    team.lastName = lastName
+    team.email = email
+    team.phone = phone
+    team.bio = bio
+   if(file){
+    const destination = '../../../../public/team'
+    const oldFile = team.userImage! 
+    if(oldFile) deleteItem(destination,oldFile)
+    team.userImage = file.filename
+   } 
+    team.socialMedia!.facebookHandle = facebookHandle
+    team.socialMedia!.twitterHandle = twitterHandle
+    team.socialMedia!.instagram = instagram
+    team.socialMedia!.whatsapp = whatsapp
+    team.status = status
+    team.position = position
+    // team.tags = tags
 
+    const updatedTeam = await team.save()
     res.status(200).json({message:'success'})
 }
 

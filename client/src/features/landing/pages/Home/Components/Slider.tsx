@@ -8,6 +8,15 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 // import 'owl.carousel';
 import 'owl.carousel.es6'
 
+interface slideProps {
+    _id:string;
+    title:string;
+    description:string;
+    body:string;
+    cto_text?:string;
+    link?:string;
+    image:string;
+}
 
 const Slider = () => {
     useEffect(() => {
@@ -44,61 +53,21 @@ const Slider = () => {
       };
     }, [])
  const {sliderStyle} = useSelector(useLandingPageConfig);
-    // const {
-    //     data: slides,
-    //     isLoading,
-    //     isSuccess,
-    //     isError,
-    //     error
-    // } = useGetSlidesQuery('faqList', {
-    //     pollingInterval: 15000,
-    //     refetchOnFocus: true,
-    //     refetchOnMountOrArgChange: true
-    // })
-const slides:{
-    id:number;
-    heading:string|ReactElement;
-    subHeading:string | ReactElement;
-    image:string;
-    body:string;
-    link:string;
-    cotBtnText:string;
-}[] =[
-    {
-        id:1,
-       heading:"Simple & Secure Payment",
-       subHeading:<>We provide you
-       a financial <span>power</span></>,
-       image:"assets/images/backgrounds/slider-1-1.png",
-       body:"Nulla ac nunc eget ante consectetur lobortis a vel orci. Vivamus nibh est condimentum ac metus nec, gravida varius diam.",
-       link:"/register",
-       cotBtnText:"Sign Up"
-
-    },
-    {
-        id:2,
-       heading:<>Quick Payment Transaction
-       <span>Everyone</span></>,
-       subHeading:"All sub headings testing..",
-       image:"assets/images/backgrounds/slider-2-2.png",
-       body:"Nulla ac nunc eget ante consectetur lobortis a vel orci. Vivamus nibh est condimentum ac metus nec, gravida varius diam.",
-       link:"/login",
-       cotBtnText:"Login"
-
-    },
-    {
-        id:3,
-       heading:"Welcome to Our company",
-       subHeading:"All sub headings  testing..",
-       image:"assets/images/backgrounds/slider-3-1.png",
-       body:"Nulla ac nunc eget ante consectetur lobortis a vel orci. Vivamus nibh est condimentum ac metus nec, gravida varius diam.",
-       link:"/register",
-       cotBtnText:"Join Now"
-
-    },
-   
-]
-      let slider:ReactElement<ReactNode> | null; 
+    const {
+        data: slides,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetSlidesQuery('slideList', {
+        pollingInterval: 15000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    })
+      let slider:any; 
+    if(slides){
+     const {ids,entities} = slides
+    //  console.log(Object.valuesentities)
 switch (sliderStyle) {
     case 1: 
     slider =(
@@ -116,8 +85,9 @@ switch (sliderStyle) {
 		"margin": 0
 	}'>
                 {
-              slides.map((slide):JSX.Element =>{
-             return( <div className="item" key={slide.id}>
+             Object.values(entities)?.map((slide:any)=>{
+
+             return( <div className="item" key={slide._id}>
                     <div className="slider-one__item">
                         <div className="slider-one__lines">
                             <span></span>
@@ -126,7 +96,7 @@ switch (sliderStyle) {
                             <span></span>
                             <span></span>
                         </div>
-                        <div className="slider-one__image" style={{backgroundImage: `url(${slide.image})`}}>
+                        <div className="slider-one__image" style={{backgroundImage: `url(${process.env.REACT_APP_BASE_URL+"uploads/slide/"+slide.image})`}}>
                         </div>
                         
                         <div className="container">
@@ -135,13 +105,13 @@ switch (sliderStyle) {
                                     <p className="slider-one__tagline">
                                         <i className="fa fa-chart-pie"></i>
                                       
-                                      {slide.heading}
+                                      {slide.title}
                                     </p>
-                                    <h2 className="slider-one__title">{slide.subHeading}</h2>
-                                    
-                                    <p className="slider-one__text">{slide.body}</p>
+                                    <h2 className="slider-one__title">{slide.description}</h2>
+                                    {slide.body}
+                                    <p className="slider-one__text">{ slide?.body?.replaceAll(/<\/?[^>]+(>|$)/gi, "")}</p>
                                     <div className="slider-one__btns">
-                                        <a href={slide.link} className="thm-btn">{slide.cotBtnText}</a>
+                                        <a href={slide?.cto?.link} className="thm-btn btn-sm ">{slide?.cto?.cot_text}</a>
                                     </div>
                                 </div>
                             </div>
@@ -191,20 +161,22 @@ switch (sliderStyle) {
 "margin": 0
 }'>
             {
-              slides.map((slide):JSX.Element =>{
+              Object.values(entities)?.map((slide:any):JSX.Element =>{
+                
+
              return( 
-             <div className="item" key={slide.id}>
+             <div className="item" key={slide._id}>
             <div className="slider-one__item">
-                <div className="slider-one__image" style={{backgroundImage:`url(${slide.image})`}}>
+                <div className="slider-one__image" style={{backgroundImage:`url(${process.env.REACT_APP_BASE_URL+"uploads/slide/"+slide.image})`}}>
                 </div>
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6">
-                            <p className="slider-one__tagline"> {slide.heading}</p>
-                            <h2 className="slider-one__title">{slide.subHeading}</h2>
-                            <p className="slider-one__text">{slide.body}</p>
+                            <p className="slider-one__tagline"> {slide.title}</p>
+                            <h2 className="slider-one__title">{slide.description}</h2>
+                            <p className="slider-one__text">{ slide?.body?.replaceAll(/<\/?[^>]+(>|$)/gi, "")}</p>
                             <div className="slider-one__btns">
-                                <Link to={slide.link} className="thm-btn thm-btn--dark-hover">{slide.cotBtnText}</Link>
+                                <Link to={slide?.cto?.link} className="thm-btn thm-btn btn-sm --dark-hover">{slide?.cto?.cto_text}</Link>
                             </div>
                         </div>
                     </div>
@@ -241,22 +213,23 @@ switch (sliderStyle) {
 "margin": 0
 }'>
         {
-              slides.map((slide):JSX.Element =>{
+              Object.values(entities)?.map((slide:any):JSX.Element =>{
+                
              return(                          
         <div className="item" key={slide.id}>
             <div className="slider-one__item">
-                <div className="slider-one__image" style={{backgroundImage: `url(${slide.image})`}}>
+                <div className="slider-one__image" style={{backgroundImage: `url(${process.env.REACT_APP_BASE_URL+"uploads/slide/"+slide.image})`}}>
                 </div>
                 
                 {/* <!-- /.slider-one__image --> */}
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12 text-center">
-                            <h2 className="slider-one__title">{/*{slide.heading}<br/>*/}{slide.subHeading}</h2>
+                            <h2 className="slider-one__title">{/*{slide.title}<br/>*/}{slide.description}</h2>
                                 {/* <!-- /.slider-one__title --> */}
-                            <p className="slider-one__text">{slide.body}</p>
+                            <p className="slider-one__text">{ slide?.body?.replaceAll(/<\/?[^>]+(>|$)/gi, "")}</p>
                             <div className="slider-one__btns">
-                                <Link to={slide.link} className="thm-btn">{slide.cotBtnText}</Link>
+                                <Link to={slide?.cto?.link} className="thm-btn btn-sm ">{slide.cto.cto_text}</Link>
                             </div>
                         </div>
                     </div>
@@ -284,7 +257,7 @@ switch (sliderStyle) {
         slider = null
         break;
 }
-  
+  }
   return (
     <>
       

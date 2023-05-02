@@ -2,9 +2,11 @@ import React, {ChangeEvent,FormEvent,useState,useEffect} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import {IoMdPricetags,IoIosList,IoMdColorWand,IoIosCreate,IoIosClose} from 'react-icons/io'
 import { useUpdatePostMutation} from '../postApiSlice'
+import { useGetPostCategoryQuery } from '../../PostCategory/postCategoryApiSlice'
 import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
+import $ from 'jquery'
 
 
 
@@ -12,7 +14,7 @@ import showToast from '../../../../../app/utils/hooks/showToast'
 interface modalDataProps {
   modalData:{
      data:{
-        id:string | number;
+        id: any;
         title: string;
         description: string;
         body: string;
@@ -26,33 +28,35 @@ interface modalDataProps {
   }
 const EditPostForm = ({modalData:{data,showModal}}:modalDataProps) => {
 
-const [title, setTitle] = useState("")
-const [description, setDescription] = useState("")
-const [body, setBody] = useState("")
-const [postBg, setPostBg] = useState<any>(null)
-const [status, setStatus] = useState("")
-const [show, setShow] = useState(false) 
-const [tags, setTags] = useState<any>([]);
-const [tagName, setTagName] = useState("")
-const [category, setCategory] = useState("")
+  // const author = useSelector(selectCurrentUser);
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [body, setBody] = useState('')
+  const [postBg, setPostBg] = useState<any>(null)
+  const [status, setStatus] = useState<any>($('#status').val())
+  const [show, setShow] = useState(false)
+  const [previewImage, setPreviewImage] = useState("");
+  const [tags, setTags] = useState<any>([]);
+  const [tagName, setTagName] = useState("")
+  const [category, setCategory] = useState("")
 
 const createTag = (e:any)=>{
-      setTagName(e.target.value)
+  setTagName(e.target.value) 
 }
 // const tagwrapper= document.getElementsByClassName('tag-wrapper')!;
-    const addTag = (e:any) =>{
-      if(tagName !== ""){
-        setTags((tags:string[])=>{return [...tags,tagName]})
-        setTagName("")
-      } 
-      };
+const addTag = (e:any) =>{
+if( e.key === 'Enter' ){
+  if(tagName !== ""){
+  setTags((tags:string[])=>{return [...tags,tagName]})
+  setTagName("")
+} 
+}
+};
 
-      const removeTag = (key:string) =>{
-        setTags((tags:string[])=>{return tags.filter(tag=> tag !== key )})
-        setTagName("")
-      };
-const [previewImage, setPreviewImage] =
-useState("");
+const removeTag = (key:string) =>{
+  setTags((tags:string[])=>{return tags.filter(tag=> tag !== key )})
+  setTagName("")
+};
 useEffect(() => {
   setTitle(data?.title!)
 setDescription(data?.description!)
@@ -60,8 +64,7 @@ setBody(data?.body!)
 setCategory(data?.category!)
 setStatus(data?.status!)
 setTags(data?.tags!)
-setPreviewImage(data?.coverImage!)
-
+setPreviewImage(process.env.REACT_APP_BASE_URL+"/uploads/posts/"+data?.coverImage!)
   setShow(showModal)
     return () => {
       setShow(false)
@@ -81,28 +84,32 @@ const [updatePost, {
 // const navigate = useNavigate()
 React.useEffect(() => {
   if (isSuccess) {
-      setTitle('')
-      setDescription('')
-      setBody('')
       setPostBg(null)
   }
 }, [isSuccess])
-
-const canSave = [title, description, body,status, postBg].every(Boolean) && !isLoading
+const {
+  data:postCategory,
+  isLoading:postCategoryIsLoading,
+  isSuccess:postCategoryIsSuccess,
+  isError:postCategoryIsError,
+  error:postCategoryError
+} = useGetPostCategoryQuery('postCategoryList', {
+  pollingInterval: 15000,
+  refetchOnFocus: true,
+  refetchOnMountOrArgChange: true
+})
+let categoryOptions;
+if(postCategory){
+const {entities} = postCategory
+ categoryOptions = Object.values(entities).map((category:any,i:number)=><option key={i} value={category._id}>{category.title}</option>)
+}
+const canSave = [title, description, body,status].every(Boolean);
 
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
-const formData = new FormData()
  if (canSave) {
-formData.append("title",title)
-formData.append("description",description)
-formData.append("body",body)
-formData.append("tags",tags)
-formData.append("category",category)
-formData.append("status",status)
-formData.append("coverImage",postBg)
 
-      await updatePost(formData)
+      await updatePost({_id:data?.id!,title,body,description,tags,category,status,coverImage:postBg})
       if(isError)return  showToast('error',JSON.stringify(error?.data?.message))
      showToast('success', 'Post updated successfully')
   }
@@ -110,9 +117,9 @@ formData.append("coverImage",postBg)
 }
 const uploadBg = (e:ChangeEvent<HTMLInputElement>)=>{
   const file = e.target.files
-  if(file && file.length > 0){
-  setPostBg(file[0])
-  const fileurl = (window.URL || window.webkitURL).createObjectURL(file[0]);
+  if(file && file.length > 0)
+  {setPostBg(file[0])
+const fileurl = (window.URL || window.webkitURL).createObjectURL(file[0]);
 setPreviewImage(fileurl)
 
 }}
@@ -151,11 +158,12 @@ setPreviewImage(fileurl)
                     onChange={(e)=>setStatus(e.target.value)}
                    
                   >
-                    <option value='publish'>Publish</option>
+                    <option value='published'>Publish</option>
                     <option value='draft'>Draft</option>
                   </select>
                 </div>
-                <div className="mb-3 col-md-12">
+              
+                <div className="mb-3 col-md-8">
                   <label className="form-label"><strong>Description</strong></label>
                   <input
                     type="text"
@@ -165,29 +173,39 @@ setPreviewImage(fileurl)
                     onChange={(e)=>setDescription(e.target.value)}
                   />
                 </div>
-
-                <div className="col-6 col-sm-3">
+                <div className="mb-3 col-md-4">
+                  <label className="form-label"><strong>Category</strong></label>
+                  <select
+                    id="category"
+                    className="default-select form-control wide"
+                    value={category}
+                    onChange={(e)=>setCategory(e.target.value)}
+                  >
+                  {categoryOptions}
+                  </select>
+                </div>
+                <div className="col-12 my-4">
                 <label
                   htmlFor="postTag"
                   className="block text-sm font-medium text-gray"
                 >
                    Post Tags<span className="required"> * </span>
                 </label> 
-                <div className="mt-1 d-flex rounded-md shadow-sm align-items-stretch overflow-hidden">
-                  <span className="d-flex w-25 align-items-center rounded-l-md border border-r-0  bg-gray-600 px-3 text-xl text-white">
-                 <IoMdPricetags/> </span>
-                   <div className="mt-1 rounded-md shadow-sm p-1 border-2 border-gray rounded-sm d-flex flex-wrap align-items-center m-0 w-100">
-                      {tags.map((tagName:string,i:number)=>{
-                   return(<div className="p-1 font-xs border border-gray rounded-sm d-flex align-items-center bg-gray-light mx-1" key={i}>
+                <div className="mt-1 d-flex rounded-md shadow-sm align-items-stretch overflow-hidden h-100">
+                  <span className="d-flex w-10 align-items-center rounded-l-md border border-r-0  bg-secondary bg-opacity-10 px-3 text-xl ">
+                 <IoMdPricetags fontSize={'1.5rem'}/> </span>
+                   <div className="mt-1 rounded-md shadow-sm p-1 border-2 border-secondary rounded-sm d-flex flex-wrap align-items-center m-0 w-100">
+                      {tags?.map((tagName:string,i:number)=>{
+                   return(<div className="p-1 font-xs border border-secondary rounded-sm d-flex align-items-center bg-gray-light mx-1" key={i}>
                       <span >{tagName}</span>
-                      <IoIosClose className="text-sm ml-1.5"/>
+                      <IoIosClose className="text-sm ml-1.5" onClick={(e)=>removeTag(tagName)}/>
                       </div>)})
                       }
                     <input 
-                      className="d-flex font-16 p-2 outline-none border-0 w-fit" 
+                      className="d-flex font-16 p-2 outline-none border-0 w-100 form-control" 
                       name="tag-input"
                       value={tagName}
-                      // onChange={createTagName}
+                      onChange={createTag}
                       onKeyDown={addTag} 
                       type="text" />
                   </div>
@@ -202,7 +220,6 @@ setPreviewImage(fileurl)
                 id="uploadbg"
                 accept=".jpeg, .jpg, .png, .gif"
                 name="uploadbg"
-                value={postBg}
                 onChange={uploadBg}
                 className="form-file-input form-control"/>
                       </div>
@@ -211,7 +228,7 @@ setPreviewImage(fileurl)
           </div>
               <div className="col-md-6">
                 Preview
-                <div id="preview">{previewImage &&<img className="img-responsive" src={previewImage} alt="User Avatar" width="240"/>}</div>
+                <div id="preview">{previewImage &&<img className="img-responsive" src={previewImage} alt="post image" width="240"/>}</div>
               </div>
          
                 <div className="col-12">

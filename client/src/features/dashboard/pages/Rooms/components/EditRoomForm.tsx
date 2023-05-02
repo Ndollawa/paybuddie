@@ -4,6 +4,7 @@ import { useUpdateRoomMutation} from '../roomApiSlice'
 import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
+import $ from 'jquery'
 
 
 
@@ -22,13 +23,13 @@ interface modalDataProps {
   }
 const EditRoomModal = ({modalData:{data,showModal}}:modalDataProps) => {
 
-const [title, setTitle] = useState(data?.title!)
-const [description, setDescription] = useState(data?.description!)
+const [title, setTitle] = useState<any>('')
+const [description, setDescription] = useState('')
 const [roomBg, setRoomBg] = useState<any>(null)
-const [status, setStatus] = useState(data?.status!)
+const [status, setStatus] = useState<any>($('#status').val())
 const [show, setShow] = useState(false)
     const [previewImage, setPreviewImage] =
-    useState("");
+    useState<any>(process.env.REACT_APP_BASE_URL+"/uploads/room/"+data?.roomImage!);
 
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
@@ -50,17 +51,23 @@ React.useEffect(() => {
 }, [isSuccess])
 useEffect(() => {
   setShow(showModal)
+  setDescription(data?.description!)
+  setStatus(data?.status!)
+  setTitle(data?.title!)
     return () => {
+      setTitle('')
+      setDescription('')
+      setRoomBg(null)
       setShow(false)
-      
     };
   }, [data])
-const canSave = [title, description,status, roomBg].every(Boolean) && !isLoading
+const canSave = [title, description,status, previewImage].every(Boolean) && !isLoading
 
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
 const formData = new FormData()
  if (canSave) {
+formData.append("_id",data?.id! as any)
 formData.append("title",title)
 formData.append("description",description)
 formData.append("status",status)
@@ -109,13 +116,13 @@ setPreviewImage(fileurl)
                 <div className="mb-3 col-md-3">
                   <label className="form-label"><strong>Status</strong></label>
                   <select
-                    id="inputState"
+                    id="status"
                     className="default-select form-control wide"
                     value={status}
                     onChange={(e)=>setStatus(e.target.value)}
                    
                   >
-                    <option value='active'>Active</option>
+                    <option value='active' selected>Active</option>
                     <option value='inactive'>Inactive</option>
                   </select>
                 </div>

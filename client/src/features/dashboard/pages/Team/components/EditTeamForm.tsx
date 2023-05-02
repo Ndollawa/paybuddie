@@ -4,12 +4,14 @@ import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import useInput from '../../../../../app/utils/hooks/useInput'
+import $ from 'jquery'
 
 
 
 interface modalDataProps {
   modalData:{
      data:{
+      _id: string;
       firstName: string;
       lastName: string;
       email: string;
@@ -18,10 +20,12 @@ interface modalDataProps {
       userImage: string;
       status: string;
       bio: string;
+      socialMedia:{
       facebookHandle: string;
       twitterHandle: string;
       instagram: string;
       whatsapp: string;
+      }
       position: string;
     } | null,
     showModal:boolean,
@@ -65,7 +69,7 @@ const EditTeamModal = ({modalData:{data,showModal}}:modalDataProps) => {
   }, [email]);
 
   const [userImage, setUserImage] = useState<any>(null);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<any>($('#status').val());
   const [show, setShow] = useState(false);
   const [addNewTeam, { isLoading, isSuccess, isError, error }]: any =
     useUpdateTeamMutation();
@@ -79,11 +83,12 @@ const EditTeamModal = ({modalData:{data,showModal}}:modalDataProps) => {
     setPhone(data?.phone!)
     setPosition(data?.position!)
     setBio(data?.bio!)
-    setUserFacebookHandle(data?.facebookHandle!)
-    setUserTwitterHandle(data?.twitterHandle!)
-    setUserInstagramHandle(data?.instagram!)
-    setUserWhatsapp(data?.whatsapp!)
-    setPreviewImage(data?.userImage!)
+    setStatus(data?.status!)
+    setUserFacebookHandle(data?.socialMedia?.facebookHandle!)
+    setUserTwitterHandle(data?.socialMedia?.twitterHandle!)
+    setUserInstagramHandle(data?.socialMedia?.instagram!)
+    setUserWhatsapp(data?.socialMedia?.whatsapp!)
+    setPreviewImage(process.env.REACT_APP_BASE_URL+"/uploads/team/"+data?.userImage!)
     setShow(showModal)
       return () => {
         setShow(false)
@@ -101,17 +106,19 @@ const EditTeamModal = ({modalData:{data,showModal}}:modalDataProps) => {
     e.preventDefault();
     const formData = new FormData();
     if (canSave) {
+      formData.append("_id",data?._id!)
       formData.append("firstName",firstName)
       formData.append("lastName",lastName)
       formData.append("bio",bio)
       formData.append("phone",phone)
+      formData.append("status",status)
       formData.append("position",position)
       formData.append("email",email)
       formData.append("facebookHandle",userFacebookHandle)
       formData.append("twitterHandle",userTwitterHandle)
       formData.append("instagram",userInstagramHandle)
       formData.append("whatsapp",userWhatsapp)
-      formData.append("userImage",userImage)
+      formData.append("upload",userImage)
       await addNewTeam(formData);
       if (isError)return showToast("error", JSON.stringify(error?.data?.message));
       showToast("success", "Team member updated successfully");
@@ -124,12 +131,7 @@ const EditTeamModal = ({modalData:{data,showModal}}:modalDataProps) => {
     let fileurl = (window.URL || window.webkitURL).createObjectURL(file[0]);
     
     setPreviewImage(fileurl)
-    // $(".img-popup").lightGallery();
-    //     $(".img-gallery").lightGallery({
-    //         selector: ".gallery-selector",
-    //         hash: false
-    //     });
-    
+ 
         } 
   }
   return (
@@ -227,7 +229,7 @@ const EditTeamModal = ({modalData:{data,showModal}}:modalDataProps) => {
                       <strong>Status</strong>
                     </label>
                     <select
-                      id="inputState"
+                      id="status"
                       className="default-select form-control wide"
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}

@@ -8,7 +8,7 @@ const ContactsSchema =  new Schema({
         required: true
     },
     contacts:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        type: Array,
         required: true,
         default:[]
     },    

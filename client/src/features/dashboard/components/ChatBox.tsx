@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import ChatList from './ChatBoxComponents/ChatList'
 import ChatModal from './ChatBoxComponents/ChatModal'
@@ -8,6 +8,7 @@ import $ from 'jquery'
 
 const Chatbox = () => {
 
+	useEffect(() => {
 	var handleDzChatUser = function() {
 		$('.dz-chat-user-box .dz-chat-user').on('click',function(){
 			$('.dz-chat-user-box').addClass('d-none');
@@ -24,6 +25,12 @@ const Chatbox = () => {
 		});
 	}
 	handleDzChatUser()
+
+	//   return () => {
+		
+	//   };
+	}, [])
+
 	
   return (
  <>

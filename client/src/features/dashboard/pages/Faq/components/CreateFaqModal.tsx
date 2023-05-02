@@ -42,7 +42,7 @@ e.preventDefault();
 }
   return (
     <>
-<button type="button" className="btn btn-primary mb-2" onClick={handleShow}>Add new FAQ</button>
+<button type="button" className="btn btn-primary btn-sm mb-2" onClick={handleShow}>Add new FAQ</button>
 <Modal show={show} size="lg" centered backdrop='static'
  onHide={handleClose} animation={false}>
         <Modal.Header closeButton>

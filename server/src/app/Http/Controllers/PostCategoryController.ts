@@ -38,8 +38,7 @@ class PostCategoryController extends BaseController {
 // @route POST /category
 // @access authorized user
  public create = async (req:Request, res:Response) => {
-    const {author, title, status } = req.body
-   
+    const {title, status } = req.body
     // Confirm data
     if ( !title || !status ) {
         return res.status(400).json({ message: 'All fields are required' })
@@ -53,7 +52,7 @@ class PostCategoryController extends BaseController {
     }
 
     // Create and store the new Category 
-    const category = await PostCategoryModel.create({author, title, status })
+    const category = await PostCategoryModel.create({ title, status })
 
     if (category) { // Created 
         return res.status(201).json({ message: 'New category created' })
@@ -68,7 +67,6 @@ class PostCategoryController extends BaseController {
 // @access authorized user
 public update = async (req:Request, res:Response) => {
     const {title, _id,status} = req.body
-
     // Confirm data
     if (!title || !status) {
         return res.status(400).json({ message: 'All fields are required' })

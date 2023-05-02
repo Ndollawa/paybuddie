@@ -8,16 +8,13 @@ interface modalDataProps {
        data:{
           id:string | number;
           title: string;
-          description: string;
-          body: string;
-          postImage: string;
           status: string;
       } | null,
       showModal:boolean,
     } 
     }
 const PostCategoryTableData = ({categoryId,index,showEditForm}:any) => {
-    const { category } = useGetPostCategoryQuery("categorysList", {
+    const { category } = useGetPostCategoryQuery("categoriesList", {
         selectFromResult: ({ data }) => ({
             category: data?.entities[categoryId]
         }),
@@ -29,7 +26,7 @@ const PostCategoryTableData = ({categoryId,index,showEditForm}:any) => {
         isError: isDelError,
         error: delerror
     }]:any = useDeletePostCategoryMutation()
-    const onDeleteCategory = async () => {
+    const onDeleteCategory = async (id:String) => {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'btn btn-sm m-2 btn-success',
@@ -48,7 +45,7 @@ const PostCategoryTableData = ({categoryId,index,showEditForm}:any) => {
             reverseButtons: true
           }).then(async(result) => {
             if (result.isConfirmed) {
-                await deleteCategory({ _id: categoryId })
+                await deleteCategory({ _id: id })
         if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
               swalWithBootstrapButtons.fire(
                 'Deleted!',
@@ -69,38 +66,48 @@ const PostCategoryTableData = ({categoryId,index,showEditForm}:any) => {
       
     }
 // 
+    
+    if (category) {
+        const created = new Date(category.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
     const categoryData = {
         data:{
-        id:categoryId,
+        id:category._id,
         title:category.title,
-        description:category.description,
-        categoryImage:category.categoryImage,
-        body:category.body,
         status:category.status
 
         },
         showModal:true
     }
-    if (category) {
-        const created = new Date(category.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
-    
+    let categoryStatus;
+    switch (category.status) {
+    case 'pending':
+        categoryStatus =<span className="badge badge-primary">{category.status}</span>
+        break;
+    case 'active':
+        categoryStatus =<span className="badge badge-success">{category.status}</span>
+        break;
+    case 'inactive':
+        categoryStatus =<span className="badge badge-danger">{category.status}</span>
+        break;
+    default:
+        categoryStatus = ""
+        break;
+}
+
     
         return (
-            <tr key={categoryId}>
+          <>  <tr key={category._id}>
                     <td>{++index}</td>
-                    <td><img src={process.env.REACT_APP_BASE_URL+"uploads/category"+category.categoryImage} alt="" /></td>
                     <td>{category.title}</td>
-                    <td>{category.description}</td>
-                    <td>{category.body}</td>
-                    <td>{category.status}</td>
+                    <td align="center">{categoryStatus}</td>
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">
                             <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(categoryData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={onDeleteCategory}><i className="fa fa-trash"></i></button>
+                            <button className="btn btn-danger shadow btn-xs sharp" onClick={()=>onDeleteCategory(category._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
-                </tr>
+                </tr></>
         )
     
     } else return null

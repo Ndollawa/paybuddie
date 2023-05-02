@@ -10,6 +10,7 @@ import { Modal } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import showToast from "../../../../../app/utils/hooks/showToast";
 import useInput from "../../../../../app/utils/hooks/useInput";
+import $ from 'jquery'
 
 const CreateTeamForm = () => {
   const [email, setEmail] = useState("");
@@ -39,7 +40,7 @@ const CreateTeamForm = () => {
   }, [email]);
 
   const [userImage, setUserImage] = useState<any>(null);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<any>($('#status').val());
   const [show, setShow] = useState(false);
   const [addNewTeam, { isLoading, isSuccess, isError, error }]: any =
     useAddNewTeamMutation();
@@ -77,6 +78,7 @@ setUserImage("")
       formData.append("firstName",firstName)
       formData.append("lastName",lastName)
       formData.append("bio",bio)
+      formData.append("status",status)
       formData.append("phone",phone)
       formData.append("position",position)
       formData.append("email",email)
@@ -84,7 +86,7 @@ setUserImage("")
       formData.append("twitterHandle",userTwitterHandle)
       formData.append("instagram",userInstagramHandle)
       formData.append("whatsapp",userWhatsapp)
-      formData.append("userImage",userImage)
+      formData.append("upload",userImage)
       await addNewTeam(formData); 
       if (isError) return showToast("error", JSON.stringify(error?.data?.message));
       showToast("success", "Team member created successfully");
@@ -212,12 +214,12 @@ setPreviewImage(fileurl)
                       <strong>Status</strong>
                     </label>
                     <select
-                      id="inputState"
+                      id="status"
                       className="default-select form-control wide"
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}
                     >
-                      <option value="active">Active</option>
+                      <option value="active" selected>Active</option>
                       <option value="inactive">Inactive</option>
                     </select>
                   </div>

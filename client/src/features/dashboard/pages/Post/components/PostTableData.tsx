@@ -1,17 +1,27 @@
 import React from 'react'
 import {useGetPostsQuery,useDeletePostMutation } from '../postApiSlice'
+import { useGetPostCategoryQuery } from '../../PostCategory/postCategoryApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import Swal from 'sweetalert2'
+import LightGallery from 'lightgallery/react'
+import 'lightgallery/css/lightgallery.css'
+import 'lightgallery/css/lg-zoom.css'
+// import 'lightgallery/css/lg-thumbnail.css'
+import lgThumbnail from 'lightgallery/plugins/thumbnail'
+import lgZoom from 'lightgallery/plugins/zoom'
+// import 'lightgallery/css/lg-thumbnail.css'
 
 interface modalDataProps {
     modalData:{
        data:{
-          id:string | number;
-          title: string;
-          description: string;
-          body: string;
-          postImage: string;
-          status: string;
+        id:string | number;
+        title: string;
+        description: string;
+        body: string;
+        coverImage: string;
+        status: string;
+        tags: string[];
+        category: string;
       } | null,
       showModal:boolean,
     } 
@@ -29,7 +39,7 @@ const PostTableData = ({postId,index,showEditForm}:any) => {
         isError: isDelError,
         error: delerror
     }]:any = useDeletePostMutation()
-    const onDeletePost = async () => {
+    const onDeletePost = async (id:string) => {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'btn btn-sm m-2 btn-success',
@@ -48,11 +58,11 @@ const PostTableData = ({postId,index,showEditForm}:any) => {
             reverseButtons: true
           }).then(async(result) => {
             if (result.isConfirmed) {
-        await deletePost({ _id: postId })
+        await deletePost({ _id:id })
         if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
               swalWithBootstrapButtons.fire(
                 'Deleted!',
-                'Post file has been deleted.',
+                'Post record has been deleted.',
                 'success'
               )
             } else if (
@@ -67,7 +77,13 @@ const PostTableData = ({postId,index,showEditForm}:any) => {
             }
           })
     }
-// 
+//  
+const { category } = useGetPostCategoryQuery("categoriesList", {
+  selectFromResult: ({ data }) => ({
+      category: data?.entities[post?.category]
+  }),
+})
+
     if (post) {
         const created = new Date(post.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
     
@@ -76,19 +92,22 @@ const PostTableData = ({postId,index,showEditForm}:any) => {
         id:postId,
         title:post.title,
         description:post.description,
-        postImage:post.postImage,
+        coverImage:post.coverImage,
         body:post.body,
+        tags:post.tags,
+        category:post.category,
         status:post.status
 
         },
         showModal:true
     }
+ const categoryTitle = category? category.title :null
     let postStatus
     switch (post.status) {
-    case 'active':
+    case 'published':
         postStatus =<span className="badge badge-success">{post.status}</span>
         break;
-    case 'inactive':
+    case 'draft':
         postStatus =<span className="badge badge-warning">{post.status}</span>
         break;
    
@@ -99,16 +118,19 @@ const PostTableData = ({postId,index,showEditForm}:any) => {
         return (
             <tr key={postId}>
                     <td>{++index}</td>
-                    <td><img src={process.env.REACT_APP_BASE_URL+"/uploads/post/"+post.postImage} alt="" width="150" /></td>
+  <td><LightGallery plugins={[lgZoom]} > <a href={process.env.REACT_APP_BASE_URL+"/uploads/posts/"+post?.coverImage}  data-lightbox={`image-${++index}`} data-exthumbimage={process.env.REACT_APP_BASE_URL+"/uploads/posts/"+post?.coverImage} data-src={process.env.REACT_APP_BASE_URL+"/uploads/posts/"+post?.coverImage} data-title={post?.title}>
+                        <img src={process.env.REACT_APP_BASE_URL+"/uploads/posts/"+post?.coverImage} alt={post.title} width="120" className="lg img-fluid img-responsive" />
+                        </a></LightGallery></td>
                     <td>{post.title}</td>
                     <td>{post.description}</td>
-                    <td>{post.body}</td>
+                    <td>{categoryTitle}</td>
+                    <td dangerouslySetInnerHTML={{__html:post.body.length >50? post.body.substr(0,50)+"..." :post.body}}></td>
                     <td>{postStatus}</td>
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">
                             <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(postData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={onDeletePost}><i className="fa fa-trash"></i></button>
+                            <button className="btn btn-danger shadow btn-xs sharp" onClick={()=>onDeletePost(post._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
                 </tr>

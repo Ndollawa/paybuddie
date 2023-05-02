@@ -1,21 +1,22 @@
-    import React,{useState,useEffect} from 'react'
-    import MainBody from '../../components/MainBody'
-    import { useDispatch } from 'react-redux'
-    import { useGetPostCategoryQuery } from './postCategoryApiSlice'
-    import { setPreloader } from '../../components/PreloaderSlice'
-    import pageProps from '../../../../app/utils/props/pageProps'
-    import PostTableData from './components/PostCategoryTableData'
-    
+import React, {ChangeEvent,FormEvent,useState,useEffect} from 'react'
+import MainBody from '../../components/MainBody'
+import { useDispatch } from 'react-redux'
+import { useGetPostCategoryQuery, useAddNewPostCategoryMutation } from './postCategoryApiSlice'
+import { setPreloader } from '../../components/PreloaderSlice'
+import pageProps from '../../../../app/utils/props/pageProps'
+import PostCategoryTableData from './components/PostCategoryTableData'   
+import showToast from '../../../../app/utils/hooks/showToast'
+import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'
+import $ from 'jquery'
+import EditPostCategoryForm from './components/EditPostCategoryForm'
+
     
 
     
 interface modalDataProps {
        data:{
-          id:string | number;
+          id:string;
           title: string;
-          description: string;
-          body: string;
-          postImage: string;
           status: string;
       } | null,
       showModal:boolean,
@@ -25,7 +26,9 @@ interface modalDataProps {
         const [modalData,setModalData] = useState<modalDataProps>({
             data:null, 
             showModal:false,
-           })
+           })      
+const [title, setTitle] = useState('')
+const [status, setStatus] = useState<any>($('#status').val())
     const {
         data:postCategory,
         isLoading,
@@ -41,46 +44,114 @@ interface modalDataProps {
         setModalData(modalData);
         }
 
+
         useEffect(() => {
             dispatch(setPreloader(isLoading?true:false)) 
              
             }, [isLoading])
 
+useEffect(() => {
+
+            destroyDataTables($('#dataTable'))
+              initDataTables($('#dataTable'),"FAQs")
+            return () => {
+             destroyDataTables($('#dataTable'))
+            }
+          }, [postCategory])
     let tableContent
     if (isSuccess) {
         const { ids } = postCategory
     
         tableContent = ids?.length
-            ? ids.map((postId:string|number ,i:number) => <PostTableData key={postId} postId={postId} index={i}
-            showEditForm={showEditForm} />
+            ? ids.map((categoryId:string|number ,i:number) => <PostCategoryTableData key={categoryId} categoryId={categoryId} index={i} showEditForm={showEditForm}/>
         )
             : null
          
     }
-    
+const [addNewPostCategory, {
+  isSuccess:addNewCatSuccess,
+  isError:addNewCatIsError,
+  error:addNewCatError
+}]:any = useAddNewPostCategoryMutation()
+
+// const navigate = useNavigate()
+
+React.useEffect(() => {
+  if (isSuccess) {
+      setTitle('')
+  }
+}, [isSuccess])
+
+const canSave = [title, status].every(Boolean) && !isLoading
+
+const createCategory = async(e:FormEvent)=>{
+e.preventDefault();
+ if (canSave) {
+ await addNewPostCategory({title,status})
+      if(isError) return showToast('error',JSON.stringify(addNewCatError?.data?.message))
+    showToast('success', 'Post category created successfully')
+  }
+
+}
      return (
         <>
         <MainBody>
-        <div className="container-fluid">
-            <div className="col-12 row">
+        <div className="container-fluid row">
+            <div className="col-md-4 col-sm-12">
+                <div className="card">
+                    <div className="card-header font-weight-semibold">Create Category</div>
+                    <div className="card-body">
+                        <form id="createCategory" onSubmit={createCategory}>								
+								<div className="form-group">						    
+                                <label className="form-label"><strong>Title or Category</strong></label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    value={title}
+                    onChange={(e)=>setTitle(e.target.value)}
+                  />
+							</div> 
+                        <div className="form-group">
+					 <label className="form-label"><strong>Status</strong></label>
+                  <select
+                    id="status"
+                    className="default-select form-control wide"
+                    value={status}
+                    onChange={(e)=>setStatus(e.target.value)}
+                  >
+                   <option >Select</option>
+                   <option value='active'>Active</option>
+                    <option value='inactive'>Inactive</option>
+                  </select>
+				</div>
+                <div className='text-right'>
+                    <button type='submit' className='btn btn-secondary btn-sm' disabled={!canSave}  >Create</button>
+                </div>
+                        </form>
+                        <div id="editCategory-holder">
+                        {modalData?.showModal && <EditPostCategoryForm modalData={modalData} showEditForm={showEditForm}/>}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="col-md-8 col-sm-12">
         
                          <div className="card">
                                 <div className="card-header">
-                                    <h4 className="card-title">All Posts</h4>
+                                    <h4 className="card-title fs-14 font-weight-semibold">All Post Category</h4>
                                 </div>
                                 <div className="card-body">
     
                                     <div className="mb-5 d-flex">
                                     
                                     </div>
-                            <div className="table-responsive table-scrollable">
-                                        <table id="table" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
+                            <div className="table-responsive  fs-14">
+                                        <table id="dataTable" className="table table-scrollable table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Image</th>
                                                     <th>Title</th>
-                                                    <th>Description</th>
                                                     <th>Status</th>
                                                     <th>Date Created</th>
                                                     <th>Action</th>

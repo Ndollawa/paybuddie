@@ -29,8 +29,8 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
     if(result?.error?.status === 403){
 
         //request to get a new token
-        const refreshResult = await baseQuery('/auth/refresh',api,extraOptions);
-        const resp:any = refreshResult
+        const refreshResult:any  = await baseQuery('/auth/refresh',api,extraOptions);
+        
         if(refreshResult?.data){
             // stores a new token
             api.dispatch(setCredentials({...refreshResult.data}))
@@ -39,11 +39,12 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
         }else{
             if(refreshResult?.error?.status === 403){
                 refreshResult.error.data =  "Your login session has expired"
-                // api.dispatch(logOut())
+                // api.dispatch(logOut())refreshResult?.error?.status === 401 &&  
             }else
-            if(refreshResult?.error?.status === 401 &&  resp?.error?.data?.message === 'expired'){
+            if(refreshResult?.error?.data?.message === 'expired'){
                 refreshResult.error.data =  "Your login session has expired"
                 api.dispatch(logOut())
+                
             }
             return refreshResult
         }

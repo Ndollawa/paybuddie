@@ -19,7 +19,7 @@ router.route('/refresh')
 .get((req:Request, res:Response,next:NextFunction)=>AuthController.refreshTokenHandler(req,res));
 
 router.route('/register')
-.get((req:Request, res:Response,next:NextFunction)=>RegisterController.index(req,res))
+// .get((req:Request, res:Response,next:NextFunction)=>RegisterController.index(req,res))
 .post((req:Request, res:Response,next:NextFunction)=>RegisterController.register(req,res))
 
 

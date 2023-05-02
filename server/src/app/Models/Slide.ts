@@ -14,7 +14,14 @@ const SlideSchema =  new Schema({
     body:{
         type:String,
         required: true,
-        unique: true
+    },
+    cto:{
+       cto_text:{
+        type:String,
+       },
+       link:{ 
+        type:String,
+    }
     },
     status:{
         type:String,

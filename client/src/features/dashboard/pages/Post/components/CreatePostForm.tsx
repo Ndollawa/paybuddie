@@ -8,6 +8,7 @@ import showToast from '../../../../../app/utils/hooks/showToast'
 import $ from 'jquery'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../../../../auth/authSlice'
+import { useGetPostCategoryQuery } from '../../PostCategory/postCategoryApiSlice'
 
 const CreatePostForm = () => {
 const author = useSelector(selectCurrentUser);
@@ -34,7 +35,22 @@ if( e.key === 'Enter' ){
 } 
 }
 };
-
+const {
+  data:postCategory,
+  isLoading:postCategoryIsLoading,
+  isSuccess:postCategoryIsSuccess,
+  isError:postCategoryIsError,
+  error:postCategoryError
+} = useGetPostCategoryQuery('postCategoryList', {
+  pollingInterval: 15000,
+  refetchOnFocus: true,
+  refetchOnMountOrArgChange: true
+})
+let categoryOptions;
+if(postCategory){
+const {entities} = postCategory
+ categoryOptions = Object.values(entities).map((category:any,i:number)=><option key={i} value={category._id}>{category.title}</option>)
+}
 const removeTag = (key:string) =>{
   setTags((tags:string[])=>{return tags.filter(tag=> tag !== key )})
   setTagName("")
@@ -68,8 +84,8 @@ const handleShow = () => setShow(true);
 
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
-const formData = new FormData()
  if (canSave) {
+var formData = new FormData()
 formData.append("title",title)
 formData.append("description",description)
 formData.append("body",body)
@@ -78,8 +94,6 @@ formData.append("category",category)
 formData.append("status",status)
 formData.append("coverImage",postBg)
 formData.append("author",author._id!)
-formData.append("coverImage",postBg)
-
       await addNewPost(formData)
       if(isError) return showToast('error',JSON.stringify(error?.data?.message))
     showToast('success', 'Post created successfully')
@@ -91,7 +105,6 @@ const uploadBg = (e:ChangeEvent<HTMLInputElement>)=>{
   if(file && file.length > 0)
   {setPostBg(file[0])
 const fileurl = (window.URL || window.webkitURL).createObjectURL(file[0]);
-alert(fileurl)
 setPreviewImage(fileurl)
 
 }}
@@ -128,11 +141,11 @@ setPreviewImage(fileurl)
                     value={status}
                     onChange={(e)=>setStatus(e.target.value)}
                   >
-                   <option value='publish'>Publish</option>
+                   <option value='published'>Publish</option>
                     <option value='draft'>Draft</option>
                   </select>
                 </div>
-                <div className="mb-3 col-md-12">
+                <div className="mb-3 col-md-8">
                   <label className="form-label"><strong>Description</strong></label>
                   <input
                     type="text"
@@ -141,6 +154,17 @@ setPreviewImage(fileurl)
                     value={description}
                     onChange={(e)=>setDescription(e.target.value)}
                   />
+                </div>
+                <div className="mb-3 col-md-4">
+                  <label className="form-label"><strong>Category</strong></label>
+                  <select
+                    id="category"
+                    className="default-select form-control wide"
+                    value={category}
+                    onChange={(e)=>setCategory(e.target.value)}
+                  >
+                  {categoryOptions}
+                  </select>
                 </div>
                 <div className="col-12 my-4">
                 <label

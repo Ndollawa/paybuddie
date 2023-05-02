@@ -6,19 +6,28 @@
     import { useGetTeamsQuery } from './teamApiSlice'
     import { setPreloader } from '../../components/PreloaderSlice'
     import pageProps from '../../../../app/utils/props/pageProps'
-    import TeamTableData from './components/TeamTableData'
-    
-    
-
-    
+    import TeamTableData from './components/TeamTableData'    
+import $ from 'jquery'
+import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'   
+ 
 interface modalDataProps {
        data:{
-          id:string | number;
-          title: string;
-          description: string;
-          body: string;
-          teamImage: string;
-          status: string;
+        _id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        username: string;
+        phone: string;
+        userImage: string;
+        status: string;
+        bio: string;
+        socialMedia:{
+        facebookHandle: string;
+        twitterHandle: string;
+        instagram: string;
+        whatsapp: string;
+        }
+        position: string;
       } | null,
       showModal:boolean,
     }
@@ -47,7 +56,16 @@ interface modalDataProps {
             dispatch(setPreloader(isLoading?true:false)) 
              
             }, [isLoading])
+ useEffect(() => {
 
+            destroyDataTables($('#dataTable'))
+              initDataTables($('#dataTable'),"FAQs")
+            return () => {
+             destroyDataTables($('#dataTable'))
+            }
+          }, [teams])    
+
+    
     let tableContent
     if (isSuccess) {
         const { ids } = teams
@@ -74,9 +92,10 @@ interface modalDataProps {
                                     <div className="mb-5 d-flex">
                                     
                         <CreateFaqModal/>
+                        <EditTeamForm modalData={modalData}/>
                                     </div>
                             <div className="table-responsive table-scrollable">
-                                        <table id="table" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
+                                        <table id="dataTable" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
@@ -85,7 +104,7 @@ interface modalDataProps {
                                                     <th>Position</th>
                                                     <th>Bio</th>
                                                     <th>Status</th>
-                                                    <th>Status</th>
+                                                    {/* <th>Status</th> */}
                                                     <th>Date Created</th>
                                                     <th>Action</th>
                                                 </tr>

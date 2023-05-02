@@ -9,7 +9,8 @@
 import UserCard from './components/UserCard'
 import { FaListAlt } from 'react-icons/fa'
 import { IoGridOutline } from 'react-icons/io5'
-    
+import $ from 'jquery'
+import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'    
 
     
 interface modalDataProps {
@@ -51,7 +52,14 @@ interface modalDataProps {
                  }
          
           let tableContent
-        
+          useEffect(() => {
+
+            destroyDataTables($('#dataTable'))
+              initDataTables($('#dataTable'),"FAQs")
+            return () => {
+             destroyDataTables($('#dataTable'))
+            }
+          }, [users])     
 let usersCard
    if(isSuccess){
 usersCard = users.ids? users?.ids.map((userId:any)=> <UserCard key={userId}  userId={userId} />): null 

@@ -3,6 +3,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import { useUpdateSlideMutation} from '../slideApiSlice'
 import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
+import {BsToggleOff ,BsToggleOn} from 'react-icons/bs';
 import showToast from '../../../../../app/utils/hooks/showToast'
 import $ from 'jquery'
 
@@ -11,11 +12,15 @@ import $ from 'jquery'
 interface modalDataProps {
   modalData:{
      data:{
-        id:string | number;
+        _id:any;
         title: string;
         description: string;
         body: string;
-        slideImage: string;
+        cto:{
+        cto_text?:string;
+        link?:string;
+      }
+        image: string;
         status: string;
     } | null,
     showModal:boolean,
@@ -26,6 +31,10 @@ const EditSlideModal = ({modalData:{data,showModal}}:modalDataProps) => {
 const [title, setTitle] = useState('')
 const [description, setDescription] = useState('')
 const [body, setBody] = useState('')
+const [CTOText, setCTOText] = useState('')
+const [CTOLink, setCTOLink] = useState('')
+
+const [addCTOToggle, setAddCTOToggle] = useState<any>(false)
 const [slideBg, setSlideBg] = useState<any>(null)
 const [status, setStatus] = useState<any>((data?.status) ? data?.status! : $('#status').val())
 const [show, setShow] = useState(false)
@@ -43,25 +52,30 @@ const [updateSlide, {
 React.useEffect(() => {
   if (isSuccess) {
       setTitle('')
+      setStatus($('#status').val())
       setDescription('')
       setBody('')
       setPreviewImage("")
       setSlideBg(null)
   }
 }, [isSuccess])
+
 useEffect(() => {
   setShow(showModal)
   setTitle(data?.title!)
   setDescription(data?.description!)
   setBody(data?.body!)
+  setAddCTOToggle([data?.cto?.cto_text! , data?.cto?.link!].every(Boolean))
+  setCTOText(data?.cto?.cto_text!)
+  setCTOLink(data?.cto?.link!)
   setStatus(data?.status)
-  setPreviewImage("")
+  // setSlideBg(data?.image!)
+  setPreviewImage(process.env.REACT_APP_BASE_URL+"/uploads/slides/"+data?.image!)
     return () => {
       setShow(false)
-      
-    };
+      };
   }, [data,showModal])
-const canSave = [title, description, body,status, slideBg].every(Boolean) && !isLoading
+const canSave = [title, description, body, previewImage].every(Boolean) && !isLoading
 
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
@@ -69,10 +83,14 @@ const formData = new FormData()
  if (canSave) {
 formData.append("title",title)
 formData.append("description",description)
+formData.append("_id",data?._id!)
 formData.append("body",body)
+formData.append("cto_text",CTOText)
+formData.append("link",CTOLink)
+formData.append("cto_option",addCTOToggle)
 formData.append("status",status)
 formData.append("slideBg",slideBg)
-
+// console.log(formData)
       await updateSlide(formData)
       if(isError) return showToast('error',JSON.stringify(error?.data?.message))
       showToast('success', 'Slide updated successfully')
@@ -121,9 +139,8 @@ setPreviewImage(fileurl)
                     onChange={(e)=>setStatus(e.target.value)}
                    
                   >
-                    <option value=''>Choose... </option>
-                    <option value='active'>Active</option>
-                    <option value='inactive'>Inactive</option>
+                    <option value='active' selected >Active</option>
+                    <option value='inactive' >Inactive</option>
                   </select>
                 </div>
                 <div className="mb-3 col-md-12">
@@ -136,7 +153,7 @@ setPreviewImage(fileurl)
                     onChange={(e)=>setDescription(e.target.value)}
                   />
                 </div>
-                <div className="col-md-12">  
+                <div className="col-md-6">  
               <label className="form-label">Background Image</label>
           <div className="input-group mb-3 col-md-6">
                       <div className="form-file">
@@ -153,8 +170,44 @@ setPreviewImage(fileurl)
           </div>
               <div className="col-md-6">
                 Preview
-                <div id="preview">{previewImage &&<img className="img-responsive" src={previewImage} alt="User Avatar" width="240"/>}</div>
+                <div id="preview">{previewImage &&<img className="img-responsive" src={process.env.REACT_APP_BASE_URL+'/uploads/slide/'+previewImage} alt="User Avatar" width="240"/>}</div>
               </div>
+              <div className="my-20 col-md-12 d-flex justify-content-between">
+              <div><strong>Add CTO Button</strong></div>
+              <div className=''>
+                <label htmlFor='addCTOToggle'  className='p-10'>{addCTOToggle?<BsToggleOn className='text-primary' fontSize={'2rem'}/>:<BsToggleOff className='text-default' fontSize={'2rem'}/>}</label>
+                <input
+                id="addCTOToggle"
+                type="checkbox"
+                  className="setting-checkbox d-none"
+                  onClick={()=>setAddCTOToggle((prev:boolean)=>!prev)}
+                />
+                 </div>
+              </div><br/>
+              {addCTOToggle &&<>
+              <div className="row">
+              <div className="mb-3 col-md-6">
+                  <label className="form-label"><strong>CTO Text</strong></label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    value={CTOText}
+                    onChange={(e)=>setCTOText(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3 col-md-6">
+                  <label className="form-label"><strong>Link</strong></label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    value={CTOLink}
+                    onChange={(e)=>setCTOLink(e.target.value)}
+                  />
+                </div>
+              </div>
+              </>}
                 <div className="col-12">
                   <label className="form-label"><strong>Body</strong></label>
                   <Editor

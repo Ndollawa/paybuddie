@@ -8,17 +8,21 @@
     import pageProps from '../../../../app/utils/props/pageProps'
     import PostTableData from './components/PostTableData'
     
-    
+import $ from 'jquery'
+import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'   
+ 
 
     
 interface modalDataProps {
        data:{
-          id:string | number;
-          title: string;
-          description: string;
-          body: string;
-          postImage: string;
-          status: string;
+        id:string | number;
+        title: string;
+        description: string;
+        body: string;
+        coverImage: string;
+        status: string;
+        tags: string[];
+        category: string;
       } | null,
       showModal:boolean,
     }
@@ -40,14 +44,9 @@ interface modalDataProps {
         refetchOnMountOrArgChange: true
     })
     const showEditForm = (modalData:modalDataProps)=>{
+        console.log(modalData)
         setModalData(modalData);
         }
-
-        useEffect(() => {
-            dispatch(setPreloader(isLoading?true:false)) 
-             
-            }, [isLoading])
-
     let tableContent
     if (isSuccess) {
         const { ids } = posts
@@ -59,6 +58,20 @@ interface modalDataProps {
             : null
          
     }
+ useEffect(() => {
+
+            destroyDataTables($('#dataTable'))
+              initDataTables($('#dataTable'),"FAQs")
+            return () => {
+             destroyDataTables($('#dataTable'))
+            }
+          }, [posts])    
+    
+        useEffect(() => {
+            dispatch(setPreloader(isLoading?true:false)) 
+             
+            }, [isLoading])
+
     
      return (
         <>
@@ -74,15 +87,18 @@ interface modalDataProps {
                                     <div className="mb-5 d-flex">
                                     
                         <CreateFaqModal/>
+                        <EditPostForm modalData={modalData} />
                                     </div>
                             <div className="table-responsive table-scrollable">
-                                        <table id="table" className="table table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
+                                        <table id="dataTable" className="table table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
                                                     <th>Image</th>
                                                     <th>Title</th>
                                                     <th>Description</th>
+                                                    <th>Category</th>
+                                                    <th>Content</th>
                                                     <th>Status</th>
                                                     <th>Date Created</th>
                                                     <th>Action</th>

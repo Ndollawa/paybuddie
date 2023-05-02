@@ -57,7 +57,7 @@ useEffect(() => {
 setDescription(data?.description!)
 setBody(data?.body!)
 setStatus(data?.status!)
-setPreviewImage(data?.image!)
+setPreviewImage(process.env.REACT_APP_BASE_URL+"/uploads/service/"+data?.image!)
   setShow(showModal)
     return () => {
       setShow(false)

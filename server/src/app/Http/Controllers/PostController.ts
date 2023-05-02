@@ -2,7 +2,7 @@ import PostModel from '../../Models/Post'
 // import UserModel from '../../Models/User'
 import {Request, Response} from 'express'
 import BaseController from './BaseController'
-
+import deleteItem from '../../utils/deleteItem'
 
 
 class PostController extends BaseController {
@@ -54,7 +54,7 @@ class PostController extends BaseController {
     }
 
     // Create and store the new user 
-    const post = await PostModel.create({author, title,description,body,coverImage:file.filename,category,tags , status})
+    const post = await PostModel.create({author, title,description,body,coverImage:file.filename,category,tags:tags.split(',') , status})
 
     if (post) { // Created 
         return res.status(201).json({ message: 'New post created' })
@@ -86,14 +86,19 @@ public update = async (req:Request, res:Response) => {
     // Check for duplicate title
     const duplicate = await PostModel.findOne({ title }).collation({ locale: 'en', strength: 2 }).lean().exec()
 
-    // Allow renaming of the original note 
+    // Allow renaming of the original note .split(',')
     if (duplicate && duplicate?._id.toString() !== _id) {
         return res.status(409).json({ message: 'Duplicate note title' })
     }
 
     post.body = body
     post.title = title
-   file? post.coverImage = file.filename  :null
+   if(file){
+    const destination = '../../../../public/posts'
+    const oldFile = post.coverImage! 
+    if(oldFile) deleteItem(destination,oldFile)
+    post.coverImage = file.filename
+   } 
     post.description = description
     post.status = status
     post.category = category
@@ -121,7 +126,9 @@ public delete = async (req:Request, res:Response) => {
     if (!post) {
         return res.status(400).json({ message: 'post not found' })
     }
-
+    const destination = '../../../../public/posts'
+    const oldFile = post.coverImage! 
+    if(oldFile) deleteItem(destination,oldFile)
     const result = await PostModel.deleteOne()
 
     res.status(200).json({message:"success"})

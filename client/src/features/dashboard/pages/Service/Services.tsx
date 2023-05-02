@@ -8,7 +8,9 @@
     import pageProps from '../../../../app/utils/props/pageProps'
     import ServiceTableData from './components/ServiceTableData'
     
-    
+import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'
+import $ from 'jquery'
+
 
     
 interface modalDataProps {
@@ -17,18 +19,13 @@ interface modalDataProps {
           title: string;
           description: string;
           body: string;
-          serviceImage: string;
+          image: string;
           status: string;
       } | null,
       showModal:boolean,
     }
     const Service = ({pageData}:pageProps)  => {
-        const dispatch =useDispatch()
-        const [modalData,setModalData] = useState<modalDataProps>({
-            data:null, 
-            showModal:false,
-           })
-    const {
+          const {
         data:services,
         isLoading,
         isSuccess,
@@ -39,10 +36,25 @@ interface modalDataProps {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
+    const dispatch =useDispatch()
+        const [modalData,setModalData] = useState<modalDataProps>({
+            data:null, 
+            showModal:false,
+           })
+  
     const showEditForm = (modalData:modalDataProps)=>{
         setModalData(modalData);
         }
 
+useEffect(() => {
+
+            destroyDataTables($('#dataTable'))
+              initDataTables($('#dataTable'),"FAQs")
+            return () => {
+             destroyDataTables($('#dataTable'))
+            }
+          }, [services])
+    
         useEffect(() => {
             dispatch(setPreloader(isLoading?true:false)) 
              
@@ -74,15 +86,17 @@ interface modalDataProps {
                                     <div className="mb-5 d-flex">
                                     
                         <CreateFaqModal/>
+                        <EditServiceForm modalData={modalData}/>
                                     </div>
                             <div className="table-responsive table-scrollable">
-                                        <table id="table" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
+                                        <table id="dataTable" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
                                                     <th>Image</th>
                                                     <th>Title</th>
                                                     <th>Description</th>
+                                                    <th>Contents</th>
                                                     <th>Status</th>
                                                     <th>Date Created</th>
                                                     <th>Action</th>

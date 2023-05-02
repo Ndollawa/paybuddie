@@ -67,25 +67,26 @@ const userImage = useUserImage(currentUser)
                     <Link to="#" className="main-menu__search search-toggler">
                         <i className="icon-magnifying-glass"></i>
                     </Link>
-                    {!currentUser._id?<><Button href="auth/register" className="thm-btn main-menu__btn mx-2" size="sm">Sign Up</Button>
-                    <Button href="auth/login" className="thm-btn main-menu__btn mx-2" size="sm">Login</Button></>
-                    :  
-            <NavDropdown title={<img src={userImage} width='30' className='border-color-primary border-1 rounded-circle' height={'30'} alt='avatar'/>} id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1"><RxDashboard fontSize={'1.2rem'}/> Dashboard</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
+                    {currentUser?
+                     <NavDropdown title={<img src={userImage} width='30' className='border-color-primary border-1 rounded-circle' height={'30'} alt='avatar'/>} id="basic-nav-dropdown">
+              <NavDropdown.Item href="/dashboard"><RxDashboard fontSize={'1.2rem'}/> Dashboard</NavDropdown.Item>
+              <NavDropdown.Item href="/dashboard/profile">
                <FaUserCog fontSize={'1.2rem'}/> My Profile
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3"><HiOutlineChatBubbleLeftRight fontSize={'1.2rem'}/> Messenger</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3"><BiTransfer fontSize={'1.2rem'}/> My Transactions</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3"><FaUserFriends fontSize={'1.2rem'}/> My Contacts</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3"><IoWalletOutline fontSize={'1.2rem'}/> My Wallet</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3"><GiTakeMyMoney fontSize={'1.2rem'}/> Market</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3"><FaCogs fontSize={'1.2rem'}/> Settings</NavDropdown.Item>
+              <NavDropdown.Item href="/dashboard/messenger"><HiOutlineChatBubbleLeftRight fontSize={'1.2rem'}/> Messenger</NavDropdown.Item>
+              <NavDropdown.Item href="/dashboard/transaction"><BiTransfer fontSize={'1.2rem'}/> My Transactions</NavDropdown.Item>
+              <NavDropdown.Item href="/dashboard/contacts"><FaUserFriends fontSize={'1.2rem'}/> My Contacts</NavDropdown.Item>
+              <NavDropdown.Item href="/dashboard/wallets"><IoWalletOutline fontSize={'1.2rem'}/> My Wallet</NavDropdown.Item>
+              <NavDropdown.Item href="/dashboard/market"><GiTakeMyMoney fontSize={'1.2rem'}/> Market</NavDropdown.Item>
+              <NavDropdown.Item href="/dashboard/profile-settings"><FaCogs fontSize={'1.2rem'}/> Settings</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4"><IoLogOutOutline fontSize={'1.2rem'}/>
+              <NavDropdown.Item href="/logout"><IoLogOutOutline fontSize={'1.2rem'}/>
                 Logout
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> :  <><Button href="auth/register" className="thm-btn main-menu__btn mx-2" size="sm">Sign Up</Button>
+                    <Button href="auth/login" className="thm-btn main-menu__btn mx-2" size="sm">Login</Button></>
+                   
+           
                 } 
                     {/* <!-- /.thm-btn --> */}
                     {

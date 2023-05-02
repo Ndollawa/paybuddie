@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {GoKey} from 'react-icons/go';
 import {GrMail} from 'react-icons/gr';
 import {FaUser,FaRegUserCircle,FaKeycdn} from 'react-icons/fa'; 
-import {useCompanyDetails} from '../dashboard/pages/Settings/settingsConfigSlice';
+import {useCompanyDetails, useSiteImages} from '../dashboard/pages/Settings/settingsConfigSlice';
 import {useRegisterMutation} from './authApiSlice';
 import { useCheckDuplicateUserMutation } from '../dashboard/pages/Users/usersApiSlice';
 import OtherBody from '../dashboard/components/OtherBody';
@@ -28,7 +28,8 @@ interface Messages{
 
 const Register:React.FC = () => {
 
-    const {siteName,logo,contact} = useSelector(useCompanyDetails);
+    const {siteName,contact} = useSelector(useCompanyDetails);
+    const {logo} = useSelector(useSiteImages);
 
 
 const userRef = useRef <HTMLInputElement>(null);
@@ -157,7 +158,7 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                         <div className="row no-gutters">
                             <div className="col-xl-12">
                                 <div className="auth-form">
-									<div className="text-center mb-3">
+									<div className="text-center  mb-3">
 										<Link to="index-2.html" className="brand-logo">
 											<img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} alt={siteName} width='150' />
 										</Link>

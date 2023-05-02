@@ -49,6 +49,7 @@ import User from './features/dashboard/pages/Users/User';
 import FaqManagement from './features/dashboard/pages/Faq/Faq';
 import TeamManagement from './features/dashboard/pages/Team/Team';
 import PostManagement from './features/dashboard/pages/Post/Post';
+import PostCategoryManagement from './features/dashboard/pages/PostCategory/PostCategory';
 import Slide from './features/dashboard/pages/Slide/Slide';
 import RoomsManagement from './features/dashboard/pages/Rooms/Rooms';
 import ServicesManagement from './features/dashboard/pages/Service/Services';
@@ -172,6 +173,7 @@ const {
                   <Route path="rooms" element={<RoomsManagement pageData={{pageTitle:"All Rooms",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="services" element={<ServicesManagement pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="posts" element={<PostManagement pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="posts/category" element={<PostCategoryManagement pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="slides" element={<Slide />} />
                   <Route path="settings/" element={<SiteSettings/>} >
                       <Route index element={<GeneralSettings/>} />

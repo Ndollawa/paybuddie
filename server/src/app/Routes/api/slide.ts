@@ -14,7 +14,11 @@ const upload = useMulter('slide')
 router.route('/')
 .get((req:Request, res:Response, next:NextFunction) => SlideController.list(req,res,next))
 .post(verifyJWT,verifyRoles(ROLES_LIST.ADMIN,ROLES_LIST.DEV),upload.single('slideBg'),(req:Request, res:Response, next:NextFunction) => SlideController.create(req,res))
-.put(verifyJWT,verifyRoles(ROLES_LIST.ADMIN,ROLES_LIST.DEV),(req:Request, res:Response, next:NextFunction) => SlideController.update(req,res))
-.delete(verifyJWT,verifyRoles(ROLES_LIST.ADMIN,ROLES_LIST.DEV),(req:Request, res:Response, next:NextFunction) => SlideController.delete(req,res))
+.put(verifyJWT,verifyRoles(ROLES_LIST.ADMIN,ROLES_LIST.DEV),upload.single('slideBg'),(req:Request, res:Response, next:NextFunction) => SlideController.update(req,res))
+.patch(verifyJWT,verifyRoles(ROLES_LIST.ADMIN,ROLES_LIST.DEV),upload.single('slideBg'),(req:Request, res:Response, next:NextFunction) => SlideController.update(req,res))
+.delete(verifyJWT,verifyRoles(ROLES_LIST.ADMIN,ROLES_LIST.DEV),(req:Request, res:Response, next:NextFunction) => SlideController.delete(req,res));
+
+router.route('/update').post(verifyJWT,verifyRoles(ROLES_LIST.ADMIN,ROLES_LIST.DEV),(req:Request, res:Response, next:NextFunction) => SlideController.update(req,res))
+
 export default router; 
 

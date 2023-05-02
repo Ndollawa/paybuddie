@@ -9,12 +9,16 @@ const TeamSchema =  new Schema({
     lastName:{
         type:String,
     },
-    postion:{
+    position:{
         type:String,
     },
     bio:{
         type:String,
     },
+    phone:{
+        type:String,
+    },
+
     email:{
         type:String,
         required: true,
@@ -23,10 +27,12 @@ const TeamSchema =  new Schema({
     userImage:{
         type:String
     },
+    socialMedia:{
     facebookHandle:{type:String},
     twitterHandle:{type:String},
     instagram:{type:String},
-    whatsapp:{type:String },
+    whatsapp:{type:String }
+    },
     status:{
         type:String,
         required: true,
@@ -36,11 +42,6 @@ const TeamSchema =  new Schema({
         },
         default:'active'
     },
-    image:{
-        type:String,
-        required:false
-    }
-   
 },{timestamps:true} );
 TeamSchema.plugin(mongoosePaginate);
 

@@ -193,7 +193,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
             if(hackedUser){
             hackedUser.refreshToken = []
             const result = await hackedUser.save();
-            // console.log(result)
+            console.log(result)
             }
         }
         )

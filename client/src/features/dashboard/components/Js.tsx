@@ -10,6 +10,8 @@ const Js = () => {
     "dashboard-assetsvendor/peity/jquery.peity.min.js",
     "dashboard-assets/vendor/apexchart/apexchart.js",
     "dashboard-assets/js/dashboard/dashboard-1.js",
+    "dashboard-assets/js/custom.js",
+    "dashboard-assets/js/deznav-init.js",
   ]	
   return (
     <>

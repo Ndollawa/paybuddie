@@ -16,7 +16,11 @@ interface modalDataProps {
           id:string | number;
           title: string;
           description: string;
-          body: string;
+          body: string; 
+          cto:{
+            cto_text?:string;
+            link?:string;
+          }
           image: string;
           status: string;
       } | null,
@@ -35,7 +39,7 @@ const SlideTableData = ({slideId,index,showEditForm}:any) => {
         isError: isDelError,
         error: delerror
     }]:any = useDeleteSlideMutation()
-    const onDeleteSlide = async () => {
+    const onDeleteSlide = async (id:string) => {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'btn btn-sm m-2 btn-success',
@@ -54,7 +58,7 @@ const SlideTableData = ({slideId,index,showEditForm}:any) => {
             reverseButtons: true
           }).then(async(result) => {
             if (result.isConfirmed) {
-        await deleteSlide({ _id: slideId })
+        await deleteSlide({ _id: id })
         if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
               swalWithBootstrapButtons.fire(
                 'Deleted!',
@@ -79,10 +83,12 @@ const SlideTableData = ({slideId,index,showEditForm}:any) => {
         const created = new Date(slide.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
       const slideData = {
         data:{
-        id:slide._id,
+        _id:slide._id,
         title:slide.title,
         description:slide.description,
         image:slide.image,
+        cto_text:slide.cto_text,
+        link:slide.link,
         body:slide.body,
         status:slide.status
 
@@ -119,7 +125,7 @@ const SlideTableData = ({slideId,index,showEditForm}:any) => {
                     <td>
                     <div className="d-flex">
                             <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(slideData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={onDeleteSlide}><i className="fa fa-trash"></i></button>
+                            <button className="btn btn-danger shadow btn-xs sharp" onClick={()=>onDeleteSlide(slide._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
                 </tr></>

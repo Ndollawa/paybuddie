@@ -7,6 +7,7 @@ import { roomsApiSlice } from "../dashboard/pages/Rooms/roomApiSlice";
 import { teamsApiSlice } from "../dashboard/pages/Team/teamApiSlice";
 // import { slidesApiSlice } from "../dashboard/pages/Slide/slideApiSlice";
 import { postsApiSlice } from "../dashboard/pages/Post/postApiSlice";
+import { postCategoryApiSlice } from "../dashboard/pages/PostCategory/postCategoryApiSlice";
 import { settingsApiSlice } from "../dashboard/pages/Settings/settingApiSlice";
 import {useSelector} from 'react-redux';
 import { selectCurrentUser } from "./authSlice";
@@ -16,17 +17,18 @@ import { Outlet } from "react-router-dom";
 const Prefetch =()=>{
   const user = useSelector(selectCurrentUser)
   useEffect(() => {
+    store.dispatch(settingsApiSlice.util.prefetch('getSettings', 'settingsList', { force: true }))
     store.dispatch(faqsApiSlice.util.prefetch('getFaqs', 'faqsList', { force: true }))
+    store.dispatch(slidesApiSlice.util.prefetch('getSlides', 'slidesList', { force: true }))
+    store.dispatch(teamsApiSlice.util.prefetch('getTeams', 'teamsList', { force: true }))
+    // store.dispatch(slidesApiSlice.util.prefetch('getSlides', 'slidesList', { force: true }))
+    store.dispatch(postsApiSlice.util.prefetch('getPosts', 'postsList', { force: true }))
+    store.dispatch(postCategoryApiSlice.util.prefetch('getPostCategory', 'categoriesList', { force: true }))
    if(user._id){
     store.dispatch(usersApiSlice.util.prefetch('getUsers', 'usersList', { force: true }))
     store.dispatch(contactsApiSlice.util.prefetch('getContacts', 'contactsList', { force: true }))
     store.dispatch(roomsApiSlice.util.prefetch('getRooms', 'roomsList', { force: true }))
    } 
-    store.dispatch(slidesApiSlice.util.prefetch('getSlides', 'slidesList', { force: true }))
-    store.dispatch(teamsApiSlice.util.prefetch('getTeams', 'teamsList', { force: true }))
-    store.dispatch(slidesApiSlice.util.prefetch('getSlides', 'slidesList', { force: true }))
-    store.dispatch(settingsApiSlice.util.prefetch('getSettings', 'settingsList', { force: true }))
-    store.dispatch(postsApiSlice.util.prefetch('getPosts', 'postsList', { force: true }))
 }, [])
     return <Outlet/>
 }

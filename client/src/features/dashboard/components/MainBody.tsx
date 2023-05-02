@@ -8,7 +8,7 @@ import SideBar from "./SideBar";
 import Chatbox from "./ChatBox";
 import Footer from "./Footer";
 import { useSelector } from 'react-redux';
-import {useCompanyDetails,useDashboardConfig} from '../pages/Settings/settingsConfigSlice';
+import {useCompanyDetails,useDashboardConfig, useSiteImages} from '../pages/Settings/settingsConfigSlice';
 import useWindowSize from "../../../app/utils/hooks/useWindowSize";
 import AppSettings from "./AppSettings";
 import ThemePanel from "./ThemePanel";
@@ -23,7 +23,8 @@ const MainBody = ({children}:any) => {
 const pageData ={
     pageTitle: 'Dashboard'
 }
-const {siteName,logo,favicon,logoDark} = useSelector(useCompanyDetails);
+const {siteName} = useSelector(useCompanyDetails);
+const {logo,favicon,logoDark} = useSelector(useSiteImages);
 const {layoutOptions} = useSelector(useDashboardConfig);
 const {
     typography,

@@ -8,9 +8,8 @@ import ViewModal from './ViewModal'
 import { setPreloader } from '../../../components/PreloaderSlice'
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'
-import  'datatables.net'
 import { faqProps } from '../../../../../app/utils/props/faqProps'
-import useDataTables from '../../../../../app/utils/hooks/useDataTables'
+import initDataTables, { destroyDataTables } from '../../../../../app/utils/initDataTables'
 
 interface modalDataProps {
     data:{
@@ -23,7 +22,6 @@ interface modalDataProps {
 }
 
 const FaqTableData = () => {
-   useDataTables($('#dataTable'))
     const dispatch = useDispatch()
   const [modalData,setModalData] = useState<modalDataProps>({
    data:null, 
@@ -44,9 +42,18 @@ const {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true
 })
+
+useEffect(() => {
+
+  destroyDataTables($('#dataTable'))
+    initDataTables($('#dataTable'),"FAQs")
+  return () => {
+   destroyDataTables($('#dataTable'))
+  }
+}, [faqs])
+
 const showEditForm  = useMemo(()=> { return(faqData:modalDataProps)=>{
 setModalData(faqData);
-console.log(faqData)
 }},[])
 const showDetails  = useMemo(()=>{ return (faqData:modalDataProps)=>{
 setViewData(faqData);
@@ -168,7 +175,7 @@ if (isSuccess && !isLoading) {
     <>
     <EditFaqModal modalData={modalData} />
     <ViewModal viewData={viewData}  />
-    <div className="mt-20 table-responsive table-scrollable" >
+    <div className="mt-5 table-responsive table-scrollable" >
     <table id="dataTable" className="table mt-10 table-bordered table-hover table-responsive table-striped table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
         <thead>
             <tr>

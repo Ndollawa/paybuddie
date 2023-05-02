@@ -95,9 +95,21 @@ export type sideBarLink ={
         id:7,
         title:'Blog Post Management',
         icon:<FaPodcast fontSize={"2rem"}/>,
-        path:'/dashboard/posts',
-        isActive:false,
-        isOpen:false
+        isOpen:false,
+        children:[
+         { 
+            id:6.0,
+            title:'Blog Posts',
+        // icon:
+            path: '/dashboard/posts'
+        },
+        {
+            id:6.1,
+            title:'Post Category',
+            // icon:
+            path: '/dashboard/posts/category'
+        }],
+       
     }
     ,{
         id:8,
