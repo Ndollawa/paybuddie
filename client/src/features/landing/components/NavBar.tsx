@@ -67,8 +67,8 @@ const userImage = useUserImage(currentUser)
                     <Link to="#" className="main-menu__search search-toggler">
                         <i className="icon-magnifying-glass"></i>
                     </Link>
-                    {currentUser?
-                     <NavDropdown title={<img src={userImage} width='30' className='border-color-primary border-1 rounded-circle' height={'30'} alt='avatar'/>} id="basic-nav-dropdown">
+                    {currentUser._id?
+                     <NavDropdown title={<img src={userImage} width='30' height={'30'} className='border-color-primary object-fit-cover border-1 rounded-circle' alt='avatar'/>} id="basic-nav-dropdown">
               <NavDropdown.Item href="/dashboard"><RxDashboard fontSize={'1.2rem'}/> Dashboard</NavDropdown.Item>
               <NavDropdown.Item href="/dashboard/profile">
                <FaUserCog fontSize={'1.2rem'}/> My Profile

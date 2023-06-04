@@ -4,12 +4,13 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const Schema = mongoose.Schema;
 
 const MessageAttachmentsSchema =  new Schema({
-    messageId:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
-        required: true
-    },
+    messageId:{ type: Schema.Types.ObjectId, ref: 'Message' },
     attachmentType:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        type:String,
+        enum: {
+            values: ['active', 'deleted'],
+            message: '{VALUE} is not supported'
+          },
         required: true
     },
     attachment:{

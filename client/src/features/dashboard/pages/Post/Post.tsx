@@ -7,23 +7,14 @@
     import { setPreloader } from '../../components/PreloaderSlice'
     import pageProps from '../../../../app/utils/props/pageProps'
     import PostTableData from './components/PostTableData'
-    
+   import postProps from '../../../../app/utils/props/postProps' 
 import $ from 'jquery'
 import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'   
  
 
     
 interface modalDataProps {
-       data:{
-        id:string | number;
-        title: string;
-        description: string;
-        body: string;
-        coverImage: string;
-        status: string;
-        tags: string[];
-        category: string;
-      } | null,
+       data:postProps | null,
       showModal:boolean,
     }
     const Post = ({pageData}:pageProps)  => {
@@ -38,7 +29,7 @@ interface modalDataProps {
         isSuccess,
         isError,
         error
-    } = useGetPostsQuery('postList', {
+    } = useGetPostsQuery('postsList', {
         pollingInterval: 15000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
@@ -61,7 +52,7 @@ interface modalDataProps {
  useEffect(() => {
 
             destroyDataTables($('#dataTable'))
-              initDataTables($('#dataTable'),"FAQs")
+              initDataTables($('#dataTable'),"All Posts")
             return () => {
              destroyDataTables($('#dataTable'))
             }

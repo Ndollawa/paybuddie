@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {useGetSlidesQuery,useDeleteSlideMutation } from '../slideApiSlice'
+import {useGetSlidesQuery,useDeleteSlideMutation } from '../slidesApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import Swal from 'sweetalert2'
 import LightGallery from 'lightgallery/react'
@@ -9,21 +9,12 @@ import 'lightgallery/css/lg-zoom.css'
 import lgThumbnail from 'lightgallery/plugins/thumbnail'
 import lgZoom from 'lightgallery/plugins/zoom'
 // import 'lightgallery/css/lg-thumbnail.css'
+import slideProps from '../../../../../app/utils/props/slideProps'
+
 
 interface modalDataProps {
     modalData:{
-       data:{
-          id:string | number;
-          title: string;
-          description: string;
-          body: string; 
-          cto:{
-            cto_text?:string;
-            link?:string;
-          }
-          image: string;
-          status: string;
-      } | null,
+       data:slideProps | null,
       showModal:boolean,
     } 
     }
@@ -124,8 +115,8 @@ const SlideTableData = ({slideId,index,showEditForm}:any) => {
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">
-                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(slideData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={()=>onDeleteSlide(slide._id)}><i className="fa fa-trash"></i></button>
+                            <button type="button" className="btn btn-info light shadow btn-xs sharp me-1"   onClick={()=>showEditForm(slideData)}><i className="fas fa-pencil-alt"></i></button>
+                            <button className="btn btn-danger light shadow btn-xs sharp" onClick={()=>onDeleteSlide(slide._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
                 </tr></>

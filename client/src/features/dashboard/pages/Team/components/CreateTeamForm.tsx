@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { useAddNewTeamMutation } from "../teamApiSlice";
+import { useAddNewTeamMutation } from "../teamsApiSlice";
 import { Modal } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import showToast from "../../../../../app/utils/hooks/showToast";
@@ -315,11 +315,11 @@ setPreviewImage(fileurl)
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" type="submit" disabled={!canSave}>
-              Save Team{" "}
+            <Button variant="secondary" size='sm' className='rounded-pill' type="submit" disabled={!canSave}>
+              Save Team
             </Button>
           </Modal.Footer>
         </form>

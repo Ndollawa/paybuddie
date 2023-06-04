@@ -38,10 +38,10 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
             result = await baseQuery(args,api, extraOptions)
         }else{
             if(refreshResult?.error?.status === 403){
-                refreshResult.error.data =  "Your login session has expired"
+                refreshResult.error.data =  "Access Forbidden"
                 // api.dispatch(logOut())refreshResult?.error?.status === 401 &&  
             }else
-            if(refreshResult?.error?.data?.message === 'expired'){
+            if(refreshResult?.error?.status === 401 && refreshResult?.error?.data?.message === 'expired'){
                 refreshResult.error.data =  "Your login session has expired"
                 api.dispatch(logOut())
                 
@@ -54,7 +54,7 @@ const baseQueryWithReauth:BaseQueryFn = async (args,api, extraOptions) =>{
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
-    tagTypes:['User','Post','Faq','Setting','Slide','Message','Team','Service','Notification','Contact','Room','PostCategory'],
+    tagTypes:['User','Post','Faq','Setting','Slide','Message','Conversation','Team','Service','Notification','Contact','Room','PostCategory'],
     endpoints: (builders) =>({})
 
 })

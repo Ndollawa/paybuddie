@@ -21,7 +21,7 @@ const from = location.state?.from ?? location.state?.from?.pathname
                         <h4><i className="fa fa-thumbs-down text-danger"></i> Bad Request</h4>
                         <p>Oppps!!!, Your Login session has expired.<br/> Please log back in</p>
 						<div>
-                            <NavLink className="btn btn-primary" to="/auth/login" replace state={{ from: location.pathname }}>
+                            <NavLink className="btn btn-secondary" to="/auth/login" replace state={{ from }}>
                                 Login
                             </NavLink>
                         </div>

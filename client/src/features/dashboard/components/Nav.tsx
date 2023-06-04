@@ -237,9 +237,9 @@ var handleAllChecked = function() {
                                     setToggleUserDropdwn(prev =>!prev);
                                     setToggleNotification(false);
                                     setToggleAlert(false);}} data-bs-toggle="dropdown">
-                                    <img src={userImage} width="20" alt={currentUser.username}/>
+                                    <img src={userImage} width="20" alt={currentUser?.username}/>
 									<div className="header-info">
-										<span>{(currentUser.firstName && currentUser.lastName)? currentUser.firstName+" "+currentUser.lastName : currentUser.username}</span>
+										<span>{ currentUser?.fullName || currentUser?.username}</span>
 										<small>{currentUser.email}</small>
 									</div>
                                 </Link>

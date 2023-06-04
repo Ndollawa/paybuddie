@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Date, Document } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 
@@ -9,6 +9,7 @@ export interface userInterface extends Document{
         _id:string | undefined;
         firstName: string | undefined;
         lastName: string | undefined;
+        fullName:string | undefined;
         email: string;
         password: string;
         username: string | undefined;
@@ -23,6 +24,10 @@ export interface userInterface extends Document{
         bio: string | undefined;
         userImage: string | undefined;
         accountStatus:string | number;
+        online:{
+            status:boolean;
+            lastSeen:Date;
+        }
         verificationStatus: number | boolean;
         accountSecurity_2FA: boolean | number;
         roles:  {
@@ -49,6 +54,12 @@ const UserSchema=  new Schema<userInterface>({
     username:{
         type:String
     },
+    fullName: {
+        type: String,
+        get: function () {
+          return `${(this as any).firstName} ${(this as any).lastName}`;
+        },
+      },
     password:{
         type:String,
         required: true
@@ -98,13 +109,13 @@ const UserSchema=  new Schema<userInterface>({
     },
       
     verificationStatus:{
-         type:Boolean,
-    enum: {
-        values: [0,1],
-        message: '{VALUE} is not supported' 
-      },
-    default:0,
-    required: true   
+        type:Boolean,
+        default:false,
+        required: true   
+    },
+    online:{
+        status:{ type:Boolean},
+        lastSeen:{ type:Date},
     },
     accountSecurity_2FA:{
         type:Boolean,

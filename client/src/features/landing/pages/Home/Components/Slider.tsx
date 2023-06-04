@@ -2,21 +2,13 @@ import React, { useEffect,ReactElement, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useLandingPageConfig } from '../../../../dashboard/pages/Settings/settingsConfigSlice';
 import { useSelector } from 'react-redux';
-import { useGetSlidesQuery } from '../../../../dashboard/pages/Slide/slideApiSlice';
+import { useGetSlidesQuery } from '../../../../dashboard/pages/Slide/slidesApiSlice';
+import slideProps from '../../../../../app/utils/props/slideProps';
 import $ from 'jquery'
 import 'owl.carousel/dist/assets/owl.carousel.css';
 // import 'owl.carousel';
 import 'owl.carousel.es6'
 
-interface slideProps {
-    _id:string;
-    title:string;
-    description:string;
-    body:string;
-    cto_text?:string;
-    link?:string;
-    image:string;
-}
 
 const Slider = () => {
     useEffect(() => {

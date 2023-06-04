@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 // import 'owl.carousel/dist/assets/owl.carousel.css';
 // import 'owl.carousel';
 import MainBody from '../../components/MainBody';
+import PageHeading from '../../components/PageHeading';
 
 
 const HomePage = () => {
@@ -18,6 +19,7 @@ useEffect(() => {
     <>
     <MainBody>
 		<div className="container-fluid">
+			<PageHeading pageHeading='Dashboard' />
 				<div className="row">
 					<div className="col-xl-3 col-sm-6 m-t35">
 						<div className="card card-coin">

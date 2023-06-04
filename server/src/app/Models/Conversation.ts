@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const ConversationSchema =  new Schema({
  
     members:{
-        type:Array,
+        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     },
   
    

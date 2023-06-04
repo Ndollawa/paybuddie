@@ -1,5 +1,5 @@
 import React from 'react';
-import useImportScript from '../../../app/utils/hooks/importScript';
+import useImportScript from '../../../app/utils/hooks/useImportScript';
 // import ScriptTag from 'react-script-tag';
 
 const Js = () => {
@@ -16,7 +16,7 @@ const Js = () => {
   return (
     <>
       {
-    useImportScript(javascript)
+    useImportScript(javascript,'babel')
    
     }
     </>

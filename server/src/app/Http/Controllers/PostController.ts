@@ -40,7 +40,6 @@ class PostController extends BaseController {
  public create = async (req:Request, res:Response) => {
     const {author, title, description, body, status,tags,category } = req.body
     const file = req.file!
-    console.log(req.body)
     // Confirm data
     if (!body || !title || !status || !req.file || !tags || !category) {
         return res.status(400).json({ message: 'All fields are required' })
@@ -70,7 +69,6 @@ class PostController extends BaseController {
 public update = async (req:Request, res:Response) => {
     const {title, description,_id,status,body,category, tags } = req.body
     const file = req.file!
-    console.log(req.body)
     // Confirm data
     if (!body || !title || !status || !tags || !category) {
         return res.status(400).json({ message: 'All fields are required' })

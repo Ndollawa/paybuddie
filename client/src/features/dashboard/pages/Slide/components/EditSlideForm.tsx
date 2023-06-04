@@ -1,28 +1,17 @@
 import React, {ChangeEvent,FormEvent,useState,useEffect} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { useUpdateSlideMutation} from '../slideApiSlice'
+import { useUpdateSlideMutation} from '../slidesApiSlice'
 import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import {BsToggleOff ,BsToggleOn} from 'react-icons/bs';
 import showToast from '../../../../../app/utils/hooks/showToast'
 import $ from 'jquery'
-
+import slideProps from '../../../../../app/utils/props/slideProps'
 
 
 interface modalDataProps {
   modalData:{
-     data:{
-        _id:any;
-        title: string;
-        description: string;
-        body: string;
-        cto:{
-        cto_text?:string;
-        link?:string;
-      }
-        image: string;
-        status: string;
-    } | null,
+     data:slideProps | null,
     showModal:boolean,
   } 
   }
@@ -36,7 +25,7 @@ const [CTOLink, setCTOLink] = useState('')
 
 const [addCTOToggle, setAddCTOToggle] = useState<any>(false)
 const [slideBg, setSlideBg] = useState<any>(null)
-const [status, setStatus] = useState<any>((data?.status) ? data?.status! : $('#status').val())
+const [status, setStatus] = useState<any>((data?.status) ? data?.status! : 'active')
 const [show, setShow] = useState(false)
 const [previewImage, setPreviewImage] = useState("");
 const handleClose = () => setShow(false);
@@ -238,10 +227,10 @@ setPreviewImage(fileurl)
                     </div>
                     </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" size='sm' className='rounded-pill' type="submit" disabled={!canSave}  >
             Update Slide
           </Button>
         </Modal.Footer>

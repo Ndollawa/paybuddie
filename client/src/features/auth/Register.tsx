@@ -3,12 +3,14 @@ import React, {useRef,useState,useEffect,useDeferredValue, FormEvent, FormEventH
 import { Link } from 'react-router-dom';
 import {GoKey} from 'react-icons/go';
 import {GrMail} from 'react-icons/gr';
-import {FaUser,FaRegUserCircle,FaKeycdn} from 'react-icons/fa'; 
+import {FaUser,FaRegUserCircle,FaKeycdn, FaRegEye, FaRegEyeSlash} from 'react-icons/fa'; 
 import {useCompanyDetails, useSiteImages} from '../dashboard/pages/Settings/settingsConfigSlice';
 import {useRegisterMutation} from './authApiSlice';
 import { useCheckDuplicateUserMutation } from '../dashboard/pages/Users/usersApiSlice';
 import OtherBody from '../dashboard/components/OtherBody';
 import { ClipLoader } from 'react-spinners';
+import $ from 'jquery'
+import showToast from '../../app/utils/hooks/showToast';
 
 // username regex must start with a lowercase or uppercase laters and must be followed by lower or uppercase or digits,- or _ of 3 to 23 characters
 const USER_REGEX = /^[a-zA-Z][a-zA-z0-9-_]{3,23}$/;
@@ -36,6 +38,8 @@ const userRef = useRef <HTMLInputElement>(null);
 const emailRef = useRef <HTMLInputElement>(null);
 const errRef = useRef <HTMLInputElement>(null);
 const successRef = useRef <HTMLInputElement>(null);
+const pwdRef = useRef <HTMLInputElement>(null);
+const cpwdRef = useRef <HTMLInputElement>(null);
 
 const [checkDuplicateUser,{
     error:checkDuplicateUserError,
@@ -64,14 +68,15 @@ const [msg,setMsg] = useState<Messages>();
 const [success,setSuccess] = useState(false);
 // const [userFocus,setUserFocus] = useState(false);
 
+const [showPassword,setShowPassword] = useState(false);
+const [showCPassword,setShowCPassword] = useState(false);
 const deferredEmail = useDeferredValue(email)
 const deferredUsername = useDeferredValue(user)
 const dispatch = useDispatch()
 const [register,{
     isLoading,
-    status,
+    data,
     error,
-    isError,
     isSuccess
 }] = useRegisterMutation();
 useEffect(()=>{
@@ -121,25 +126,45 @@ useEffect(()=>{
     setValidMatch(match)
 }, [pwd,matchPwd]);
 
+const handleShowPassword = function(type:string){
+  if(type === 'pwd'){
+    if($('#password').attr('type') === 'password'){
+        setShowPassword(true)
+        $('#password').attr('type','text');
+    }else if($('#password').attr('type') === 'text'){
+        $('#password').attr('type','password');
+        setShowPassword(false)
+    }
+    pwdRef.current?.focus()
+}else{
+    if($('#cpassword').attr('type') === 'password'){
+        setShowPassword(true)
+        $('#cpassword').attr('type','text');
+    }else if($('#cpassword').attr('type') === 'text'){
+        $('#cpassword').attr('type','password');
+        setShowCPassword(false)
+    }
+    cpwdRef.current?.focus()   
+}
+}
 
 
 const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
     e.preventDefault();
         await register({username:user,email,password:pwd})
-        console.log()
             if(error){
-            //     setMsg({type:'danger',msg:'No Server Response'});
-            // }else if(status === 400){
-            //     setMsg({type:'warning',msg:'Missing form detail(s)'} )
-            // }else if(status === 409){
-            //     setMsg({type:'danger',msg:'Conflict: User with Username or email already exist!'} )
-            // }else{
+                setMsg({type:'danger',msg:'No Server Response'});
+            }else if(data?.status === 400){
+                setMsg({type:'warning',msg:'Missing form detail(s)'} )
+            }else if(data?.status === 409){
+                setMsg({type:'danger',msg:'Conflict: User with Username or email already exist!'} )
+            }else{
                 setMsg({type:'danger',msg:'Registration Failed<br/>'+error})
             errRef.current?.focus();
             }
-    if(!error && isSuccess){
+    if(!isLoading && isSuccess){
         setMsg({type:'success',msg:'New Account successfully created!'}) 
-
+        showToast('sucess','New Account successfully created!')
         setSuccess(true);
         setUser('');
         setEmail('');
@@ -233,15 +258,17 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                              />
                                         </div>
                                         </div>
-                                        {(emailFocus &&  !validEmail) &&<p className='alert alert-danger' id='uemailnote'>Must begin with letter follwed by @<br/>and a provider and end with a '.com'.<br/> eg. youremail@provider.com</p>}
+                                        {(emailFocus &&  !validEmail) &&<p className='alert alert-danger' id='uemailnote'>Must begin with letter follwed by @ and a provider and end with a '.com'. eg. youremail@provider.com</p>}
                                         <div className="form-group"><label className="mb-1"><strong>Password</strong></label>
                                          <div className={validPwd? "input-group input-success":"input-group input-default"}>
                                          <span className="input-group-text"><GoKey fontSize='1rem'/></span>
                                          
                                             <input 
                                             type="password" 
+                                            id="password" 
                                             className="form-control" 
                                             required
+                                            ref={pwdRef}
                                             aria-invalid ={validPwd ? "false": "true"}
                                             aria-describedby="pwdnote"
                                             onChange={(e)=> setPwd(e.target.value)}
@@ -251,6 +278,8 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                             value={pwd}
                                             
                                             />
+                                            <span className="input-group-text" onClick={()=>handleShowPassword('pwd')}>{showPassword?<FaRegEye fontSize='1rem'/>: <FaRegEyeSlash fontSize={'1rem'} />}</span>
+                                          
                                             </div>
                                         </div>
                                         {(pwdFocus && ! validPwd) && <p className='alert alert-danger' id='pwdnote'>8 to 24 characters.<br/>Must include uppercase and lowercase letters, a number and a special character.<br/> Allowed Special characters: <span aria-label="underscore">_</span> <span aria-label="hyphens">-</span><span aria-label="at symbol">@</span><span aria-label="hashtag">#</span><span aria-label="dollar sign">$</span><span aria-label="percent">% </span> </p>}
@@ -262,6 +291,8 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                             type="password" 
                                             className="form-control" 
                                             required
+                                            ref={cpwdRef}
+                                            id="cpassword"
                                             aria-invalid ={validMatch ? "false": "true"}
                                             aria-describedby="confirmpwdnote"
                                             onChange={(e)=> setMatchPwd(e.target.value)}
@@ -270,16 +301,18 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                                             value={matchPwd}
                                             placeholder="confirm password"
                                             />
+                                             <span className="input-group-text" onClick={()=>handleShowPassword('cpwd')}>{showCPassword?<FaRegEye fontSize='1rem'/>: <FaRegEyeSlash fontSize={'1rem'} />}</span>
+                                           
                                             </div>
                                         </div>
                                         {(matchFocus && !validMatch) && <p className='alert alert-danger' id='confirmpwdnote'>Passwords do not match!</p>}
                                         <div className="text-center mt-4">
                                             <button type="submit" 
-                                            disabled={!(validEmail && validPwd && validName && validMatch)? true : false} className="btn btn-primary btn-block">{isLoading?"Registering...":"Register Me"} {isLoading && <ClipLoader loading={isLoading} color={'#ffffff'} size={'0.8rem'}/>}</button>
+                                            disabled={!(validEmail && validPwd && validName && validMatch)? true : false} className="btn btn-secondary btn-block">{isLoading?"Registering...":"Register Me"} {isLoading && <ClipLoader loading={isLoading} color={'#ffffff'} size={'0.8rem'}/>}</button>
                                         </div>
                                     </form>
                                     <div className="new-account mt-3">
-                                        <p>Already have an account? <Link className="text-primary" to="/auth/login">Login</Link></p>
+                                        <p>Already have an account? <Link className="text-secondary" to="/auth/login">Login</Link></p>
                                     </div>
                                 </div>
                             </div>

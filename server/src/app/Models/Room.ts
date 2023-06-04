@@ -11,7 +11,7 @@ const RoomSchema =  new Schema({
         type:String,
         required: true
     },
-    members:Array,
+    members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     status:{
         type:String,
         required: true,

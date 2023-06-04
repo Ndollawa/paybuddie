@@ -107,10 +107,10 @@ e.preventDefault();
                     </div>
             </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" size='sm' type="submit" className='rounded-pill' disabled={!canSave}  >
             Save FAQ
           </Button>
         </Modal.Footer>

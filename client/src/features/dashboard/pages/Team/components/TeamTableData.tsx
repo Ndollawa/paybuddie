@@ -1,5 +1,5 @@
 import React from 'react'
-import {useGetTeamsQuery,useDeleteTeamMutation } from '../teamApiSlice'
+import {useGetTeamsQuery,useDeleteTeamMutation } from '../teamsApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import Swal from 'sweetalert2'
 import LightGallery from 'lightgallery/react'
@@ -9,28 +9,11 @@ import 'lightgallery/css/lg-zoom.css'
 import lgThumbnail from 'lightgallery/plugins/thumbnail'
 import lgZoom from 'lightgallery/plugins/zoom'
 // import 'lightgallery/css/lg-thumbnail.css'
-
+import teamProps from '../../../../../app/utils/props/teamProps'
 
 interface modalDataProps {
     modalData:{
-       data:{
-        _id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        username: string;
-        phone: string;
-        userImage: string;
-        status: string;
-        bio: string;
-        socialMedia:{
-        facebookHandle: string;
-        twitterHandle: string;
-        instagram: string;
-        whatsapp: string;
-        }
-        position: string;
-      } | null,
+       data:teamProps | null,
       showModal:boolean,
     } 
     }
@@ -135,8 +118,8 @@ const TeamTableData = ({teamId,index,showEditForm}:any) => {
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">
-                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(teamData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={()=>onDeleteTeam(team._id)}><i className="fa fa-trash"></i></button>
+                            <button type="button" className="btn btn-info light shadow btn-xs sharp me-1"   onClick={()=>showEditForm(teamData)}><i className="fas fa-pencil-alt"></i></button>
+                            <button className="btn btn-danger light shadow btn-xs sharp" onClick={()=>onDeleteTeam(team._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
                 </tr>

@@ -1,6 +1,6 @@
 import React, {ChangeEvent,FormEvent,useState} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { useAddNewServiceMutation } from '../serviceApiSlice'
+import { useAddNewServiceMutation } from '../servicesApiSlice'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
@@ -9,13 +9,13 @@ import showToast from '../../../../../app/utils/hooks/showToast'
 const CreateServiceForm = () => {
 
 const [title, setTitle] = useState('')
+const [icon, setIcon] = useState('')
 const [description, setDescription] = useState('')
 const [body, setBody] = useState('')
 const [serviceBg, setServiceBg] = useState<any>(null)
-const [status, setStatus] = useState('')
+const [status, setStatus] = useState('active')
 const [show, setShow] = useState(false)
-          const [previewImage, setPreviewImage] =
-    useState("");
+const [previewImage, setPreviewImage] = useState("");
 const [addNewService, {
   isLoading,
   isSuccess,
@@ -28,6 +28,7 @@ const [addNewService, {
 React.useEffect(() => {
   if (isSuccess) {
       setTitle('')
+      setIcon('')
       setDescription('')
       setBody('')
       setServiceBg(null)
@@ -35,7 +36,7 @@ React.useEffect(() => {
   }
 }, [isSuccess])
 
-const canSave = [title, description, body,status, serviceBg].every(Boolean) && !isLoading
+const canSave = [title, icon, description, body,status, serviceBg].every(Boolean) && !isLoading
 
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
@@ -49,6 +50,7 @@ formData.append("title",title)
 formData.append("description",description)
 formData.append("body",body)
 formData.append("status",status)
+formData.append("icon",icon)
 formData.append("upload",serviceBg)
       await addNewService(formData)
       if(isError) return showToast('error',JSON.stringify(error?.data?.message))
@@ -80,7 +82,7 @@ setPreviewImage(fileurl)
         <div className="card-body">
           <div className="basic-form">
               <div className="row">
-                <div className="mb-3 col-md-9">
+                <div className="mb-3 col-md-7">
                   <label className="form-label"><strong>Name or Title</strong></label>
                   <input
                     type="text"
@@ -91,6 +93,16 @@ setPreviewImage(fileurl)
                   />
                 </div>
                 <div className="mb-3 col-md-3">
+                  <label className="form-label"><strong>Icon Class</strong></label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    value={icon}
+                    onChange={(e)=>setIcon(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3 col-md-2">
                   <label className="form-label"><strong>Status</strong></label>
                   <select
                     id="inputState"
@@ -162,10 +174,10 @@ setPreviewImage(fileurl)
                     </div>
                     </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" type="submit" disabled={!canSave}  >
             Save Service          </Button>
         </Modal.Footer>
             </form>

@@ -18,7 +18,12 @@ const TeamSchema =  new Schema({
     phone:{
         type:String,
     },
-
+    fullName: {
+        type: String,
+        get: function () {
+          return `${(this as any).firstName} ${(this as any).lastName}`;
+        },
+      },
     email:{
         type:String,
         required: true,

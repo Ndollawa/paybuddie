@@ -1,6 +1,7 @@
 import React, {ChangeEvent,FormEvent,useState,useEffect} from 'react'
 import { useUpdatePostCategoryMutation} from '../postCategoryApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
+import postCategoryProps from '../../../../../app/utils/props/postCategoryProps';
 
 
 
@@ -8,11 +9,7 @@ import showToast from '../../../../../app/utils/hooks/showToast'
 
 interface modalDataProps {
   modalData:{
-     data:{
-        id:string;
-        title: string;
-        status: string;
-    } | null,
+     data:postCategoryProps | null,
     showModal:boolean;
   } 
   showEditForm:any
@@ -40,7 +37,7 @@ const canSave = [title,status].every(Boolean) && !isLoading
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
  if (canSave) {
-      await updatePostCategory({title,status,_id:data?.id})
+      await updatePostCategory({title,status,_id:data?._id})
       if(isError) return showToast('error',JSON.stringify(error?.data?.message))
       showToast('success', 'Post category updated successfully')
   }

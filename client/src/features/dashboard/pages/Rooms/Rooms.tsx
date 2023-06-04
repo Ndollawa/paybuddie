@@ -3,25 +3,19 @@
     import CreateRoomModal from './components/CreateRoomForm'
     import EditRoomForm from './components/EditRoomForm'
     import { useDispatch } from 'react-redux'
-    import { useGetRoomsQuery } from './roomApiSlice'
+    import { useGetRoomsQuery } from './roomsApiSlice'
     import $ from 'jquery'
     import { setPreloader } from '../../components/PreloaderSlice'
     import pageProps from '../../../../app/utils/props/pageProps'
     import RoomTableData from './components/RoomsTableData'
     import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'
+import roomProps from '../../../../app/utils/props/roomProps'
     
     
 
     
 interface modalDataProps {
-       data:{
-          id:string | number;
-          title: string;
-          description: string;
-          body: string;
-          roomImage: string;
-          status: string;
-      } | null,
+       data:roomProps | null,
       showModal:boolean,
     }
     const Rooms = ({pageData}:pageProps)  => {
@@ -36,7 +30,7 @@ interface modalDataProps {
         isSuccess,
         isError,
         error
-    } = useGetRoomsQuery('roomList', {
+    } = useGetRoomsQuery('roomsList', {
         pollingInterval: 15000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
@@ -52,7 +46,7 @@ interface modalDataProps {
             useEffect(() => {
 
                 destroyDataTables($('#dataTable'))
-                  initDataTables($('#dataTable'),"FAQs")
+                  initDataTables($('#dataTable'),"All Rooms")
                 return () => {
                  destroyDataTables($('#dataTable'))
                 }
@@ -83,6 +77,7 @@ interface modalDataProps {
                                     <div className="mb-5 d-flex">
                                     
                         <CreateRoomModal/>
+                        <EditRoomForm modalData={modalData} />
                                     </div>
                             <div className="table-responsive table-scrollable">
                                         <table id="dataTable" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>

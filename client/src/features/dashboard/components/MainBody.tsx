@@ -9,13 +9,16 @@ import Chatbox from "./ChatBox";
 import Footer from "./Footer";
 import { useSelector } from 'react-redux';
 import {useCompanyDetails,useDashboardConfig, useSiteImages} from '../pages/Settings/settingsConfigSlice';
+import { selectCurrentUser } from "../../auth/authSlice";
 import useWindowSize from "../../../app/utils/hooks/useWindowSize";
 import AppSettings from "./AppSettings";
 import ThemePanel from "./ThemePanel";
+import useUserActivity from "../../../app/utils/hooks/useUserActivity";
 
 
 const MainBody = ({children}:any) => {
-
+const currentUser = useSelector(selectCurrentUser)
+useUserActivity()
     const isLoading = useSelector(useIsLoading);
     // console.log(isLoading)
     const [isToggled,setIsToggled] = useState(false);
@@ -106,7 +109,7 @@ handleHeaderHight()
 {/* <!--*******************
     Preloader startdirection={direction}
 ********************--> */}
-{<Preloader/>}
+<Preloader/>
 {/* <!--*******************
     Preloader end
 ********************-->
@@ -153,11 +156,11 @@ handleHeaderHight()
             {children}
    
         </div>
-        <Footer />
       </div>
-        <AppSettings/>
-        <ThemePanel/>
+        {/* <AppSettings/>
+        <ThemePanel/> */}
     </div>
+    <Footer />
    </>
   )
 }

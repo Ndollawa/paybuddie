@@ -1,5 +1,5 @@
 import React from 'react';
-import useImportScript from '../../../app/utils/hooks/importScript';
+import useImportScript from '../../../app/utils/hooks/useImportScript';
 // import ScriptTag from 'react-script-tag';
 
 const Js:React.FC = () => {

@@ -16,7 +16,7 @@ const Error503 = () => {
                         <h4><i className="fa fa-times-circle text-danger"></i> Service Unavailable</h4>
                         <p>Sorry, we are under maintenance!</p>
 						<div>
-                            <button className="btn btn-primary" onClick={()=>navigate(-2)}>Click to go Back</button>
+                            <button className="btn btn-secondary" onClick={()=>navigate(-1)}>Click to go Back</button>
                         </div>
                     </div>
                 </div>

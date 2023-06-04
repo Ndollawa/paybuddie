@@ -3,5 +3,7 @@ export interface faqProps{
     question:string;
     response:string;
     status:string;
+    createdAt?:Date;
+    updatedAt?:Date;
 
 }

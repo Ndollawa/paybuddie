@@ -1,34 +1,18 @@
-    import React,{useState,useEffect} from 'react'
-    import MainBody from '../../components/MainBody'
-    import CreateFaqModal from './components/CreateTeamForm'
-    import EditTeamForm from './components/EditTeamForm'
-    import { useDispatch } from 'react-redux'
-    import { useGetTeamsQuery } from './teamApiSlice'
-    import { setPreloader } from '../../components/PreloaderSlice'
-    import pageProps from '../../../../app/utils/props/pageProps'
-    import TeamTableData from './components/TeamTableData'    
+import React,{useState,useEffect} from 'react'
+import MainBody from '../../components/MainBody'
+import CreateFaqModal from './components/CreateTeamForm'
+import EditTeamForm from './components/EditTeamForm'
+import { useDispatch } from 'react-redux'
+import { useGetTeamsQuery } from './teamsApiSlice'
+import { setPreloader } from '../../components/PreloaderSlice'
+import pageProps from '../../../../app/utils/props/pageProps'
+import TeamTableData from './components/TeamTableData'    
 import $ from 'jquery'
 import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'   
- 
+import teamProps from '../../../../app/utils/props/teamProps'
+
 interface modalDataProps {
-       data:{
-        _id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        username: string;
-        phone: string;
-        userImage: string;
-        status: string;
-        bio: string;
-        socialMedia:{
-        facebookHandle: string;
-        twitterHandle: string;
-        instagram: string;
-        whatsapp: string;
-        }
-        position: string;
-      } | null,
+       data:teamProps | null,
       showModal:boolean,
     }
     const Team = ({pageData}:pageProps)  => {
@@ -59,7 +43,7 @@ interface modalDataProps {
  useEffect(() => {
 
             destroyDataTables($('#dataTable'))
-              initDataTables($('#dataTable'),"FAQs")
+              initDataTables($('#dataTable'),"Our Team")
             return () => {
              destroyDataTables($('#dataTable'))
             }

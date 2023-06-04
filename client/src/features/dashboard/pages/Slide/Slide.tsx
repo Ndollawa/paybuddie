@@ -3,28 +3,17 @@
     import CreateFaqModal from './components/CreateSlideForm'
     import EditSlideForm from './components/EditSlideForm'
     import { useDispatch } from 'react-redux'
-    import { useGetSlidesQuery } from './slideApiSlice'
+    import { useGetSlidesQuery } from './slidesApiSlice'
     import { setPreloader } from '../../components/PreloaderSlice'
     import pageProps from '../../../../app/utils/props/pageProps'
     import SlideTableData from './components/SlideTableData'
     import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'
     import $ from 'jquery'
-    
+    import slideProps from '../../../../app/utils/props/slideProps'
 
     
 interface modalDataProps {
-       data:{
-          _id:string | number;
-          title: string;
-          description: string;
-          body: string;
-          cto:{
-            cto_text?:string;
-            link?:string;
-          }
-          image: string;
-          status: string;
-      } | null,
+       data:slideProps | null,
       showModal:boolean,
     }
     const Slide = ({pageData}:pageProps)  => {
@@ -35,7 +24,7 @@ interface modalDataProps {
         isSuccess,
         isError,
         error
-    } = useGetSlidesQuery('slideList', {
+    } = useGetSlidesQuery('slidesList', {
         pollingInterval: 15000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
@@ -56,7 +45,7 @@ interface modalDataProps {
             useEffect(() => {
 
                 destroyDataTables($('#dataTable'))
-                  initDataTables($('#dataTable'),"FAQs")
+                  initDataTables($('#dataTable'),"All Slides")
                 return () => {
                  destroyDataTables($('#dataTable'))
                 }

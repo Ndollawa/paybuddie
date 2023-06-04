@@ -164,7 +164,7 @@
 	
 	
 	// 
-	var table = $('#example3, #example4,').DataTable({
+	var table = $('#example3, #example4').DataTable({
 		language: {
 			paginate: {
 			  next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
@@ -172,6 +172,7 @@
 			}
 		}
 	});
+	
 	$('#example tbody').on('click', 'tr', function () {
 		var data = table.row( this ).data();
 	});

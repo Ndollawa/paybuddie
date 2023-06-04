@@ -91,7 +91,7 @@ aboutUsSection = (<section className="about-four pt-120 pb-120">
     <div className="container">
         <div className="row row-gutter-y-60">
             <div className="col-lg-6">
-                <div className="about-five__image wow fadeInLeft" data-wow-duration="1500ms">
+                <div className="about-five__image wow fadeInLeft p-5" data-wow-duration="1500ms">
                     <img src="assets/images/resources/about-5-1.png" alt=""/>
                     <div className="about-five__image__caption">
                         <div className="about-five__image__caption__shape-1"></div>
@@ -103,7 +103,7 @@ aboutUsSection = (<section className="about-four pt-120 pb-120">
                         <h3 className="about-five__image__title">
                             25<i>+</i>
                         </h3>
-                        <p className="about-five__image__text">Years Experiecne</p>
+                        <p className="about-five__image__text m-5">Years Experiecne</p>
                     </div>
                     <div className="about-five__image__floated">{siteName}</div>
                 </div>

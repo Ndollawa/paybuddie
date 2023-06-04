@@ -4,13 +4,8 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const Schema = mongoose.Schema;
 
 const MessageSchema =  new Schema({
-    conversation:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'Coversation' }],
-        required: true
-    },
-    sender:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        required: true
+    conversationId:{ type: Schema.Types.ObjectId, ref: 'Coversation' },
+    sender: { type: Schema.Types.ObjectId, ref: 'User' 
     },
     message:{
         type:String,
@@ -36,7 +31,17 @@ const MessageSchema =  new Schema({
         default:'active',
         required: true   
     },
+ attachments:[{
+    attachmentType:{
+        type:String,
+        required: true
+    },
+    attachment:{
+        type:String,
+        required: true
+    },
 
+ }],
 },
 {timestamps:true});
 MessageSchema.plugin(mongoosePaginate);

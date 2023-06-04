@@ -1,33 +1,16 @@
 import React, {ChangeEvent,FormEvent,useState,useEffect,useRef} from 'react'
-import { useUpdateTeamMutation} from '../teamApiSlice'
+import { useUpdateTeamMutation} from '../teamsApiSlice'
 import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import useInput from '../../../../../app/utils/hooks/useInput'
 import $ from 'jquery'
-
+import teamProps from '../../../../../app/utils/props/teamProps'
 
 
 interface modalDataProps {
   modalData:{
-     data:{
-      _id: string;
-      firstName: string;
-      lastName: string;
-      email: string;
-      username: string;
-      phone: string;
-      userImage: string;
-      status: string;
-      bio: string;
-      socialMedia:{
-      facebookHandle: string;
-      twitterHandle: string;
-      instagram: string;
-      whatsapp: string;
-      }
-      position: string;
-    } | null,
+     data:teamProps | null,
     showModal:boolean,
   } 
   }
@@ -332,10 +315,10 @@ const EditTeamModal = ({modalData:{data,showModal}}:modalDataProps) => {
   </div>
                     </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" size='sm' className='rounded-pill' type="submit" disabled={!canSave}  >
             Update Team
           </Button>
         </Modal.Footer>

@@ -14,6 +14,7 @@ userInfo:{
         _id:string | undefined | null;
        firstName: string | undefined | null;
        lastName: string | undefined | null;
+       fullName: string | undefined | null;
        email: string | null;
        username: string | undefined;
        phone: string | undefined | null;
@@ -24,6 +25,10 @@ userInfo:{
        state: string | undefined;
        country: string | undefined;
        occupation: string | undefined;
+       online:{
+        status: boolean |undefined;
+        lastSeen: Date;
+       }
        bio: string | undefined;
        userImage: string | undefined ;
        accountStatus:undefined | number | null;
@@ -73,6 +78,7 @@ class AuthController{
                         username:foundUser.username,
                         firstName:foundUser.firstName,
                         lastName:foundUser.lastName,
+                        fullName:foundUser.firstName+" "+foundUser.lastName,
                         phone:foundUser.phone,
                         dob:foundUser.dob,
                         gender: foundUser.gender,
@@ -80,7 +86,8 @@ class AuthController{
                         city: foundUser.city,
                         state: foundUser.state,
                         country: foundUser.country,
-                        occupation: foundUser.occupation,
+                        occupation: foundUser.occupation, 
+                        online:foundUser.online,
                         bio: foundUser.bio,
                         accountStatus:foundUser.accountStatus,
                         verificationStatus:foundUser.verificationStatus,
@@ -100,6 +107,7 @@ class AuthController{
                         username:foundUser.username,
                         firstName:foundUser.firstName,
                         lastName:foundUser.lastName,
+                        fullName:foundUser.firstName+" "+foundUser.lastName,
                         phone:foundUser.phone,
                         dob:foundUser.dob,
                         gender: foundUser.gender,
@@ -109,6 +117,7 @@ class AuthController{
                         country: foundUser.country,
                         occupation: foundUser.occupation,
                         bio: foundUser.bio,
+                        online:foundUser.online,
                         accountStatus:foundUser.accountStatus,
                         verificationStatus:foundUser.verificationStatus,
                         accountSecurity_2FA:foundUser.accountSecurity_2FA,
@@ -189,11 +198,10 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
         async(error:any, decodedToken:any) =>{
         // delete all tokens on reuse
             if(error) return res.status(403).json({message:'Access Forbidden'}); //Forbidden
-            const hackedUser = await UserModel.findOne({email:decodedToken.userInfo.email}).exec();
-            if(hackedUser){
+            const hackedUser = await UserModel.findOne({email:decodedToken?.userInfo?.email}).exec();
+            if(hackedUser?._id){
             hackedUser.refreshToken = []
             const result = await hackedUser.save();
-            console.log(result)
             }
         }
         )
@@ -203,21 +211,19 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
 
     const newRefeshTokenArray = foundUser.refreshToken.filter(rt =>rt !== refreshToken);
         //evaluate jwt
-
-
        jwt.verify(
         refreshToken,
         `${process.env.REFRESH_TOKEN_SECRET}`,
        async (err:any, decodedToken:any)=>{
-
+       
         // console.log(decodedToken)
         if(err){
             foundUser.refreshToken = [...newRefeshTokenArray];
             const result = await foundUser.save();
         }
-       
-            if(err || foundUser.email !== decodedToken.userInfo.email) return res.status(403).json({message:'Access Forbidden'});;// forbidden
-            const roles = Object.values(foundUser.roles!);
+        if(err || foundUser.email !== decodedToken.userInfo.email) return res.status(403).json({message:'Access Forbidden'});;// forbidden
+            //Refresh token was still valid
+       const roles = Object.values(foundUser.roles!);
             const accessToken =jwt.sign(
                 {
                 userInfo:{
@@ -227,6 +233,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
                     username:foundUser.username,
                     firstName:foundUser.firstName,
                     lastName:foundUser.lastName,
+                    fullName:foundUser.firstName+" "+foundUser.lastName,
                     phone:foundUser.phone,
                     dob:foundUser.dob,
                     gender: foundUser.gender,
@@ -236,6 +243,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
                     country: foundUser.country,
                     occupation: foundUser.occupation,
                     bio: foundUser.bio,
+                    online:foundUser.online,
                     accountStatus:foundUser.accountStatus,
                     verificationStatus:foundUser.verificationStatus,
                     accountSecurity_2FA:foundUser.accountSecurity_2FA,
@@ -254,6 +262,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
                         username:foundUser.username,
                         firstName:foundUser.firstName,
                         lastName:foundUser.lastName,
+                        fullName:foundUser.firstName+" "+foundUser.lastName,
                         phone:foundUser.phone,
                         dob:foundUser.dob,
                         gender: foundUser.gender,
@@ -263,6 +272,7 @@ refreshTokenHandler = async (req:Request, res:Response)=>{
                         country: foundUser.country,
                         occupation: foundUser.occupation,
                         bio: foundUser.bio,
+                        online:foundUser.online,
                         accountStatus:foundUser.accountStatus,
                         verificationStatus:foundUser.verificationStatus,
                         accountSecurity_2FA:foundUser.accountSecurity_2FA,

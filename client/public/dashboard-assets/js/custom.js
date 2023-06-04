@@ -421,10 +421,10 @@
 			handleMinHeight();
 			handleDataAction();
 			handleHeaderHight();
-			handleDzScroll();
+			//handleDzScroll();
 			handleMenuTabs();
 			handleChatbox();
-			handlePerfectScrollbar();
+			//handlePerfectScrollbar();
 			handleBtnNumber();
 			handleDzChatUser();
 			handleDzFullScreen();

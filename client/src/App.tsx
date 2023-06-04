@@ -136,9 +136,9 @@ const {
                 <Route path="our-blog/:id" element={<Post pageData={{pageTitle:"Post",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="our-team" element={<Team pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="our-team/:id/member" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="our-team/:id" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="services/:id/service" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="services/:id" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                 <Route path="login" element={<Navigate to="/auth/login" replace/>} />
                 <Route path="register" element={<Navigate to="/auth/register"/>} />
                 <Route path="lockscreen" element={<Navigate to="/auth/login"/>} />
@@ -164,6 +164,7 @@ const {
                   <Route path="users" element={<Users pageData={{pageTitle:"Users",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="users/user/:userId" element={<User pageData={{pageTitle:"User",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="messenger" element={<Chat pageData={{pageTitle:"Messenger",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                  <Route path="messenger/:id" element={<Chat pageData={{pageTitle:"Messenger",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                   <Route path="coin-Detail/:id" element={<CoinDetail pageData={{pageTitle:"Coin Data",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
                  
             <Route element={<RequireAuth allowedRoles={[1000,1001]} />} >

@@ -1,17 +1,12 @@
 import React from 'react'
-import {useGetRoomsQuery,useDeleteRoomMutation } from '../roomApiSlice'
+import {useGetRoomsQuery,useDeleteRoomMutation } from '../roomsApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import Swal from 'sweetalert2'
+import roomProps from '../../../../../app/utils/props/roomProps'
 
 interface modalDataProps {
     modalData:{
-       data:{
-          id:string | number;
-          title: string;
-          description: string;
-          image: string;
-          status: string;
-      } | null,
+       data:roomProps | null,
       showModal:boolean,
     } 
     }
@@ -28,7 +23,7 @@ const RoomTableData = ({roomId,index,showEditForm}:any) => {
         isError: isDelError,
         error: delerror
     }]:any = useDeleteRoomMutation()
-    const onDeleteRoom = async () => {
+    const onDeleteRoom = async (id:string) => {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'btn btn-sm m-2 btn-success',
@@ -47,7 +42,7 @@ const RoomTableData = ({roomId,index,showEditForm}:any) => {
             reverseButtons: true
           }).then(async(result) => {
             if (result.isConfirmed) {  
-              await deleteRoom({ _id: roomId })
+              await deleteRoom({ _id:id })
         if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
               swalWithBootstrapButtons.fire(
                 'Deleted!',
@@ -106,8 +101,8 @@ const RoomTableData = ({roomId,index,showEditForm}:any) => {
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">
-                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(roomData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={onDeleteRoom}><i className="fa fa-trash"></i></button>
+                            <button type="button" className="btn btn-info light shadow btn-xs sharp me-1"   onClick={()=>showEditForm(roomData)}><i className="fas fa-pencil-alt"></i></button>
+                            <button className="btn btn-danger light shadow btn-xs sharp" onClick={()=>onDeleteRoom(room._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
                 </tr>

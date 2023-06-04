@@ -1,16 +1,18 @@
 import mongoosePaginate from 'mongoose-paginate-v2'
-import mongoose, { SchemaType } from 'mongoose';
+import mongoose, { SchemaType,  Document } from 'mongoose';
 const Schema = mongoose.Schema;
 
-const ContactsSchema =  new Schema({
-    user:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        required: true
-    },
+
+export interface userContactsInterface extends Document{
+    user: string | undefined;
+    contacts: string[] | undefined;
+}
+
+const ContactsSchema =  new Schema<userContactsInterface>({
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    
     contacts:{
-        type: Array,
-        required: true,
-        default:[]
+        type:  [{ type: Schema.Types.ObjectId, ref: 'User' }],
     },    
 
 },{timestamps:true} );

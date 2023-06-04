@@ -9,16 +9,13 @@ import showToast from '../../../../app/utils/hooks/showToast'
 import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'
 import $ from 'jquery'
 import EditPostCategoryForm from './components/EditPostCategoryForm'
+import postCategoryProps from '../../../../app/utils/props/postCategoryProps'
 
     
 
     
 interface modalDataProps {
-       data:{
-          id:string;
-          title: string;
-          status: string;
-      } | null,
+       data:postCategoryProps | null,
       showModal:boolean,
     }
     const PostCategory = ({pageData}:pageProps)  => {
@@ -35,7 +32,7 @@ const [status, setStatus] = useState<any>($('#status').val())
         isSuccess,
         isError,
         error
-    } = useGetPostCategoryQuery('postCategoryList', {
+    } = useGetPostCategoryQuery('categoriesList', {
         pollingInterval: 15000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
@@ -53,7 +50,7 @@ const [status, setStatus] = useState<any>($('#status').val())
 useEffect(() => {
 
             destroyDataTables($('#dataTable'))
-              initDataTables($('#dataTable'),"FAQs")
+              initDataTables($('#dataTable'),"All Post Category")
             return () => {
              destroyDataTables($('#dataTable'))
             }

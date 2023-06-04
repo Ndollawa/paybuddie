@@ -279,6 +279,7 @@
 	  }, {
 		low: 0,
 		showArea: true,
+		fullWidth: true,
 		plugins: [
 		  Chartist.plugins.tooltip()
 		]

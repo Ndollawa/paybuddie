@@ -4,10 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const Schema = mongoose.Schema;
 
 const PostSchema =  new Schema({
-    author:{
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        required: true
-    },
+    author:{ type: Schema.Types.ObjectId, ref: 'User' },
     title:{
         type:String,
         required: true,
@@ -41,11 +38,11 @@ const PostSchema =  new Schema({
         default:'draft',
         required: true   
     },
-    read_count:{
+    readCount:{
         type:Number,
         default:0
     },
-    reading_time:{
+    readingTime:{
         type:String
     }
 

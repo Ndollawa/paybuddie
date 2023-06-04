@@ -40,7 +40,6 @@ class SlideController extends BaseController {
  public create = async (req:Request, res:Response) => {
     const { title, description, body, status,cto_option, link, cto_text } = req.body
     const file = req.file!
-    console.log(req.body)
     // Confirm data
     if (!body || !title || !status || !req.file) {
         return res.status(400).json({ message: 'All fields are required' })
@@ -48,7 +47,6 @@ class SlideController extends BaseController {
 
     // Check for duplicate title
     const duplicate = await SlideModel.findOne({ title }).collation({ locale: 'en', strength: 2 }).lean().exec()
-
     if (duplicate) {
         return res.status(409).json({ message: 'Duplicate slide title' })
     }

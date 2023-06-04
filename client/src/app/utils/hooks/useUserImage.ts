@@ -9,7 +9,7 @@ import defaultUser2 from '../../../images/user/defaultUser2.jpeg'
 
 const useUserImage = (user:any)=>{
     if(user?.verificationStatus && user?.userImage && user?.userImage !== ''){
-        return user?.userImage
+        return process.env.REACT_APP_BASE_URL+'/uploads/users/'+user?.userImage
     }else if(user?.verificationStatus && user?.gender === 'male'){
         return defaultUserMale
     }else if(user?.verificationStatus && user?.gender === 'female'){

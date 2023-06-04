@@ -179,54 +179,47 @@ const removeImage = async(file:string,type:string)=>{
 			
 			<div className="row "> 
 				<div className="col-lg-4"> 
-					<div className="card"> 
+					<div className="card" style={{height:'60%'}}> 
 						<div className="card-header"> 
 							<h3 className="card-title">Change Password</h3>  
 							</div> 
-							<div className="card-body d-flex  flex-column justify-content-center align-center"> 
+							<div className="card-body"> 
+								<div className="add-contact-box">
+									<div className="add-contact-content">
 								<form method="post"onSubmit={updateProfilePassword} > 
-									<div className="row mb-2 d-flex justify-content-center align-center"> 
-										<div className="col-auto position-relative rounded-circle"> 
-											 <img className="avatar avatar-xl" src={userImage} alt="Avatar-img" style={{width:'14rem'}}/>
-                                             <div className='  rounded-circle bg-danger p-2 d-flex justify-content-center align-center' style={{
-                                                position:'absolute',
-                                                width:'2.5rem',
-                                                height:'2.5rem',
-                                                right:'1rem',
-                                                top:'5rem',
-                                                userSelect:'none',
-                                                cursor:'pointer'
-                                             }} onClick={()=>removeImage(currentUser?.userImage!,"avatar")}><FaRegTimesCircle fontSize={'1rem'} color={'#ffffff'}/>
-                                             </div>
-                                             <div className='  rounded-circle bg-primary p-2 d-flex justify-content-center align-center' style={{
-                                                position:'absolute',
-                                                width:'2.5rem',
-                                                height:'2.5rem',
-                                                right:'1rem',
-                                                top:'8rem',
-                                                userSelect:'none',
-                                                cursor:'pointer'
-                                             }}><label style={{
-                                                cursor:'pointer' }}htmlFor='changeUserImage'><FaPencilAlt fontSize={'1rem'} color={'#ffffff'}/></label>
-                                             <input type="file" name="profileAvatar" id="changeUserImage" accept='image/*' className="d-none" 
-                                             onChange={updateProfilePicture}/></div>
-										</div> 
-										
-									</div> 
-	 
-										<div className="form-group"> 
-											<label className="form-label">New Password</label> <input type="password" id="password" name="password" className="form-control" 
+											<div className="image-placeholder">
+												<div className="avatar-edit">
+													<input type="file" id="imageUpload"  onChange={updateProfilePicture} accept=".png, .jpg, .jpeg"/>
+													<label htmlFor="imageUpload" title="Upload Profile Image"></label>
+													<span title="Remove Profile Image" onClick={()=>removeImage(currentUser?.userImage!,"avatar")} className="remove-avatar"><FaRegTimesCircle fontSize={'1rem'} color={'#ffffff'}/></span>
+												</div>
+												<div className="avatar-preview">
+													<div id="imagePreview" style={{backgroundImage: `url(${userImage})`}}>
+													 </div>
+												</div>
+											</div>
+											<div className="form-group">
+												<label className="text-black font-w500">New Password</label>
+												<div className="contact-name">
+													<input type="password" id="password" name="password" className="form-control" 
                                             onChange={(e)=> setPassword(e.target.value)}/>
+													<span className="validation-text"></span>
+												</div>
+											</div>
+											
+											<div className="form-group">
+												<label className="text-black font-w500">Confirm Password</label>
+												<div className="contact-occupation">
+													<input type="password" id="confirmpassword" name="confirmpassword" className="form-control"
+                                            onChange={(e)=> setConfirmPassword(e.target.value)}/>
+												</div>
+											</div>
+											<div className="form-footer"> 
+											<button type="submit" className=" btn btn-primary btn-block" name="submit">Save Changes</button>
 										</div> 
-										<div className="form-group"> 
-											<label className="form-label"> Confirm Password</label> <input type="password" id="confirmpassword" name="confirmpassword" className="form-control"
-                                            onChange={(e)=> setConfirmPassword(e.target.value)}/> 
-										</div> 
-										
-										<div className="form-footer"> 
-											<button type="submit" className=" btn btn-primary btn-block pfsetting1" name="pfsetting1">Save Changes</button>
-										</div> 
-								</form> 
+										</form>
+									</div>
+								</div>
 							</div> 
 									</div> 
 								</div> 

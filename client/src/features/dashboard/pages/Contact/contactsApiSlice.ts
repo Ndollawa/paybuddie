@@ -45,9 +45,7 @@ export const contactsApiSlice = apiSlice.injectEndpoints({
             query: initialContact => ({
                 url: '/contacts',
                 method: 'POST',
-                body: {
-                    ...initialContact,
-                }
+                body: initialContact
             }),
             invalidatesTags: [
                 { type: 'Contact', id: "LIST" }
@@ -57,37 +55,13 @@ export const contactsApiSlice = apiSlice.injectEndpoints({
             query: initialContact => ({
                 url: '/contacts',
                 method: 'PATCH',
-                body: {
-                    ...initialContact,
-                }
+                body: initialContact
             }),
             invalidatesTags: (result, error, arg) => [
                 { type: 'Contact', id: arg.id }
             ]
         }),
-        checkDuplicateContact: builder.mutation({
-            query: contactInfo => ({
-                url: '/checkduplicate',
-                method: 'POST',
-                body: {
-                    ...contactInfo,
-                }
-            }),
-            invalidatesTags: (result, error, arg) => [
-                { type: 'Contact', id: arg.id }
-            ]
-        }),
-          
-        uploadFile:builder.mutation<any, any>({
-            query:(arg:{data:FormData,url:string})=>({
-                url:arg.url,
-                method:'POST',
-                body:arg.data,
-            }),
-                invalidatesTags: (result, error, arg) => [
-                    { type: 'Contact', id: arg.id }
-                ]
-        }),
+      
         deleteContact: builder.mutation({
             query: ({ _id }) => ({
                 url: `/contacts`,
@@ -105,8 +79,6 @@ export const {
     useGetContactsQuery,
     useAddNewContactMutation,
     useUpdateContactMutation,
-    useUploadFileMutation,
-    useCheckDuplicateContactMutation,
     useDeleteContactMutation,
 } = contactsApiSlice
 

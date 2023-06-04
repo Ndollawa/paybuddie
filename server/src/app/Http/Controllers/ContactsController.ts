@@ -16,7 +16,7 @@ class ContactsController extends BaseController {
 // @access public
  public selectAll = async (req:Request, res:Response) => {
     // Get all notes from MongoDB
-    const contacts = await ContactsModel.find().lean()
+    const contacts = await ContactsModel.find().populate('contacts').exec()
 
     // If no notes 
     if (!contacts?.length) {
@@ -37,46 +37,44 @@ class ContactsController extends BaseController {
 // @desc Create new contacts
 // @route POST /contacts
 // @access authorized user
- public create = async (req:Request, res:Response) => {
-    const { email, firstName, lastName, phone, bio, status } = req.body
-    const file = req.file!
+ public addContact = async (req:Request, res:Response) => {
+    const {userId, contactId } = req.body
     // Confirm data
-    if (!email || !firstName || !lastName || !bio || !status || !req.file) {
+    if (!userId || !contactId) {
         return res.status(400).json({ message: 'All fields are required' })
     }
-    const userObj = {...req.body,userImage:file}
-    // Create and store the new user 
-    const contacts = await ContactsModel.create(userObj)
-
-    if (contacts) { // Created 
-        return res.status(201).json({ message: 'New contacts Memeber created' })
+    if(contactId !== userId){
+    // Create and store the new user contact
+    const userContacts = await ContactsModel.findOne({user:userId}).exec()
+    if (userContacts) {
+        if(userContacts.contacts?.includes(contactId)) return res.status(200).json({message:'Contact already exist'})
+    const newContact = await ContactsModel.findByIdAndUpdate({_id:userContacts?._id},{$addToSet:{contacts:contactId}},{new:true,upsert:true})
     } else {
-        return res.status(400).json({ message: 'Invalid contacts member data received' })
+     const newContact = await ContactsModel.create({user:userId, contacts:[contactId]})
+    
     }
-
 }
-
-// @desc Update a contacts
-// @route PATCH /contacts
+    res.status(200).json({message:'success'})
+}
+// @desc Update contacts
+// @route POST /contacts
 // @access authorized user
-public update = async (req:Request, res:Response) => {
-    const { email, firstName, lastName, phone, bio, status ,_id} = req.body
-    const file = req.file!
+ public removeContact = async (req:Request, res:Response) => {
+    const {userId, contactId } = req.body
     // Confirm data
-    if (!email || !firstName || !lastName || !bio || !status || !req.file) {
+    if (!userId || !contactId) {
         return res.status(400).json({ message: 'All fields are required' })
     }
-  const userObj = file?  {...req.body,userImage:file}: {...req.body}
-    // Confirm contacts exists to update
-    const contacts = await ContactsModel.findByIdAndUpdate(_id,userObj,{new:true})
-
-    if (!contacts) {
-        return res.status(400).json({ message: 'Contacts member not found' })
-    }
-
+    // Create and store the new user contact
+    const userContacts = await ContactsModel.findOne({user:userId}).lean().exec()
+if(!userContacts) return res.sendStatus(404).json({message:'Not Found'})
+    
+        // const updatedContact = userContacts?.contacts?.filter(contact => contact !== contactId)
+        const updatedContact = await ContactsModel.findByIdAndUpdate({_id:userContacts?._id},{$pull:{contacts:contactId}},{new:true,upsert:true})
 
     res.status(200).json({message:'success'})
 }
+
 
 // @desc Delete a contacts
 // @route DELETE /contacts

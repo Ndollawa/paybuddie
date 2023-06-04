@@ -11,7 +11,7 @@ import userInterface from "../../../../app/utils/props/userProps";
 
 
 const usersAdapter = createEntityAdapter({
-    // sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1
+    sortComparer: (a:userInterface['user'], b:userInterface['user']) => (a.createdAt === b.createdAt) ? 0 : a.createdAt ? 1 : -1
 })
 
 const initialState = usersAdapter.getInitialState()
@@ -42,24 +42,20 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }
         }),
         addNewUser: builder.mutation({
-            query: initialUser => ({
+            query: data => ({
                 url: '/users',
                 method: 'POST',
-                body: {
-                    ...initialUser,
-                }
+                body: data 
             }),
             invalidatesTags: [
                 { type: 'User', id: "LIST" }
             ]
         }),
         updateUser: builder.mutation({
-            query: initialUser => ({
+            query: data => ({
                 url: '/users',
                 method: 'PATCH',
-                body: {
-                    ...initialUser,
-                }
+                body: data,
             }),
             invalidatesTags: (result, error, arg) => [
                 { type: 'User', id: arg.id }
@@ -69,9 +65,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             query: userInfo => ({
                 url: '/checkduplicate',
                 method: 'POST',
-                body: {
-                    ...userInfo,
-                }
+                body:userInfo,
             }),
             invalidatesTags: (result, error, arg) => [
                 { type: 'User', id: arg.id }

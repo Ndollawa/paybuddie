@@ -1,64 +1,44 @@
-import React,{useState} from 'react'
-import CreateContactForm from './CreateContactForm'
-import ContactsTableData from './ContactsTableData'
+import React,{useEffect,useState} from 'react'
+import {useGetContactsQuery } from '../contactsApiSlice'
+import { Link } from 'react-router-dom'
+import { FaEye } from 'react-icons/fa'
+import ContactTableData from './ContactTableData'
+import contactProps from '../../../../../app/utils/props/contactProps'
 
+interface modalDataProps {
+    modalData:{
+       data:contactProps | null,
+      showModal:boolean,
+    } 
+    }
+const ContactsTable = ({contactId,index,showEditForm}:any) => {
+    const { contact } = useGetContactsQuery("contactsList", {
+        selectFromResult: ({ data }) => ({
+            contact: data?.entities[contactId]
+        }),
+      })
+      const [userContacts, setUserContacts] = useState([])  
+      useEffect(() => {
+if(contact){
+        setUserContacts(contact.contacts)
+}
+        // return () => {
+        //   effect
+        // };
+      }, [contact])
 
-    interface modalDataProps {
-        data:{
-           contact:string;
-       } | null,
-       showModal:boolean,
-     }
-const ContactsTable = ({contacts}:any) => {
-
-    const [modalData,setModalData] = useState<modalDataProps>({
-        data:null, 
-        showModal:false,
-        })
-  const showEditForm = (modalData:modalDataProps)=>{
-         setModalData(modalData);
-         }
- 
-  let tableContent
- 
-      tableContent = contacts?.ids?.length
-          ? contacts?.ids.map((contactId:string|number ,i:number) => <ContactsTableData key={contactId} contactId={contactId} index={i}
-          showEditForm={showEditForm} />
-      )
-          : null
-  return (
-    <>  <div className="card">
-                 <div className="mb-5 d-flex">
-                                    
-                                    {/* <CreateContactForm/> */}
-                                    </div>
-                         <div className="card-body">
-                            <div className="table-responsive table-scrollable">
-                                        <table id="table" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
-                                            <thead>
-                                                <tr>
-                                                    <th>S/N</th>
-                                                    <th>Name</th>
-                                                    <th>Contactname</th>
-                                                    <th>Verification Status</th>
-                                                    <th>Country</th>
-                                                    <th>Account Status</th>
-                                                    <th>Date Created</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                               
-                                               
-                                               {tableContent}
-                                            
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-  )
+   
+        return (
+       
+        <>
+        {
+          userContacts.map((user:string,i:number)=><ContactTableData contactId={user} key={user}  index={i}/>)
+    
+        }
+        </>
+        )
+    
+  
 }
 
 export default React.memo(ContactsTable)

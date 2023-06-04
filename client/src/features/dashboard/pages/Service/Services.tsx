@@ -1,27 +1,20 @@
-    import React,{useState,useEffect} from 'react'
+    import React,{useState,useEffect,useMemo} from 'react'
     import MainBody from '../../components/MainBody'
     import CreateFaqModal from './components/CreateServiceForm'
     import EditServiceForm from './components/EditServiceForm'
     import { useDispatch } from 'react-redux'
-    import { useGetServicesQuery } from './serviceApiSlice'
+    import { useGetServicesQuery } from './servicesApiSlice'
     import { setPreloader } from '../../components/PreloaderSlice'
     import pageProps from '../../../../app/utils/props/pageProps'
     import ServiceTableData from './components/ServiceTableData'
-    
-import initDataTables,{destroyDataTables} from '../../../../app/utils/initDataTables'
-import $ from 'jquery'
+    import serviceProps from '../../../../app/utils/props/serviceProps'
+    import $ from 'jquery'
+import ViewModal from './components/ViewModal'
 
 
     
 interface modalDataProps {
-       data:{
-          id:string | number;
-          title: string;
-          description: string;
-          body: string;
-          image: string;
-          status: string;
-      } | null,
+        data:serviceProps | null,
       showModal:boolean,
     }
     const Service = ({pageData}:pageProps)  => {
@@ -31,8 +24,8 @@ interface modalDataProps {
         isSuccess,
         isError,
         error
-    } = useGetServicesQuery('serviceList', {
-        pollingInterval: 15000,
+    } = useGetServicesQuery('servicesList', {
+        pollingInterval: 1500,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
@@ -41,20 +34,17 @@ interface modalDataProps {
             data:null, 
             showModal:false,
            })
-  
+           const [viewData,setViewData] = useState<modalDataProps>({
+            data:null, 
+            showModal:false,
+           })
     const showEditForm = (modalData:modalDataProps)=>{
         setModalData(modalData);
         }
 
-useEffect(() => {
-
-            destroyDataTables($('#dataTable'))
-              initDataTables($('#dataTable'),"FAQs")
-            return () => {
-             destroyDataTables($('#dataTable'))
-            }
-          }, [services])
-    
+        const showDetails  = useMemo(()=>{ return (serviceData:modalDataProps)=>{
+            setViewData(serviceData);
+            }},[])
         useEffect(() => {
             dispatch(setPreloader(isLoading?true:false)) 
              
@@ -66,7 +56,7 @@ useEffect(() => {
     
         tableContent = ids?.length
             ? ids.map((serviceId:string|number ,i:number) => <ServiceTableData key={serviceId} serviceId={serviceId} index={i}
-            showEditForm={showEditForm} />
+            showEditForm={showEditForm}  showDetails={showDetails} />
         )
             : null
          
@@ -87,6 +77,7 @@ useEffect(() => {
                                     
                         <CreateFaqModal/>
                         <EditServiceForm modalData={modalData}/>
+                        <ViewModal viewData={viewData}/>
                                     </div>
                             <div className="table-responsive table-scrollable">
                                         <table id="dataTable" className="table table-striped mt-10 table-bordered table-hover table-checkable order-column valign-middle border mb-0 align-items-centerid" style={{minWidth: '845px'}}>
@@ -96,7 +87,6 @@ useEffect(() => {
                                                     <th>Image</th>
                                                     <th>Title</th>
                                                     <th>Description</th>
-                                                    <th>Contents</th>
                                                     <th>Status</th>
                                                     <th>Date Created</th>
                                                     <th>Action</th>

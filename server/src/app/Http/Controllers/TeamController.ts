@@ -41,7 +41,6 @@ class TeamController extends BaseController {
  public create = async (req:Request, res:Response) => {
     const { email, firstName, lastName, phone, bio, status } = req.body
     const file = req.file!
-    console.log(req.body)
     // Confirm data
     if (!email || !firstName || !lastName || !bio || !status || !file) {
         return res.status(400).json({ message: 'All fields are required' })
@@ -65,7 +64,6 @@ public update = async (req:Request, res:Response) => {
     const { email, firstName, lastName, phone, bio, status ,_id,facebookHandle,twitterHandle,instagram,whatsapp,position} = req.body
     const file = req.file!
     // Confirm data
-    console.log(req.body)
     if (!email || !firstName || !lastName || !bio || !status) {
         return res.status(400).json({ message: 'All fields are required' })
     }

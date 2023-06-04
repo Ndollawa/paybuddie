@@ -22,7 +22,10 @@ import RoomRoutes from './src/app/Routes/api/room';
 import ContactsRoutes from './src/app/Routes/api/contacts';
 import UserRoutes from './src/app/Routes/api/users';
 import MessageRoutes from './src/app/Routes/api/messages';
+import ConversationRoutes from './src/app/Routes/api/conversations';
 import MessageModel from './src/app/Models/Message';
+import UserModel from './src/app/Models/User';
+import ConversationModel from './src/app/Models/Conversation';
 import AuthRoutes from './src/app/Routes/api/auth';
 import TeamRoutes from './src/app/Routes/api/team';
 import PostRoutes from './src/app/Routes/api/post';
@@ -92,15 +95,39 @@ const io = new SocketIOServer(server,{
         methods: ['GET','POST']
     }
     });
+    type connectedUser = {userId:string;socketId:string}
+    let users:connectedUser[] = []
+    const addUser = (userId:string,socketId:string) =>{
+        !users.some((user:connectedUser)=>user.userId === userId) && users.push({userId,socketId})
+    }
+    const removeUser = (socketId:string) =>{
+    users = users.filter(user => user.socketId !== socketId)
+    }
+
  //Handle private chat 
  io.on("connection", (socket:Socket) => {
-    console.log(socket)
-     socket.on("privateMessage", async(data) => { 
+    socket.on('addUser',userId=>{
+        addUser(userId,socket.id)
+        socket.emit('activeUsers',users)
+        //  console.log(users)
+    })
+    socket.on('userActivity',async({_id,online})=>{
+            await UserModel.findByIdAndUpdate(_id,{online},{new:true})      
+        // socket.emit('activeUsers',users)
+        //  console.log(online)
+    })
+     socket.on("sendMessage", async(data,res) => { 
         const { sender, receiver, message } = data;
-        console.log(data)
-        const sendMsg = await MessageModel.create({...data,conversation:[sender,receiver]})
+let conversation;
+         conversation = await ConversationModel.findOne({members:{$all:[sender,receiver]}}).exec()
+        if(!conversation){
+        conversation = await ConversationModel.create({members:[sender,receiver]}) 
+        } 
+        const sendMsg = await MessageModel.create({sender,message,conversationId:conversation?._id})
         // sendMsg.save()
-        io.to(receiver).emit("message", { sender, message }); 
+        const user = users.find(user => user.userId === receiver)
+       user && io.to(user?.socketId).emit("receivedMessage",sendMsg);
+        res(null,sendMsg) 
             }); 
 
     //Handle group chat 
@@ -110,8 +137,9 @@ const io = new SocketIOServer(server,{
              io.to(groupName).emit("groupMessage", message); 
             });
          });
-    socket.on('disconnect',(socket)=>{
-        console.log(`User disconnected: ${socket}`)
+    socket.on('disconnect',()=>{
+removeUser(socket.id)
+socket.emit('activeUsers',users)
     })
         });
         
@@ -139,6 +167,7 @@ app.use('/settings', SettingsRoutes);
 
 app.use(verifyJWT);
 app.use('/messages', MessageRoutes);
+app.use('/conversations', ConversationRoutes);
 app.use('/contacts', ContactsRoutes);
 app.use('/rooms', RoomRoutes);
 app.all('*',(req,res)=>{

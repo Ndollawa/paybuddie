@@ -1,6 +1,6 @@
 import React, {ChangeEvent,FormEvent,useState} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { useAddNewSlideMutation } from '../slideApiSlice'
+import { useAddNewSlideMutation } from '../slidesApiSlice'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import {BsToggleOff ,BsToggleOn} from 'react-icons/bs';
@@ -16,7 +16,7 @@ const [CTOText, setCTOText] = useState('')
 const [CTOLink, setCTOLink] = useState('')
 const [body, setBody] = useState('')
 const [slideBg, setSlideBg] = useState<any>(null)
-const [status, setStatus] = useState<any>($('#status').val()!)
+const [status, setStatus] = useState<any>('active')
 const [show, setShow] = useState(false)
 const [addCTOToggle, setAddCTOToggle] = useState<any>(false)
 const [previewImage, setPreviewImage] =
@@ -208,10 +208,10 @@ setPreviewImage(fileurl)
                     </div>
                     </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" type="submit" disabled={!canSave}  >
             Save Slide          </Button>
         </Modal.Footer>
             </form>

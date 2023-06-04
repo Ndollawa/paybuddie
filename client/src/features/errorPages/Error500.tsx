@@ -16,7 +16,7 @@ const Error500 = () => {
                         <h4><i className="fa fa-times-circle text-danger"></i> Internal Server Error</h4>
                         <p>Sorry! The operation couldn't be completed.</p> 
 						<div>
-                            <button className="btn btn-primary" onClick={()=>navigate(-2)}>Click to go Back</button>
+                            <button className="btn btn-secondary" onClick={()=>navigate(-1)}>Click to go Back</button>
                         </div>	
                     </div>
                 </div>

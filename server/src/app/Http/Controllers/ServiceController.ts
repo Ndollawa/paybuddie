@@ -38,7 +38,7 @@ class ServiceController extends BaseController {
 // @route POST /service
 // @access authorized user
  public create = async (req:Request, res:Response) => {
-    const { title, description, body, status } = req.body
+    const { title, description,icon, body, status } = req.body
     const file = req.file!
     // Confirm data
     if (!body || !title || !status || !req.file) {
@@ -53,7 +53,7 @@ class ServiceController extends BaseController {
     }
 
     // Create and store the new user 
-    const service = await ServiceModel.create({ title,description,body,image:file.filename })
+    const service = await ServiceModel.create({ title,description,body,icon,image:file.filename })
 
     if (service) { // Created 
         return res.status(201).json({ message: 'New service created' })
@@ -67,7 +67,7 @@ class ServiceController extends BaseController {
 // @route PATCH /service
 // @access authorized user
 public update = async (req:Request, res:Response) => {
-    const {title, description,_id,status,body } = req.body
+    const {title, description,_id,status,body,icon } = req.body
 const image = req?.file!
     // Confirm data
     if (!title || !description) {
@@ -99,6 +99,7 @@ const image = req?.file!
     
     service.description = description
     service.status = status
+    service.icon = icon
 
     const updatedService = await service.save()
 

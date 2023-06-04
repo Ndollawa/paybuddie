@@ -4,9 +4,10 @@ import { useDispatch} from 'react-redux';
 import Head from '../dashboard/components/Head';
 import pageProps from '../../app/utils/props/pageProps';
 import {  setPreloader } from '../dashboard/components/PreloaderSlice';
-import './dashboardStyles/styles.css';
+import './assets/css/styles.css';
 import $ from 'jquery'
 import Js from '../dashboard/components/Js';
+import { Helmet } from 'react-helmet';
 
 
 const Layout:React.FC<pageProps> = ({pageData}:pageProps) => { 

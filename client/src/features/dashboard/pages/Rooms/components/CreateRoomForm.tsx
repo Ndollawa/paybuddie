@@ -1,5 +1,5 @@
 import React, {ChangeEvent,FormEvent,useState } from 'react'
-import { useAddNewRoomMutation } from '../roomApiSlice'
+import { useAddNewRoomMutation } from '../roomsApiSlice'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
@@ -10,7 +10,7 @@ const CreateRoomForm = () => {
 const [title, setTitle] = useState('')
 const [description, setDescription] = useState('')
 const [roomBg, setRoomBg] = useState<any>(null)
-const [status, setStatus] = useState('')
+const [status, setStatus] = useState('active')
 const [show, setShow] = useState(false)
           const [previewImage, setPreviewImage] =
     useState("");
@@ -138,10 +138,10 @@ setPreviewImage(fileurl)
                     </div>
                     </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" size='sm' className='rounded-pill' type="submit" disabled={!canSave}  >
             Save Room          </Button>
         </Modal.Footer>
             </form>

@@ -58,7 +58,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     ? jwt_decode(accessToken)
                        : undefined;
                     const  user_info = decodedToken?.userInfo
-            //    console.log(user_info)
+               console.log(user_info)
                     dispatch(setCredentials({accessToken,user_info}))
                 } catch (error) {
                     

@@ -35,10 +35,11 @@ const [login,{isLoading:isLoadingLogin, isSuccess}] = useLoginMutation();
  
 const dispatch = useDispatch();
 
-const from = (location.state?.from)? location.state.from.pathname : '/dashboard';
+const from =  location?.state?.from?.pathname || '/dashboard';
 
 const userRef = useRef <HTMLInputElement>(null);
 const errRef = useRef <HTMLInputElement>(null);
+const pwdRef = useRef <HTMLInputElement>(null);
 
 const [user,setUser] = useState('');
 const [pwd,setPwd] = useState('');
@@ -72,7 +73,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
             dispatch(setCredentials({accessToken,user_info}))
             setUser('');
             setPwd('');
-            navigate(from,{replace:true});
+            navigate(from);
             
         }catch(err:any){
                 if(!err){
@@ -95,6 +96,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                     $('#password').attr('type','password');
                     setShowPassword(false)
                 }
+                pwdRef.current?.focus()
         }
 
   return (
@@ -146,6 +148,7 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                          <div className={`input-group input-default`}>
                                             <span className="input-group-text"><FaKeycdn fontSize='1rem'/></span>
                                           <input 
+                                          ref={pwdRef}
                                             autoComplete='off'
                                             id="password"
                                             type="password" 
@@ -176,11 +179,11 @@ const handleLogin:FormEventHandler = async (e:FormEvent)=>{
                                             </div>
                                         </div>
                                         <div className="text-center">
-                                            <button type="submit" className="btn btn-primary btn-block">{(isLoadingLogin)? "Logging In...":"Login" } {isLoadingLogin && <ClipLoader loading={isLoadingLogin} color={'#ffffff'} size={'0.8rem'}/>}</button>
+                                            <button type="submit" className="btn btn-secondary btn-block">{(isLoadingLogin)? "Logging In...":"Login" } {isLoadingLogin && <ClipLoader loading={isLoadingLogin} color={'#ffffff'} size={'0.8rem'}/>}</button>
                                         </div>
                                     </form>
                                     <div className="new-account mt-3">
-                                        <p>Don't have an account? <Link className="text-primary" to="/auth/register">Register</Link></p>
+                                        <p>Don't have an account? <Link className="text-secondary" to="/auth/register">Register</Link></p>
                                     </div>
                                 </div>
                             </div>

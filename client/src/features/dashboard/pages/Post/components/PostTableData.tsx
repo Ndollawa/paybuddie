@@ -9,20 +9,12 @@ import 'lightgallery/css/lg-zoom.css'
 // import 'lightgallery/css/lg-thumbnail.css'
 import lgThumbnail from 'lightgallery/plugins/thumbnail'
 import lgZoom from 'lightgallery/plugins/zoom'
+import postProps from '../../../../../app/utils/props/postProps'
 // import 'lightgallery/css/lg-thumbnail.css'
 
 interface modalDataProps {
     modalData:{
-       data:{
-        id:string | number;
-        title: string;
-        description: string;
-        body: string;
-        coverImage: string;
-        status: string;
-        tags: string[];
-        category: string;
-      } | null,
+       data:postProps | null,
       showModal:boolean,
     } 
     }
@@ -89,7 +81,7 @@ const { category } = useGetPostCategoryQuery("categoriesList", {
     
     const postData = {
         data:{
-        id:postId,
+        _id:postId,
         title:post.title,
         description:post.description,
         coverImage:post.coverImage,
@@ -129,8 +121,8 @@ const { category } = useGetPostCategoryQuery("categoriesList", {
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">
-                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(postData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={()=>onDeletePost(post._id)}><i className="fa fa-trash"></i></button>
+                            <button type="button" className="btn btn-info light shadow btn-xs sharp me-1"   onClick={()=>showEditForm(postData)}><i className="fas fa-pencil-alt"></i></button>
+                            <button className="btn btn-danger light shadow btn-xs sharp" onClick={()=>onDeletePost(post._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
                 </tr>

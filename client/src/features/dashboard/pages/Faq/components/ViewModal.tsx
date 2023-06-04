@@ -1,17 +1,14 @@
 import React, {FormEvent,useState, useEffect} from 'react'
+import { Editor } from '@tinymce/tinymce-react'
 import { useUpdateFaqMutation } from '../faqApiSlice'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
+import { faqProps } from '../../../../../app/utils/props/faqProps'
 
 interface modalDataProps {
 viewData:{
-   data:{
-      id:string | number;
-      question: string;
-      response: string;
-      status: string;
-  } | null,
+   data:faqProps | null,
   showModal:boolean,
 } 
 }
@@ -41,18 +38,6 @@ setShow(showModal)
 
 const handleClose = () => setShow(false);
 
-const canSave = (question && response && status)? true :false
-
-
-
-const handleSubmit = async(e:FormEvent)=>{
-e.preventDefault();
- if (canSave) {
-      await updateFaq({_id:data?.id,question, response,status })
-        if(isSuccess)showToast('success', 'FAQ Updated successfully')
-        if(isError) showToast('error',JSON.stringify(error?.data))
-    }
-}
 
   return (
     <>
@@ -65,22 +50,36 @@ e.preventDefault();
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>{question}</Modal.Title>
+        <Modal.Title>Question: {question}</Modal.Title>
         </Modal.Header>
-            <form onSubmit={handleSubmit}>
         <Modal.Body>
-             <fieldset>
-              <legend><label className="fs-15 text-black"> Response:</label></legend>
-              <div className="paragraph border-1 p-3 border-primary" dangerouslySetInnerHTML={{__html: response}}></div>
-                       
-            </fieldset>
+          <h4 className="heading">Response:</h4>
+        <Editor
+        tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
+      //  onEditorChange={(newValue,editor)=>setBody(newValue)}
+       value={response}
+       disabled
+        init={{
+          height: 500,
+          menubar: false,
+          plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
+          ],
+          toolbar: 'undo redo | blocks | ' +
+            'bold italic forecolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        }}
+      />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" size='sm' onClick={handleClose}>
+          <Button variant="primary" size='sm' onClick={handleClose}>
             Close
           </Button>
         </Modal.Footer>
-            </form>
       </Modal>
 
     </>

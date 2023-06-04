@@ -36,7 +36,7 @@ export const messagesApiSlice = apiSlice.injectEndpoints({
                 } else return [{ type: 'Message', id: 'LIST' }]
             }
         }),
-        addNewMessage: builder.mutation({
+        sendMessage: builder.mutation({
             query: initialMessage => ({
                 url: '/messages',
                 method: 'POST',
@@ -75,7 +75,7 @@ export const messagesApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetMessagesQuery,
-    useAddNewMessageMutation,
+    useSendMessageMutation,
     useUpdateMessageMutation,
     useDeleteMessageMutation,
 } = messagesApiSlice

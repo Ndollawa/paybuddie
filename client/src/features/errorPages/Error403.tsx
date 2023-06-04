@@ -14,7 +14,7 @@ const Error403 = () => {
                         <h4><i className="fa fa-times-circle text-danger"></i> Forbidden Error!</h4>
                         <p>You do not have permission to view this resource.</p>
 						<div>
-                            <button className="btn btn-primary" onClick={()=>navigate(-2)}>Click to go Back</button>
+                            <button className="btn btn-secondary" onClick={()=>navigate(-1)}>Click to go Back</button>
                         </div>
                     </div>
                 </div>

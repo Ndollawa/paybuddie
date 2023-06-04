@@ -41,7 +41,7 @@ const {
   isSuccess:postCategoryIsSuccess,
   isError:postCategoryIsError,
   error:postCategoryError
-} = useGetPostCategoryQuery('postCategoryList', {
+} = useGetPostCategoryQuery('categoriesList', {
   pollingInterval: 15000,
   refetchOnFocus: true,
   refetchOnMountOrArgChange: true
@@ -244,10 +244,10 @@ setPreviewImage(fileurl)
                     </div>
                     </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" size='sm' className='rounded-pill' type="submit" disabled={!canSave}  >
             Save Post          </Button>
         </Modal.Footer>
             </form>

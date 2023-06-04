@@ -14,7 +14,7 @@ class ConversationController extends BaseController{
 // @access Private
 public list = async (req:Request, res:Response) => {
     // Get all conversation from MongoDB
-    const conversation = await ConversationModel.find().select('-password').lean()
+    const conversation = await ConversationModel.find().lean()
 
     // If no conversation 
     if (!conversation?.length) {

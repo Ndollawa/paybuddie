@@ -4,15 +4,11 @@ import { useUpdateFaqMutation } from '../faqApiSlice'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
+import { faqProps } from '../../../../../app/utils/props/faqProps'
 
 interface modalDataProps {
 modalData:{
-   data:{
-      id:string | number;
-      question: string;
-      response: string;
-      status: string;
-  } | null,
+   data:faqProps | null,
   showModal:boolean,
 } 
 }
@@ -49,7 +45,7 @@ const canSave = (question && response && status)? true :false
 const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
  if (canSave) {
-      await updateFaq({_id:data?.id,question, response,status })
+      await updateFaq({_id:data?._id,question, response,status })
         if(isError) return showToast('error',JSON.stringify(error?.data))
         showToast('success', 'FAQ Updated successfully')
         setShow(false)
@@ -126,10 +122,10 @@ e.preventDefault();
                     </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button type="submit" disabled={!canSave} variant="primary">Update FAQ</Button>
+          <Button type="submit" size='sm' className='rounded-pill' disabled={!canSave} variant="secondary">Update FAQ</Button>
         </Modal.Footer>
             </form>
       </Modal>

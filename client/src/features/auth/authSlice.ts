@@ -15,12 +15,17 @@ const authSlice = createSlice({
             email:undefined,
             firstName:undefined,
             lastName:undefined,
+            // fullName:undefined,
             username:undefined,
             phone:undefined,
             dob:undefined,
             gender: undefined,
             address: undefined,
             city: undefined,
+            online:{
+                status:undefined,
+                lastSeen:undefined,
+             },
             state: undefined,
             country: undefined,
             occupation: undefined,
@@ -39,6 +44,7 @@ const authSlice = createSlice({
             const {accessToken , user_info} = action.payload;
             state.token = accessToken;
             if(user_info){
+                // console.log(user_info)
             state.user = user_info;
             }
         },
@@ -49,6 +55,7 @@ const authSlice = createSlice({
                 email:undefined,
                 firstName:undefined,
                 lastName:undefined,
+                // fullName:undefined,
                 username:undefined,
                 phone:undefined,
                 dob:undefined,
@@ -58,6 +65,10 @@ const authSlice = createSlice({
                 state: undefined,
                 country: undefined,
                 occupation: undefined,
+                online:{
+                    status:undefined,
+                    lastSeen:undefined,
+                 },
                 bio: undefined,
                 userImage:undefined,
                 accountStatus:undefined,

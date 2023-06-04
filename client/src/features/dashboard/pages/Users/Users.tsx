@@ -1,11 +1,11 @@
-    import React,{useState,useEffect} from 'react'
-    import MainBody from '../../components/MainBody'
-    import { useDispatch } from 'react-redux'
-    import { useGetUsersQuery } from './usersApiSlice'
-    import { setPreloader } from '../../components/PreloaderSlice'
-    import pageProps from '../../../../app/utils/props/pageProps'
-    import UsersTableData from './components/UsersTableData'
-    import useToggle from '../../../../app/utils/hooks/useToggle'
+import React,{useState,useEffect} from 'react'
+import MainBody from '../../components/MainBody'
+import { useDispatch } from 'react-redux'
+import { setPreloader } from '../../components/PreloaderSlice'
+import pageProps from '../../../../app/utils/props/pageProps'
+import UsersTableData from './components/UsersTableData'
+import useToggle from '../../../../app/utils/hooks/useToggle'
+import { useGetUsersQuery } from './usersApiSlice'
 import UserCard from './components/UserCard'
 import { FaListAlt } from 'react-icons/fa'
 import { IoGridOutline } from 'react-icons/io5'
@@ -32,7 +32,7 @@ interface modalDataProps {
         isSuccess,
         isError,
         error
-    } = useGetUsersQuery('userList', {
+    } = useGetUsersQuery('usersList', {
         pollingInterval: 15000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
@@ -55,11 +55,11 @@ interface modalDataProps {
           useEffect(() => {
 
             destroyDataTables($('#dataTable'))
-              initDataTables($('#dataTable'),"FAQs")
+              initDataTables($('#dataTable'),"Users")
             return () => {
              destroyDataTables($('#dataTable'))
             }
-          }, [users])     
+          }, [users,viewType])     
 let usersCard
    if(isSuccess){
 usersCard = users.ids? users?.ids.map((userId:any)=> <UserCard key={userId}  userId={userId} />): null 
@@ -85,7 +85,7 @@ tableContent = users?.ids?.length
             <div className="card-body d-flex justify-content-between align-items-center">
 								<div>
 									<h4>Users {viewType? "List": "Card"} View</h4>
-									<span>Lorem ipsum sit amet</span>
+									<span>All Users Record</span>
 								</div>
 								<button className="btn btn-info light" onClick={setView}>{viewType? <FaListAlt fontSize={'1.2rem'}/> : <IoGridOutline fontSize={'1.2rem'} />}</button>
 							</div>

@@ -14,8 +14,8 @@ class UsersController extends BaseController{
 // @route GET /users
 // @access Private
 public list = async (req:Request, res:Response) => {
-    // Get all users from MongoDB
-    const users = await UserModel.find().select('-password').lean()
+    // Get all users from MongoDB{'roles.Dev':{$exists:false}}
+    const users = await UserModel.find().select('-password').sort({createdAt:-1}).lean()
 
     // If no users 
     if (!users?.length) {
@@ -74,6 +74,10 @@ switch (type) {
         res.status(200).json({message:'success'})   
         break;
     case 'profileUpdate':
+        await UserModel.findByIdAndUpdate(_id,data,{new:true})
+        res.status(200).json({message:'success'})
+        break;
+    case 'onlineStatus':
         await UserModel.findByIdAndUpdate(_id,data,{new:true})
         res.status(200).json({message:'success'})
         break;

@@ -32,13 +32,13 @@ const SideBar:React.FC<pageProps> = ({pageData,}:pageProps) => {
     return (
         <>        
     <div className="deznav">
-        <PerfectScroll className='mm-active ps ps--active-y'>
+        <div className='deznav-scroll'>
             <div className="main-profile">
                 <div className="image-bx">
-                    <img src={userImage} alt={currentUser.username}/>
+                    <img src={userImage} alt={currentUser?.username}/>
                     <Link to="/dashboard/profile/edit"><i className="fa fa-cog" aria-hidden="true"></i></Link>
                 </div>
-                <h5 className="name"><span className="font-w400">Hello,</span> {(currentUser.firstName && currentUser.lastName)? currentUser.firstName+" "+currentUser.lastName : currentUser.username}</h5>
+                <h5 className="name"><span className="font-w400">Hello,</span> {currentUser?.fullName || currentUser?.username}</h5>
                 <p className="email">{currentUser.email}</p>
             </div>
             <SideNav/>
@@ -46,7 +46,7 @@ const SideBar:React.FC<pageProps> = ({pageData,}:pageProps) => {
                 <p><strong>{siteName}</strong><br/> © 2022 -  All Rights Reserved</p>
                 <p className="fs-12">Made with <span className="fa fa-heart"></span> by <a href="mailto:foundictsolutions@gmail.com">Found ICT Solutions</a></p>
             </div>
-        </PerfectScroll>
+        </div>
     </div>
                </>
   )

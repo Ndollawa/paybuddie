@@ -7,22 +7,14 @@ import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import $ from 'jquery'
+import postProps from '../../../../../app/utils/props/postProps'
 
 
 
 
 interface modalDataProps {
   modalData:{
-     data:{
-        id: any;
-        title: string;
-        description: string;
-        body: string;
-        coverImage: string;
-        status: string;
-        tags: string[];
-        category: string;
-    } | null,
+     data:postProps | null,
     showModal:boolean,
   } 
   }
@@ -93,7 +85,7 @@ const {
   isSuccess:postCategoryIsSuccess,
   isError:postCategoryIsError,
   error:postCategoryError
-} = useGetPostCategoryQuery('postCategoryList', {
+} = useGetPostCategoryQuery('categoriesList', {
   pollingInterval: 15000,
   refetchOnFocus: true,
   refetchOnMountOrArgChange: true
@@ -109,7 +101,7 @@ const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
  if (canSave) {
 
-      await updatePost({_id:data?.id!,title,body,description,tags,category,status,coverImage:postBg})
+      await updatePost({_id:data?._id!,title,body,description,tags,category,status,coverImage:postBg})
       if(isError)return  showToast('error',JSON.stringify(error?.data?.message))
      showToast('success', 'Post updated successfully')
   }
@@ -261,10 +253,10 @@ setPreviewImage(fileurl)
                     </div>
                     </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" size='sm' className='rounded-pill' type="submit" disabled={!canSave}  >
             Update Post
           </Button>
         </Modal.Footer>

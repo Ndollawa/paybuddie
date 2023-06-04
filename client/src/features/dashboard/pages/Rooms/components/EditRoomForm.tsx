@@ -1,23 +1,18 @@
 import React, {ChangeEvent,FormEvent,useState,useEffect} from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { useUpdateRoomMutation} from '../roomApiSlice'
+import { useUpdateRoomMutation} from '../roomsApiSlice'
 import {Modal} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import $ from 'jquery'
+import roomProps from '../../../../../app/utils/props/roomProps'
 
 
 
 
 interface modalDataProps {
   modalData:{
-     data:{
-        id:string | number;
-        title: string;
-        description: string;
-        roomImage: string;
-        status: string;
-    } | null,
+     data:roomProps | null,
     showModal:boolean,
   } 
   }
@@ -26,10 +21,10 @@ const EditRoomModal = ({modalData:{data,showModal}}:modalDataProps) => {
 const [title, setTitle] = useState<any>('')
 const [description, setDescription] = useState('')
 const [roomBg, setRoomBg] = useState<any>(null)
-const [status, setStatus] = useState<any>($('#status').val())
+const [status, setStatus] = useState<any>('active')
 const [show, setShow] = useState(false)
     const [previewImage, setPreviewImage] =
-    useState<any>(process.env.REACT_APP_BASE_URL+"/uploads/room/"+data?.roomImage!);
+    useState<any>(process.env.REACT_APP_BASE_URL+"/uploads/room/"+data?.image!);
 
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
@@ -67,7 +62,7 @@ const handleSubmit = async(e:FormEvent)=>{
 e.preventDefault();
 const formData = new FormData()
  if (canSave) {
-formData.append("_id",data?.id! as any)
+formData.append("_id",data?._id!)
 formData.append("title",title)
 formData.append("description",description)
 formData.append("status",status)
@@ -163,10 +158,10 @@ setPreviewImage(fileurl)
                     </div>
                     </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="primary" size='sm' className='rounded-pill' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" disabled={!canSave}  >
+          <Button variant="secondary" size='sm' className='rounded-pill' type="submit" disabled={!canSave}  >
             Update Room
           </Button>
         </Modal.Footer>

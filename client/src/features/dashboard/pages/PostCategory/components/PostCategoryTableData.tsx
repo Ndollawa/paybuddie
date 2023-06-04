@@ -2,14 +2,11 @@ import React from 'react'
 import {useGetPostCategoryQuery,useDeletePostCategoryMutation } from '../postCategoryApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import Swal from 'sweetalert2'
+import postCategoryProps from '../../../../../app/utils/props/postCategoryProps'
 
 interface modalDataProps {
     modalData:{
-       data:{
-          id:string | number;
-          title: string;
-          status: string;
-      } | null,
+       data:postCategoryProps | null,
       showModal:boolean,
     } 
     }
@@ -103,8 +100,8 @@ const PostCategoryTableData = ({categoryId,index,showEditForm}:any) => {
                     <td>{created}</td>
                     <td>
                     <div className="d-flex">
-                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(categoryData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={()=>onDeleteCategory(category._id)}><i className="fa fa-trash"></i></button>
+                            <button type="button" className="btn btn-info light shadow btn-xs sharp me-1"   onClick={()=>showEditForm(categoryData)}><i className="fas fa-pencil-alt"></i></button>
+                            <button className="btn btn-danger light shadow btn-xs sharp" onClick={()=>onDeleteCategory(category._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
                 </tr></>

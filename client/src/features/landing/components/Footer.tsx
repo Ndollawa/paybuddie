@@ -76,12 +76,11 @@ const Footer = () => {
                     <form >
                         <div className="mc4wp-form-fields">
                             <div className="footer-widget__mailchimp">
-                                <div className="footer-widget__mailchimp_inner d-flex justify-content-between"> 
-                                <input type="email" name="email" placeholder="Email address"/> 
-                                <button type="submit" className="thm-btn btn-md d-flex justify-content-center flex-shrink-1">Send</button>
-                                </div>
-                                <p className="footer-widget__mailchimp__text"> <span>I agree to all your terms and policies</span></p>
-                                </div>
+                                <div className="footer-widget__mailchimp_inner"> 
+                            <input type="email" name="email" placeholder="Email address"/> 
+                            <input type="submit" value="Send" className="thm-btn"/>
+                                </div><p className="footer-widget__mailchimp__text">
+                                 <span>I agree to all your terms and policies</span></p></div>
                         </div>
                     </form>
                     </div>

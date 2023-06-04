@@ -1,5 +1,7 @@
-import React,{FormEvent, useEffect,useState,useContext} from 'react';
+import React,{useEffect,useState} from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import MainBody from '../../components/MainBody';
 import pageProps from '../../../../app/utils/props/pageProps';
 import useWindowSize from '../../../../app/utils/hooks/useWindowSize';
@@ -7,24 +9,41 @@ import { selectCurrentUser } from '../../../auth/authSlice';
 import useUserImage from '../../../../app/utils/hooks/useUserImage';
 import { useSelector } from 'react-redux';
 import $ from 'jquery'
-import { Link } from 'react-router-dom';
-import useSocketIO from '../../../../app/utils/hooks/useSocketIO';
-import Message from './components/Message';
-import ChatUser from './components/ChatUser';
+import { Link, useParams } from 'react-router-dom';
+import Conversation from './components/Conversation';
+import { useGetConversationsQuery } from '../../pages/Messenger/conversationsApiSlice';
+import { useGetUsersQuery } from '../Users/usersApiSlice';
+import { useGetMessagesQuery } from './messagesApiSlice';
+import conversationProps from '../../../../app/utils/props/conversationProps';
+import messageProps from '../../../../app/utils/props/messageProps';
+import ChatBox from './components/ChatBox';
+import useDebounce from '../../../../app/utils/hooks/useDebounce';
+import userInterface from '../../../../app/utils/props/userProps';
+
 
 const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
-	const { width,height } = useWindowSize()
+	const [query, setQuery] = useState('')
+	const [userConversations, setUserConversations] = useState<conversationProps[] | []>([])
+	const { height } = useWindowSize()
 	const currentUser = useSelector(selectCurrentUser)
 	const userImage = useUserImage(currentUser)
-
-	const socket = useSocketIO()
-	const [message, setMessage] = useState('')
-	const [attchment, setAttchment] = useState([])
-	const [imageUpload, setImageUpload] = useState([])
-	const [isUpload, setIsUpload] = useState(false)
+	const debouncedQuery = useDebounce(query)
+  const {id} = useParams()
+  // console.log(chatUserId)
+  	const { conversations } = useGetConversationsQuery("conversationsList", {
+	selectFromResult: ({ data }) => ({
+		conversations: data && (Object.values(data?.entities)as conversationProps[])?.filter((c)=>c?.members?.includes(currentUser?._id!))
+  })
+})
 	const [room, setRoom] = useState('')
-	const [toUser, setToUser] = useState('')
-
+	const [toUser, setToUser] = useState<string | undefined>(undefined)
+	useEffect(() => {
+		setToUser(id)
+	  return () => {
+		
+	  }
+	}, [id])
+	
 	useEffect(() => {
 		const handleChatSidebar = function(){
 			$('.chat-hamburger').on('click',function(){
@@ -54,18 +73,34 @@ const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
 		}
 		handleDzChatUser()
 	  return () => {
-		
+		setToUser(undefined)
 	  };
 	}, [])
-
-
-
-	const handleSendMessage =(e:FormEvent)=>{
-		e.preventDefault()
-		if(message !== '' || isUpload){
-		const data = {message,sender:currentUser._id,receiver:""}
-		socket.emit("privateMessage",(data))}
+	  const { users } = useGetUsersQuery("usersList", {
+    selectFromResult: ({ data }) => ({
+      users: data?.ids?.map((id:string)=>data?.entities[id])		 
+    }),
+    }) 
+  
+      const { messages } = useGetMessagesQuery("messagesList", {
+      selectFromResult: ({ data }) => ({
+        messages:  data?.ids?.map((id:string)=>data?.entities[id])
+      }) 	 })
+	useEffect(() => {
+		setUserConversations(searchData(conversations))
+	}, [debouncedQuery])
+	const keys = ['firstName','lastName','username']
+const searchData = (data:any)=>{
+	return data?.filter((item:any)=>{
+	const contactId = item?.members.find((m:string) => m !== currentUser?._id )
+	const contact = users.find((user:userInterface['user']) =>user._id === contactId)
+	return keys?.some((key:string)=>contact[key]?.toLowerCase()?.includes(debouncedQuery)) ||
+	(messages as messageProps[])?.filter((m:messageProps)=> m?.conversationId === item?._id && m?.message.includes(debouncedQuery)).length
+		 
 	}
+		)
+
+}
   return (
     <MainBody>
 		<div className='container-fuid' style={{position:'relative'}}>
@@ -82,106 +117,56 @@ const Chat:React.FC<pageProps> = ({pageData}:pageProps) => {
 									<div className="d-flex chat-fix-search align-items-center">
 										<img src={userImage} alt="" className="rounded-circle me-3"/>
 										<div className="input-group message-search-area">
-											<input type="text" className="form-control" placeholder="Search here.."/>
+											<input type="text" className="form-control" onChange={(e)=>setQuery(e.target.value)} onKeyPress={()=>setUserConversations(searchData(conversations))} placeholder="Search here.."/>
 											<div className="input-group-append">
-												<button className="input-group-text"><i className="flaticon-381-search-2"></i></button>
+												<button className="input-group-text" onClick={()=>setUserConversations(searchData(conversations))}><i className="flaticon-381-search-2"></i></button>
 											</div>
 										</div>
 									</div>
-									<div className="card-action card-tabs">
-										<ul className="nav nav-tabs style-3" role="tablist">
-											<li className="nav-item">
-												<a className="nav-link active" data-bs-toggle="tab" href="#AllMessage" role="tab" aria-selected="false">
-													All Message
-												</a>
-											</li>
-											<li className="nav-item">
-												<a className="nav-link" data-bs-toggle="tab" href="#Unread" role="tab" aria-selected="false">
-													Unread
-												</a>
-											</li>
-											<li className="nav-item">
-												<a className="nav-link " data-bs-toggle="tab" href="#Archived" role="tab" aria-selected="true">
-													Archived
-												</a>
-											</li>
-										</ul>
-									</div>
+									<div className="card-action card-tabs ">
+										<Tabs
+							defaultActiveKey="allMessages"
+							id="messenger-tab"
+							className="style-3"
+							>
+											
+											<Tab eventKey="allMessages" title="All Messages">
 									<div className="card-body message-bx px-0 pt-3" >
 										<PerfectScrollbar className="tab-content dz-scroll" id="message-bx">
-											<div className="tab-pane fade show active" id="AllMessage" role="tabpanel">
-												<ChatUser/>
-												<ChatUser/>
-												<ChatUser/>
-												<ChatUser/>
 												
-											</div>
-											<div className="tab-pane fade" id="Unread" role="tabpanel">
-												
-											</div>
-											<div className="tab-pane fade" id="Archived" role="tabpanel">
-												
-											</div>
+												{userConversations && userConversations.map((c:conversationProps,i:number)=> <Conversation key={c?._id} conversation={c} i={i}/>)}
+											</PerfectScrollbar>
+									</div></Tab>
+											<Tab eventKey="unread" title="Unread">
+									<div className="card-body message-bx px-0 pt-3" >
+										<PerfectScrollbar className="tab-content dz-scroll" id="message-bx">
+										
+										
 										</PerfectScrollbar>
-									</div>
+										</div>
+												</Tab>
+											<Tab eventKey="archived" title="Archived">
+												
+									<div className="card-body message-bx px-0 pt-3" >
+										<PerfectScrollbar className="tab-content dz-scroll" id="message-bx">
+
+										</PerfectScrollbar>
+										</div>
+												</Tab>
+											
+						</Tabs>
+						</div>
 								</div>
 								<div className="chart-right-sidebar">
-									<div className="message-bx chat-box">
-										<div className="d-flex justify-content-between chat-box-header">
-											<div className="d-flex align-items-center">
-												<img src="dashboard-assets/images/users/pic2.jpg" alt="" className="rounded-circle main-img me-3"/>
-												<h5 className="text-black font-w500 mb-sm-1 mb-0 title-nm">Baby Joies</h5>
-											</div>
-											<div className="d-flex align-items-center">	
-												<span className="d-sm-inline-block d-none">Last seen 4:23 AM</span>
-												<div className="dropdown ms-2">
-													<Link to='#' data-bs-toggle="dropdown" aria-expanded="false">
-														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="../../www.w3.org/2000/svg.html">
-															<path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#575757" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-															<path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="#575757" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-															<path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="#575757" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-														</svg>
-													</Link>
-													<div className="dropdown-menu dropdown-menu-end">
-														<Link className="dropdown-item" to="">Edit</Link>
-														<Link className="dropdown-item" to="">Delete</Link>
-													</div>
-												</div>
-											</div>	
-										</div>
-										<PerfectScrollbar className="chat-box-area dz-scroll" id="chartBox" style={{backgroundImage:"url('dashboard-assets/images/chat-bg.png')"}}>
-											<div  className="chat">
-												<Message/>
-												
-											</div>
-											
-										</PerfectScrollbar>
-										<div className="card-footer border-0 type-massage">
-											<form>
-											<div className="input-group">
-												<input 
-												className="form-control" 
-												placeholder="Type message..."
-												onChange={(e)=>setMessage(e.target.value)}
-												value={message} />
-												<div className="input-group-append"> 
-													<span>
-														<label htmlFor='attachmentUpload' className="btn p-0 me-3">
-															<i className="las la-paperclip scale5 text-secondary"></i>
-														</label>
-														<input type="file" name="" id="attachmentUpload" className="d-none" multiple />
-													</span>
-													<span>
-															<label htmlFor='imageUpload' className="btn p-0 me-3">
-																<i className="las la-image scale5 text-secondary"></i>
-															</label>
-															<input type="file" name="" id="imageUpload" className="d-none" accept='image/*' multiple />
-													</span><button type="submit" className="send-btn btn-primary btn" onClick={handleSendMessage} >SEND</button>
-												</div>
-											</div>
-											</form>
-										</div>
+									{toUser?
+									<ChatBox receiver={toUser}  sender={currentUser._id as string}/>
+									: <div className='d-flex align-items-center justify-content-center flex-column h-100 w-100'  style={{backgroundImage:`url('dashboard-assets/images/chat-bg.png')`}}>
+										<h3 className='text-muted'>No chat selected</h3>
+										<p className='text-muted'>Please select a user to start a conversation.</p>
 									</div>
+								
+								}
+									
 								</div>
 							</div>
 		{/* <div className="fab-container">

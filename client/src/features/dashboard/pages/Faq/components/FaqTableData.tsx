@@ -2,27 +2,32 @@ import React,{useState,useEffect,useMemo} from 'react'
 import Swal from 'sweetalert2'
 import { useGetFaqsQuery, useDeleteFaqMutation } from '../faqApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
-import useLocalStorage from '../../../../../app/utils/hooks/useLocalStorage'
 import EditFaqModal from './EditFaqModal'
 import ViewModal from './ViewModal'
 import { setPreloader } from '../../../components/PreloaderSlice'
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'
-import { faqProps } from '../../../../../app/utils/props/faqProps'
 import initDataTables, { destroyDataTables } from '../../../../../app/utils/initDataTables'
+import { faqProps } from '../../../../../app/utils/props/faqProps'
 
 interface modalDataProps {
-    data:{
-        id:string | number;
-        question: string;
-        response: string;
-        status: string;
-    } | null,
+    data:faqProps | null,
     showModal:boolean,
 }
 
 const FaqTableData = () => {
     const dispatch = useDispatch()
+    const {
+    data: faqs,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+} = useGetFaqsQuery('faqsList', {
+    pollingInterval: 15000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true
+})
   const [modalData,setModalData] = useState<modalDataProps>({
    data:null, 
    showModal:false,
@@ -31,17 +36,7 @@ const FaqTableData = () => {
    data:null, 
    showModal:false,
   })
-const {
-    data: faqs,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-} = useGetFaqsQuery('faqList', {
-    pollingInterval: 15000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true
-})
+
 
 useEffect(() => {
 
@@ -142,19 +137,9 @@ if (isSuccess && !isLoading) {
                     <td>{created}</td>
                     <td>
                         <div className="d-flex">
-                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>{showEditForm({
+                            <button type="button" className="btn btn-success light shadow btn-xs sharp me-1"   onClick={()=>{showDetails({
         data:{
-        id:faqId._id,
-        question:faqId.question,
-        response:faqId.response,
-        status:faqId.status
-
-        },
-        showModal:true
-    });}}><i className="fas fa-pencil-alt"></i></button>
-                            <button type="button" className="btn btn-success shadow btn-xs sharp me-1"   onClick={()=>{showDetails({
-        data:{
-        id:faqId._id,
+       _id:faqId._id,
         question:faqId.question,
         response:faqId.response,
         status:faqId.status
@@ -162,7 +147,17 @@ if (isSuccess && !isLoading) {
         },
         showModal:true
     });}}><i className="fas fa-eye"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={()=>onDeleteFaq(faqId)}><i className="fa fa-trash"></i></button>
+                            <button type="button" className="btn btn-info light shadow btn-xs sharp me-1"   onClick={()=>{showEditForm({
+        data:{
+        _id:faqId._id,
+        question:faqId.question,
+        response:faqId.response,
+        status:faqId.status
+
+        },
+        showModal:true
+    });}}><i className="fas fa-pencil-alt"></i></button>
+                            <button className="btn btn-danger light shadow btn-xs sharp" onClick={()=>onDeleteFaq(faqId)}><i className="fa fa-trash"></i></button>
                         </div>												
                     </td>												
                 </tr>

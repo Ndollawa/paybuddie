@@ -1,5 +1,5 @@
-import React from 'react'
-import {useGetServicesQuery,useDeleteServiceMutation } from '../serviceApiSlice'
+import React,{useState,useEffect,useMemo} from 'react'
+import {useGetServicesQuery,useDeleteServiceMutation } from '../servicesApiSlice'
 import showToast from '../../../../../app/utils/hooks/showToast'
 import LightGallery from 'lightgallery/react'
 import 'lightgallery/css/lightgallery.css'
@@ -10,27 +10,30 @@ import lgZoom from 'lightgallery/plugins/zoom'
 // import 'lightgallery/css/lg-thumbnail.css'
 import $ from 'jquery'
 import Swal  from 'sweetalert2'
-
+import serviceProps from '../../../../../app/utils/props/serviceProps'
+import initDataTables,{destroyDataTables} from '../../../../../app/utils/initDataTables'
 
 interface modalDataProps {
-    modalData:{
-       data:{
-          id:string | number;
-          title: string;
-          description: string;
-          body: string;
-          image: string;
-          status: string;
-      } | null,
-      showModal:boolean,
-    } 
-    }
-const ServiceTableData = ({serviceId,index,showEditForm}:any) => {
+  data:serviceProps | null,
+ showModal:boolean,
+}
+const ServiceTableData = ({serviceId,index,showEditForm, showDetails}:any) => {
     const { service } = useGetServicesQuery("servicesList", {
         selectFromResult: ({ data }) => ({
             service: data?.entities[serviceId]
         }),
     })
+
+ 
+useEffect(() => {
+
+            destroyDataTables($('#dataTable'))
+              initDataTables($('#dataTable'),"Our Services")
+            return () => {
+             destroyDataTables($('#dataTable'))
+            }
+          }, [service])
+    
 
 
     const [deleteService, {
@@ -38,7 +41,7 @@ const ServiceTableData = ({serviceId,index,showEditForm}:any) => {
         isError: isDelError,
         error: delerror
     }]:any = useDeleteServiceMutation()
-    const onDeleteService = async () => {
+    const onDeleteService = async (id:string) => {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'btn btn-sm m-2 btn-success',
@@ -57,7 +60,7 @@ const ServiceTableData = ({serviceId,index,showEditForm}:any) => {
             reverseButtons: true
           }).then(async(result) => {
             if (result.isConfirmed) {  
-        await deleteService({ _id: serviceId })
+        await deleteService({ _id: id })
         if(isDelError) return showToast('error',JSON.stringify(delerror?.data))
               swalWithBootstrapButtons.fire(
                 'Deleted!',
@@ -82,10 +85,11 @@ const ServiceTableData = ({serviceId,index,showEditForm}:any) => {
         const created = new Date(service.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })
        const serviceData = {
         data:{
-        id:serviceId,
+        _id:serviceId,
         title:service.title,
         description:service.description,
-        serviceImage:service.image,
+        image:service.image,
+        icon:service.icon,
         body:service.body,
         status:service.status
 
@@ -113,13 +117,23 @@ const ServiceTableData = ({serviceId,index,showEditForm}:any) => {
                         </a></LightGallery></td>
                     <td>{service.title}</td>
                     <td>{service.description}</td>
-                    <td  dangerouslySetInnerHTML={{__html:service.body}} ></td>
                     <td>{serviceStatus}</td>
                     <td>{created}</td>
                     <td>
-                    <div className="d-flex">
-                            <button type="button" className="btn btn-primary shadow btn-xs sharp me-1"   onClick={()=>showEditForm(serviceData)}><i className="fas fa-pencil-alt"></i></button>
-                            <button className="btn btn-danger shadow btn-xs sharp" onClick={onDeleteService}><i className="fa fa-trash"></i></button>
+                    <div className="d-flex"> <button type="button" className="btn btn-success light shadow btn-xs sharp me-1"   onClick={()=>{showDetails({
+        data:{
+        _id:serviceId,
+        title:service.title,
+        description:service.description,
+        image:service.image,
+        icon:service.icon,
+        body:service.body,
+        status:service.status
+
+        },
+        showModal:true})}}><i className="fas fa-eye"></i></button>
+                            <button type="button" className="btn btn-info light shadow btn-xs sharp me-1"   onClick={()=>showEditForm(serviceData)}><i className="fas fa-pencil-alt"></i></button>
+                            <button className="btn btn-danger light shadow btn-xs sharp" onClick={()=>onDeleteService(service._id)}><i className="fa fa-trash"></i></button>
                         </div>													
                     </td>												
                 </tr>

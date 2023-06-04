@@ -70,6 +70,7 @@ class RoomController extends BaseController {
 public update = async (req:Request, res:Response) => {
     const {title, description,_id,status} = req.body
 const image = req?.file!
+console.log(req.body)
     // Confirm data
     if (!title || !description) {
         return res.status(400).json({ message: 'All fields are required' })

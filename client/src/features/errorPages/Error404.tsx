@@ -18,7 +18,7 @@ const from = location.state?.from ?? location.state?.from?.pathname ?? '/dashboa
                         <h4><i className="fa fa-exclamation-triangle text-warning"></i> The page you were looking for is not found!</h4>
                         <p>You may have mistyped the address or the page may have moved.</p>
 						<div>
-                            <button className="btn btn-primary" onClick={()=>navigate(from)}>Click to go Back</button>
+                            <button className="btn btn-secondary" onClick={()=>navigate(from)}>Click to go Back</button>
                         </div>
                     </div>
                 </div>

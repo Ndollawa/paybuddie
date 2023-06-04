@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import { Link,Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {useCompanyDetails} from '../dashboard/pages/Settings/settingsConfigSlice';
+import {useCompanyDetails, useSiteImages} from '../dashboard/pages/Settings/settingsConfigSlice';
 import Nav from './components/Nav';
 import Head from './components/Head';
 import Footer from './components/Footer';
@@ -198,7 +198,7 @@ const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
   }
 
     }, [])
-    const {favicon}  = useSelector(useCompanyDetails); 
+    const {favicon}  = useSelector(useSiteImages); 
   return (
     <>
     <Head pageData={pageData}/>
@@ -209,7 +209,7 @@ const Home:React.FC<pageProps> = ({pageData}:pageProps) => {
     <div className="custom-cursor__cursor-two"></div>
 
     <div className="preloader">
-        <div className="preloader__image" style={{backgroundImage:process.env.REACT_APP_UPLOAD_URL+"/settings/"+favicon}}></div>
+        <div className="preloader__image" style={{backgroundImage:process.env.REACT_APP_BASE_URL+"/settings/"+favicon}}></div>
     </div>
     {/* // <!-- /.preloader --> */}
     <div className="page-wrapper">
