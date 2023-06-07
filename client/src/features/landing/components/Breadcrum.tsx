@@ -23,6 +23,7 @@ const {pagesBg}  = useSelector(useSiteImages);
                 <span property="name" className="post post-page current-item">{pageTitle}</span>
     <meta property="position" content="2"/></span></div><h2>{pageTitle}</h2></div>
     </section>
+
   )
 }
 

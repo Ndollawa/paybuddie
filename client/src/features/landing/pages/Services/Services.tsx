@@ -18,7 +18,7 @@ const Services:React.FC<pageProps> = ({pageData}:pageProps) => {
         isError,
         error
     } = useGetServicesQuery('servicesList', {
-        pollingInterval: 1500,
+        pollingInterval: 15000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
