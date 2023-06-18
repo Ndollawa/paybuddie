@@ -136,7 +136,7 @@ public delete = async (req:Request, res:Response) => {
         return res.status(400).json({ message: 'Conversation not found' })
     }
 
-    const result = await conversation.deleteOne()
+    const result = await ConversationModel.deleteOne({_id})
 
     const reply = `Conversationname ${result.conversationname} with ID ${result._id} deleted`
 

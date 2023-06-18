@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import {useCompanyDetails,useDashboardConfig} from '../pages/Settings/settingsConfigSlice';
 
 
-const OtherBody = ({children}:any) => {
+const OtherBody = ({children}:{children:React.ReactNode}) => {
   const {layoutOptions} = useSelector(useDashboardConfig);
 const {
     typography,

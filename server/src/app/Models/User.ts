@@ -54,12 +54,7 @@ const UserSchema=  new Schema<userInterface>({
     username:{
         type:String
     },
-    fullName: {
-        type: String,
-        get: function () {
-          return `${(this as any).firstName} ${(this as any).lastName}`;
-        },
-      },
+    
     password:{
         type:String,
         required: true
@@ -135,6 +130,15 @@ const UserSchema=  new Schema<userInterface>({
 
 },
 {timestamps:true});
+UserSchema.virtual('fullName').get(function () {
+      return `${(this as any).firstName} ${(this as any).lastName}`;
+    }).set(function(v) {
+        // `v` is the value being set, so use the value to set
+        // `firstName` and `lastName`.
+        const firstName = v.substring(0, v.indexOf(' '));
+        const lastName = v.substring(v.indexOf(' ') + 1);
+        this.set({ firstName, lastName });
+      });
 UserSchema.plugin(mongoosePaginate);
 
 export default mongoose.model<userInterface>('User',UserSchema);

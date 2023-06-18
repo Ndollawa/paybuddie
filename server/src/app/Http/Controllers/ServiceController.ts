@@ -126,7 +126,7 @@ public delete = async (req:Request, res:Response) => {
     const destination = '../../../../public/service'
     const oldFile = service.image! 
     if(oldFile) deleteItem(destination,oldFile)
-    const result = await ServiceModel.deleteOne()
+    const result = await ServiceModel.deleteOne({_id})
 
     res.status(200).json({message:"success"})
 }

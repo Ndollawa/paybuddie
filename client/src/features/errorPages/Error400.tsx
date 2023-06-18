@@ -1,10 +1,11 @@
 import React from 'react'
 import OtherBody from '../dashboard/components/OtherBody'
 import { useNavigate } from 'react-router-dom'
+import { FallbackProps } from 'react-error-boundary'
 
 
 const Error400 = () => {
-    const navigate =useNavigate()
+    // const navigate =useNavigate()onClick={()=>navigate(-1)}
   return (
    <OtherBody>
         <div className="container h-100">
@@ -15,7 +16,7 @@ const Error400 = () => {
                         <h4><i className="fa fa-thumbs-down text-danger"></i> Bad Request</h4>
                         <p>Your Request resulted in an error</p>
 						<div>
-                            <button className="btn btn-secondary" onClick={()=>navigate(-1)}>Click to go Back</button>
+                            <button className="btn btn-secondary" >Click to go Back</button>
                         </div>
                     </div>
                 </div>

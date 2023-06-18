@@ -1,16 +1,18 @@
-import {createSlice, Selector} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
+import { RootState } from '../../../../app/stores/store';
 
 enum Styles{STYLE_1=1,STYLE_2, STYLE_3};
 const initialState = {
         _id:"",
         landingPageConfig:{
-            showBlog:null,
-            showAffiliate:null,
-            showTestimonial:null,
+            showBlog:false,
+            showAffiliate:false,
+            showTestimonial:false,
             navStyle:Styles.STYLE_1,
             sliderStyle:Styles.STYLE_1,
             aboutStyle:Styles.STYLE_1,
             testimonialStyle:Styles.STYLE_1,
+            serviceStyle:Styles.STYLE_1,
             ourBenefitStyle:Styles.STYLE_2,
             whatWeOfferStyle:Styles.STYLE_1
         },
@@ -32,21 +34,21 @@ const initialState = {
             }
         },
         companyDetails:{
-            siteName:null,
-            city:null,
-            state:null,
-            country:null,
-            zip:null,
-            description:null,
+            siteName:'',
+            city:'',
+            state:'',
+            country:'',
+            zip:'',
+            description:'',
             email:[],
             contact:[],
-            address:null,
-            activeHours:null,
+            address:'',
+            activeHours:'',
             socialMedia:{
-            facebookHandle:null,
-            twitterHandle:null,
-            instagram:null,
-            whatsapp:null
+            facebookHandle:'',
+            twitterHandle:'',
+            instagram:'',
+            whatsapp:''
         }
         },  
         siteImages:{
@@ -59,9 +61,9 @@ const initialState = {
             pagesBg:'',
         },
         pages:{
-            aboutUs:null,
-            privacyPolicy:null,
-            termsCondition:null
+            aboutUs:'',
+            privacyPolicy:'',
+            termsCondition:''
         }
 }
 
@@ -96,11 +98,11 @@ export const settingsConfigSlice = createSlice({
     }
 })
 
-export const useCompanyDetails = (state:any)=>state.settingsConfig.companyDetails;
-export const useLandingPageConfig = (state:any)=>state.settingsConfig.landingPageConfig;
-export const useDashboardConfig = (state:any)=>state.settingsConfig.dashboardConfig;
-export const useSiteImages = (state:any)=>state.settingsConfig.siteImages;
-export const usePages = (state:any)=>state.settingsConfig.pages;
-export const useSettings = (state:any)=>state.settingsConfig
+export const useCompanyDetails = (state:RootState)=>state.settingsConfig.companyDetails;
+export const useLandingPageConfig = (state:RootState)=>state.settingsConfig.landingPageConfig;
+export const useDashboardConfig = (state:RootState)=>state.settingsConfig.dashboardConfig;
+export const useSiteImages = (state:RootState)=>state.settingsConfig.siteImages;
+export const usePages = (state:RootState)=>state.settingsConfig.pages;
+export const useSettings = (state:RootState)=>state.settingsConfig
 export const {setAppGeneralSetting,setDashboardSetting,setPagesSetting,setAppHomepageSetting,setSettings} = settingsConfigSlice.actions;
 export default settingsConfigSlice.reducer;

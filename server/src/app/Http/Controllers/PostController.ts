@@ -127,7 +127,7 @@ public delete = async (req:Request, res:Response) => {
     const destination = '../../../../public/posts'
     const oldFile = post.coverImage! 
     if(oldFile) deleteItem(destination,oldFile)
-    const result = await PostModel.deleteOne()
+    const result = await PostModel.deleteOne({_id})
 
     res.status(200).json({message:"success"})
 }

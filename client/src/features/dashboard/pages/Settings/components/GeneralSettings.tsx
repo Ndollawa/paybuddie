@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const GeneralSettings = () => {
 const dispatch = useDispatch();
 const {_id} = useSelector(useSettings)
-const {email,contact,zip,description,siteName,activeHours,city,state,country,address,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
+const {email,contact,zip,description,siteName,activeHours,city,state,country,address,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}} = useSelector(useCompanyDetails);
 const [generalSettings,isLoading] = useGeneralSettingsMutation();
 // alert(_id)
 

@@ -1,9 +1,10 @@
 import React from 'react'
 import { useGetPostCategoryQuery } from '../../../../dashboard/pages/PostCategory/postCategoryApiSlice'
 import { useGetUsersQuery } from '../../../../dashboard/pages/Users/usersApiSlice'
+import { useGetPostCommentQuery } from '../../../../dashboard/pages/Post/postCommentApiSlice'
 import postProps from '../../../../../app/utils/props/postProps'
-import { format } from 'timeago.js'
 import postCategoryProps from '../../../../../app/utils/props/postCategoryProps'
+import postCommentProps from '../../../../../app/utils/props/postCommentProps'
 
 const PostList = ({post}:{post:postProps}) => {
     const { category } = useGetPostCategoryQuery("categoryList", {
@@ -16,9 +17,14 @@ const PostList = ({post}:{post:postProps}) => {
           user: data?.entities[post?.author]	 
         }),
         })
+    const { postComment } = useGetPostCommentQuery("postCommentsList", {
+        selectFromResult: ({ data }) => ({
+          postComment: data && data.ids.map((id:string) => data?.entities[id]).filter((comment:postCommentProps) =>comment.postId === post?._id)	 
+        }),
+        })
 
   return (
-    <div className="col-lg-12 single-post-item" key={post?._id}>
+    <div className="col-lg-12 single-post-item mb-5" key={post?._id}>
     <article
       id={`post-${post?._id}`}
       className="post type-post status-publish format-standard has-post-thumbnail hentry category-finance category-studies tag-education-loan tag-mortage"
@@ -40,20 +46,29 @@ const PostList = ({post}:{post:postProps}) => {
                 <a
                   href={`/our-blog/${post?._id}`}
                   rel="bookmark"
-                >
+                >{
+                  (new Date(post?.createdAt!).getUTCDate >=  new Date(post?.updatedAt!).getUTCDate)?
                   <time
                     className="entry-date published"
                     dateTime={post?.createdAt?.toString()}
                   >
-                  {format(post?.createdAt as Date)}                                   
+                  {new Date(post?.createdAt!).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })}                                   
                    </time>
+                   :
+                   <time
+                          className="updated"
+                          dateTime={post?.updatedAt!.toString()}
+                        >
+                          {new Date(post?.updatedAt!).toLocaleString('en-US', { day: 'numeric', month: 'long', year:'numeric' })}
+                        </time>
+                        }
                  </a>
               </span>
               <span className="meta-list byline_author">
                 <i className="far fa-user-circle"></i>
                 <a
                   className="url fn n"
-                  href="../author/admin/index.html"
+                  href="#"
                 >
                   {user?.fullName || user?.username}
                 </a>
@@ -61,14 +76,14 @@ const PostList = ({post}:{post:postProps}) => {
               <span className="meta-list blog_comment">
                 
                 <i className="far fa-comments"></i>
-                <a href="../education-loan-quisque-rhoncus-massa-et/index.html#respond">
-                  0 Comments
+                <a href={`/our-blog/posts/${post?._id}`}>
+                  {postComment?.length} Comment(s)
                 </a>
               </span>
             </div>
             <h3 className="blog-card__title">
               <a
-                href={`our-blog/${post?._id}`}
+                href={`/our-blog/posts/${post?._id}`}
                 rel="bookmark"
               >
                 {post?.title}
@@ -82,7 +97,7 @@ const PostList = ({post}:{post:postProps}) => {
             <div className="blog-card-bottom-btn">
               
               <a
-                href={`our-blog/${post?._id}`}
+                href={`/our-blog/posts/${post?._id}`}
                 className="blog-card-btn-link"
               >
                 Read More

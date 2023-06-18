@@ -94,7 +94,7 @@ public delete = async (req:Request, res:Response) => {
         return res.status(400).json({ message: 'Contacts member not found' })
     }
 
-    const result = await ContactsModel.deleteOne()
+    const result = await ContactsModel.deleteOne({_id})
 
     res.status(200).json({message:"success"})
 }

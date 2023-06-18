@@ -126,7 +126,7 @@ public delete = async (req:Request, res:Response) => {
     const destination = '../../../../public/room'
     const oldFile = room.image! 
     if(oldFile) deleteItem(destination,oldFile)
-    const result = await RoomModel.deleteOne()
+    const result = await RoomModel.deleteOne({_id})
 
     res.status(200).json({message:"success"})
 }

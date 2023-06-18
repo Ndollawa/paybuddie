@@ -129,7 +129,7 @@ public delete = async (req:Request, res:Response) => {
 
     const oldFile = slide.image! 
     if(oldFile) deleteItem(destination,oldFile)
-     const result = await SlideModel.deleteOne()
+     const result = await SlideModel.deleteOne({_id})
 
     res.status(200).json({message:"success"})
 }

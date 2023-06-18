@@ -23,14 +23,14 @@ const Footer = () => {
                             </a>
                             <p className="footer-widget__text">{description}</p>
                             <ul className="list-unstyled footer-widget__info">
-                                <li>
+                              {email && <li>
                                     <i className="icon-email"></i>
                                     <a href={`mailto:${email}`}>{email}</a>
-                                </li>
-                                <li>
+                                </li>} 
+                                {contact && <li>
                                     <i className="icon-telephone"></i>
                                     <a href={`tel:${contact}`}>{contact}</a>
-                                </li>
+                                </li>}
                             </ul>
                             {/* <!-- /.list-unstyled --> */}
                         </div>

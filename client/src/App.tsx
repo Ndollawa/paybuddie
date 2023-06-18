@@ -126,19 +126,19 @@ const {
             <Route element={<Prefetch/>}>
             <Route path="/" element={<Home pageData={{pageTitle:pageTitle,coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} >
                 <Route index element={<HomePage/>} />
-                <Route path="about" element={<About pageData={{pageTitle:"About",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="contact" element={<Contact pageData={{pageTitle:"Contact",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="careers" element={<Career pageData={{pageTitle:"Careers",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="career/apply-now" element={<Form pageData={{pageTitle:"Apply Now",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="faqs" element={<Faq pageData={{pageTitle:"FAQs",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="terms-and-condition" element={<TermsConditions pageData={{pageTitle:"Terms and Conditions",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="our-blog" element={<Blog pageData={{pageTitle:"Blog",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="our-blog/:id" element={<Post pageData={{pageTitle:"Post",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="our-team" element={<Team pageData={{pageTitle:"Our Team",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="our-team/:id" element={<Member pageData={{pageTitle:"Team Member",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="services" element={<Services pageData={{pageTitle:"Services",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
-                <Route path="services/:id" element={<Service pageData={{pageTitle:"Service",coverImage:'assets/images/backgrounds/page-header-bg-1-1.jpg'}}/>} />
+                <Route path="about" element={<About pageData={{pageTitle:"About"}}/>} />
+                <Route path="contact" element={<Contact pageData={{pageTitle:"Contact"}}/>} />
+                <Route path="careers" element={<Career pageData={{pageTitle:"Careers"}}/>} />
+                <Route path="career/apply-now" element={<Form pageData={{pageTitle:"Apply Now"}}/>} />
+                <Route path="faqs" element={<Faq pageData={{pageTitle:"FAQs"}}/>} />
+                <Route path="terms-and-condition" element={<TermsConditions pageData={{pageTitle:"Terms and Conditions"}}/>} />
+                <Route path="our-blog/posts" element={<Blog pageData={{pageTitle:"Blog"}}/>} />
+                <Route path="our-blog/posts/:id" element={<Post pageData={{pageTitle:"Post"}}/>} />
+                <Route path="privacy-and-Policy" element={<PrivacyPolicy pageData={{pageTitle:"Privacy and Policy"}}/>} />
+                <Route path="our-team" element={<Team pageData={{pageTitle:"Our Team"}}/>} />
+                <Route path="our-team/:id" element={<Member pageData={{pageTitle:"Team Member"}}/>} />
+                <Route path="services" element={<Services pageData={{pageTitle:"Services"}}/>} />
+                <Route path="services/:id" element={<Service pageData={{pageTitle:"Service"}}/>} />
                 <Route path="login" element={<Navigate to="/auth/login" replace/>} />
                 <Route path="register" element={<Navigate to="/auth/register"/>} />
                 <Route path="lockscreen" element={<Navigate to="/auth/login"/>} />

@@ -1,20 +1,23 @@
 import React,{useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { selectCurrentUser } from '../../../auth/authSlice';
 // import $ from 'jquery';
 // import 'owl.carousel/dist/assets/owl.carousel.css';
 // import 'owl.carousel';
 import MainBody from '../../components/MainBody';
 import PageHeading from '../../components/PageHeading';
+import { useSelector } from 'react-redux';
 
 
 const HomePage = () => {
+	const currentUser = useSelector(selectCurrentUser)
 useEffect(() => {
 // 	$('.owl-carousel').owlCarousel();
 //   return () => {
 // 	$('.owl-carousel').owlCarousel('destroy');
 //   };
 }, [])
-
+// console.log(currentUser)
   return (
     <>
     <MainBody>

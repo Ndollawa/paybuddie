@@ -113,7 +113,7 @@ public delete = async (req:Request, res:Response) => {
         return res.status(400).json({ message: 'Category not found' })
     }
 
-    const result = await PostCategoryModel.deleteOne()
+    const result = await PostCategoryModel.deleteOne({_id})
 
     res.status(200).json({message:"success"})
 }

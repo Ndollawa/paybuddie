@@ -23,7 +23,8 @@ const [blogToggle, setBlogToggle] = useState(homeSettings.showBlog)
 const [aboutUsStyle, setAboutUsStyle, AboutUsStyleAttr] = useInput(homeSettings.aboutStyle)
 const [whatweOfferStyle, setWhatWeOfferStyle, WhatWeOfferStyleAttr] = useInput(homeSettings.whatWeOfferStyle)
 const [navstyle, setNavStyle, NavStyleAttr] = useInput(homeSettings.navStyle)
-const [testimonialstyle, setTestimonialStyle, TestimonialStyleAttr] = useInput(homeSettings.testimonialStyle)
+const [testimonialStyle, setTestimonialStyle, TestimonialStyleAttr] = useInput(homeSettings.testimonialStyle)
+const [serviceStyle, setServiceStyle, serviceStyleAttr] = useInput(homeSettings.serviceStyle)
 const [sliderstyle, setSliderStyle, SliderStyleAttr] = useInput(homeSettings.sliderStyle)
 const [ourBenefitstyle, setOurBenefitStyle, OurBenefitStyleAttr] = useInput(homeSettings.ourBenefitStyle)
 
@@ -35,7 +36,8 @@ const data={
   navStyle:navstyle,
   sliderStyle:sliderstyle,
   aboutStyle:aboutUsStyle,
-  testimonialStyle:testimonialstyle,
+  testimonialStyle,
+  serviceStyle,
   ourBenefitStyle:ourBenefitstyle,
   whatWeOfferStyle:whatweOfferStyle
 }
@@ -113,7 +115,7 @@ const handleTestimonialToggle =  async()=>{
                 id='blogToggle'
                 type="checkbox"
                   className="setting-checkbox d-none"
-                  value={blogToggle}
+                  checked={blogToggle}
                   onClick={()=>{setBlogToggle((prev:boolean) => !prev);
                     handleBlogToggle()
                   }}
@@ -128,7 +130,7 @@ const handleTestimonialToggle =  async()=>{
                 id='testimonialToggle'
                 type="checkbox"
                   className="setting-checkbox d-none"
-                  value={testimonialToggle}
+                  checked={testimonialToggle}
                   onChange={()=>{setTestimonialToggle((prev:boolean)=> !prev);
                   handleTestimonialToggle()}}
                 />
@@ -137,6 +139,19 @@ const handleTestimonialToggle =  async()=>{
              <br/>
              <br/>
              <br/>
+            <div className="mb-3 col-md-4">
+                <label className="form-label"><strong>Navbar Style</strong></label>
+                <select
+                  className="default-select form-control wide"
+                  value={navstyle}
+                  onChange={setNavStyle}
+                  {...NavStyleAttr}
+                >
+                  <option value="">Choose...</option>
+                 {styleOptions}
+                </select>
+              </div>
+              
               <div className="mb-3 col-md-4">
                 <label className="form-label"><strong>Slider Style</strong></label>
                 <select
@@ -164,15 +179,15 @@ const handleTestimonialToggle =  async()=>{
             </div>
               
             <div className="mb-3 col-md-4">
-                <label className="form-label"><strong>Navbar Style</strong></label>
+                <label className="form-label"><strong>Service  Style</strong></label>
                 <select
                   className="default-select form-control wide"
-                  value={navstyle}
-                  onChange={setNavStyle}
-                  {...NavStyleAttr}
+                  value={serviceStyle}
+                  onChange={setServiceStyle}
+                  {...serviceStyleAttr}
                 >
                   <option value="">Choose...</option>
-                 {styleOptions}
+                  {styleOptions}
                 </select>
               </div>
               
@@ -193,7 +208,7 @@ const handleTestimonialToggle =  async()=>{
                 <label className="form-label"><strong>Testimonial Style</strong></label>
                 <select
                   className="default-select form-control wide"
-                  value={testimonialstyle}
+                  value={testimonialStyle}
                   onChange={setTestimonialStyle}
                   {...TestimonialStyleAttr}
                 >

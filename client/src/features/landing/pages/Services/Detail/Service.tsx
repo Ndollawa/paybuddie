@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useParams,useNavigate } from 'react-router-dom'
 import { useGetServicesQuery } from '../../../../dashboard/pages/Service/servicesApiSlice'
 import pageProps from '../../../../../app/utils/props/pageProps'
 import Breadcrum from '../../../components/Breadcrum'
@@ -8,11 +8,14 @@ import serviceProps from '../../../../../app/utils/props/serviceProps'
 
 const Service = ({pageData}:pageProps)  => {
 const {id} = useParams()
+const navigate = useNavigate()
    const { service } = useGetServicesQuery("servicesList", {
             selectFromResult: ({ data }) => ({
               service: id && data?.entities[id]		 
             }),
             }) 
+            if(!service) navigate('/error/404')
+            
 //    const { services } = useGetServicesQuery("servicesList", {
 //             selectFromResult: ({ data }) => ({
 //               services: data?.ids?.map((id:string)=>data?.entities[id])		 

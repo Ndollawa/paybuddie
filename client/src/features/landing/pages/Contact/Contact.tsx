@@ -6,7 +6,7 @@ import {useCompanyDetails} from '../../../dashboard/pages/Settings/settingsConfi
 
 
 const Contact :React.FC<pageProps> = ({pageData}:pageProps) => {
-    const {siteName,logo,address,email,contact,description,activeHours,facebookHandle,twitterHandle,instagram,whatsapp} = useSelector(useCompanyDetails);
+    const {siteName,address,email,contact,description,activeHours,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}} = useSelector(useCompanyDetails);
  
 
 
@@ -119,12 +119,12 @@ const Contact :React.FC<pageProps> = ({pageData}:pageProps) => {
             </div>
             {/* <!-- /.col-md-4 col-sm-12 --> */}
             <div className="col-md-4 col-sm-12">
-                <div className="contact-info-one__item">
+                <div className="contact-info-one__item d-flex flex-nowrap">
                     <div className="contact-info-one__icon">
                         <i className="icon-pin"></i>
                     </div>
                     {/* <!-- /.contact-info-one__icon --> */}
-                    <div className="contact-info-one__content">
+                    <div className="contact-info-one__content flex-grow-1">
                         <p className="contact-info-one__text">Visit anytime</p>
                         {/* <!-- /.contact-info-one__text --> */}
                         <address className="contact-info-one__link">{address}</address>

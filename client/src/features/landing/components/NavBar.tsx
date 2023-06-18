@@ -55,7 +55,7 @@ const userImage = useUserImage(currentUser)
                         <li><NavLink to="/services" className={({isActive})=> isActive ?"current":""} >Services</NavLink> </li>
                         {/* <li><a to="#">Pages</a></li> */}
                         <li><NavLink to="/our-team" className={({isActive})=> isActive ?"current":""} >Our Team</NavLink></li>
-                        <li><NavLink to="/our-blog" className={({isActive})=> isActive ?"current":""} >News</NavLink></li>
+                        <li><NavLink to="/our-blog/posts" className={({isActive})=> isActive ?"current":""} >News</NavLink></li>
                         <li><NavLink to="/contact" className={({isActive})=> isActive ?"current":""} >Contact</NavLink></li>
                     </ul>
                 </div>

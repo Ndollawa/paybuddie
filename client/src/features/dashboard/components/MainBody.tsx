@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect, ReactNode} from "react";
 import { Link } from "react-router-dom";
 import $ from 'jquery'
 import Preloader from "./Preloader";
@@ -16,7 +16,7 @@ import ThemePanel from "./ThemePanel";
 import useUserActivity from "../../../app/utils/hooks/useUserActivity";
 
 
-const MainBody = ({children}:any) => {
+const MainBody = ({children}:{children:React.ReactNode}) => {
 const currentUser = useSelector(selectCurrentUser)
 useUserActivity()
     const isLoading = useSelector(useIsLoading);
