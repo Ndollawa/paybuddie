@@ -141,19 +141,19 @@ switch (ourBenefitStyle) {
                                     </div>
                                     <div className="benefit-two__tab__content__box__content">
                                         <ul className="list-unstyled ml-0 about-two__list">
-                                            <li titlt={`In the event of a transaction dispute, ${siteName} offers professional mediation services to help resolve the issue. Our experienced team will carefully review the evidence and facilitate communication between the parties involved to reach a fair and satisfactory resolution.`}>
+                                            <li title={`In the event of a transaction dispute, ${siteName} offers professional mediation services to help resolve the issue. Our experienced team will carefully review the evidence and facilitate communication between the parties involved to reach a fair and satisfactory resolution.`}>
                                                 <i className="fa fa-arrow-circle-right"></i>
                                                 Mediation Services
                                             </li>
-                                            <li titlt={` Our dispute resolution process is designed to be fair and impartial. We take into account all relevant information and strive to make unbiased decisions based on the evidence provided, ensuring a balanced outcome for all parties involved.`}>
+                                            <li title={` Our dispute resolution process is designed to be fair and impartial. We take into account all relevant information and strive to make unbiased decisions based on the evidence provided, ensuring a balanced outcome for all parties involved.`}>
                                                 <i className="fa fa-arrow-circle-right"></i>
                                                 Fair and Impartial Decision Making
                                             </li>
-                                            <li titlt={` ${siteName} understands the importance of resolving disputes efficiently. We aim to facilitate a timely resolution process, minimizing any disruptions or delays in the transaction. Our goal is to provide a swift and satisfactory resolution to restore trust and enable the transaction to proceed smoothly.`}>
+                                            <li title={` ${siteName} understands the importance of resolving disputes efficiently. We aim to facilitate a timely resolution process, minimizing any disruptions or delays in the transaction. Our goal is to provide a swift and satisfactory resolution to restore trust and enable the transaction to proceed smoothly.`}>
                                                 <i className="fa fa-arrow-circle-right"></i>
                                                 Timely Resolution
                                             </li>
-                                            <li titlt={` Our dispute resolution team consists of experts in online transactions and conflict resolution. They possess the knowledge and experience necessary to navigate complex situations and guide the parties towards a mutually agreeable resolution.`}>
+                                            <li title={` Our dispute resolution team consists of experts in online transactions and conflict resolution. They possess the knowledge and experience necessary to navigate complex situations and guide the parties towards a mutually agreeable resolution.`}>
                                                 <i className="fa fa-arrow-circle-right"></i>
                                                 Expert Assistance
                                             </li>
