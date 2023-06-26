@@ -57,7 +57,7 @@ const Services:React.FC<pageProps> = ({pageData}:pageProps) => {
                                         <a href={`/services/${service._id}`}>{service?.title}</a>
                                     </h3>
                                     {/* <!-- /.service-card__title --> */}
-                                    <p className="service-card__text">{service?.description}</p>
+                                    <p className="service-card__text s-card">{service?.description}</p>
                                         {/* <!-- /.service-card__text --> */}
                                     <a href={`/services/${service._id}`} className="service-card__link">
                                         <i className="fa fa-angle-right"></i>

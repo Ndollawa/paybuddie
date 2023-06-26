@@ -25,6 +25,7 @@ const SiteImage = () => {
       logoIcon,
       logoDark,
       aboutUsBg,
+      aboutVideo,
       pagesBg,
       backgroundImage,
     },
@@ -51,7 +52,7 @@ const SiteImage = () => {
     if (isError) {
     return  showToast(
         "error",
-        `Sorry, couldn't Upload Favicon: ${error.data.message}`
+        `Sorry, couldn't Upload Favicon: ${error?.data?.message}`
       );
     }
     showToast("success", "Favicon Uploaded successfully");
@@ -64,7 +65,7 @@ const SiteImage = () => {
     formData.append("type", "logoIcon");
     await settingsUpload(formData);
     if (isError) {
-   return   showToast("error", `Sorry, couldn't Upload Logo Icon: ${error.data.message}`);
+   return   showToast("error", `Sorry, couldn't Upload Logo Icon: ${error?.data?.message}`);
     }
 
       showToast("success", "Logo Icon Uploaded successfully");
@@ -77,7 +78,7 @@ const SiteImage = () => {
     formData.append("type", "logo");
     await settingsUpload(formData);
     if (isError) {
-   return   showToast("error", `Sorry, couldn't Upload Logo: ${error.data.message}`);
+   return   showToast("error", `Sorry, couldn't Upload Logo: ${error?.data?.message}`);
     }
 
       showToast("success", "Logo Uploaded successfully");
@@ -93,7 +94,7 @@ const SiteImage = () => {
     if (isError) {
     return  showToast(
         "error",
-        `Sorry, couldn't Upload Dark Logo: ${error.data.message}`
+        `Sorry, couldn't Upload Dark Logo: ${error?.data?.message}`
       );
     }
    
@@ -111,7 +112,25 @@ const SiteImage = () => {
     if (isError) {
     return  showToast(
         "error",
-        `Sorry, couldn't Upload About us Image: ${error.data.message}`
+        `Sorry, couldn't Upload About us Image: ${error?.data?.message}`
+      );
+    }
+
+      showToast("success", "About us Image Uploaded successfully");
+  
+  }
+  const handleAboutUsVideoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files!;
+    const formData = new FormData();
+    formData.append("siteImage", files[0]!);
+    formData.append("_id", _id);
+    formData.append("type", "aboutVideo");
+    //
+    await settingsUpload(formData);
+    if (isError) {
+    return  showToast(
+        "error",
+        `Sorry, couldn't Upload About us Image: ${error?.data?.message}`
       );
     }
 
@@ -131,7 +150,7 @@ const SiteImage = () => {
     if (isError) {
      return showToast(
         "error",
-        `Sorry, couldn't Upload Pages Background Image: ${error.data.message}`
+        `Sorry, couldn't Upload Pages Background Image: ${error?.data?.message}`
       );
     }
       showToast("success", "Pages Background Image Uploaded successfully");
@@ -149,7 +168,7 @@ const SiteImage = () => {
     if (isError) {
     return  showToast(
         "error",
-        `Sorry, couldn't Upload Background Image: ${error.data.message}`
+        `Sorry, couldn't Upload Background Image: ${error?.data?.message}`
       );
     }
     showToast("success", "Background Image Uploaded successfully");
@@ -162,7 +181,7 @@ const SiteImage = () => {
       if (removeFileIsError) {
     return    showToast(
           "error",
-          `Sorry, couldn't remove Image: ${removeFileError.data.message}`
+          `Sorry, couldn't remove Image: ${removeFileError?.data?.message}`
         );
       }
       showToast("success", " Image removed successfully");
@@ -171,7 +190,7 @@ const SiteImage = () => {
 
   return (
     <div className="card">
-      <div className="card-header bg-primary">
+      <div className="card-header bg-secondary">
         <h4 className="card-title text-white">Site Images</h4>
       </div>
       <div className="card-body">
@@ -414,6 +433,53 @@ const SiteImage = () => {
                   <div
                     className="position-absolute top-0"
                     onClick={() => removeImage(aboutUsBg, "aboutUsBg")}
+                  >
+                    <FaTrash color="red" cursor={"pointer"} fontSize={"1rem"} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">About Us Video</label>
+            <div className="input-group mb-3 col-md-5">
+              <div className="form-file">
+                <input
+                  type="file"
+                  id="loader-up"
+                  accept="video/*"
+                  name="loader"
+                  className="form-file-input form-control"
+                  onChange={handleAboutUsVideoUpload}
+                />
+              </div>
+              <span className="input-group-text">Upload</span>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div id="about-us-video">
+              {aboutVideo && (
+                <div
+                  style={{
+                    backgroundColor: "#ccc",
+                    padding: "10px",
+                    border: "2px solid #f68600",
+                    borderRadius: "2%",
+                  }}
+                  className="container position-relative w-100"
+                >  <video
+                    className="img-responsive offset-1"
+                    src={
+                      process.env.REACT_APP_BASE_URL +
+                      "/uploads/settings/" +
+                      aboutVideo
+                    }
+                    controls
+                    width="320"
+                  ></video>
+                  <div
+                    className="position-absolute top-0"
+                    onClick={() => removeImage(aboutVideo, "aboutVideo")}
                   >
                     <FaTrash color="red" cursor={"pointer"} fontSize={"1rem"} />
                   </div>

@@ -15,7 +15,7 @@ const PostList = ({post}:{post:postProps}) => {
    
         const { postComment } = useGetPostCommentQuery("postCommentsList", {
             selectFromResult: ({ data }) => ({
-              postComment: data && data.ids.map((id:string) => data?.entities[id]).filter((comment:postCommentProps) =>comment.postId === post?._id)	 
+              postComment: data && data.ids.map((id:string) => data?.entities[id]).filter((comment:postCommentProps) =>comment.status === 'active')	 
             }),
             })
     const { user } = useGetUsersQuery("usersList", {

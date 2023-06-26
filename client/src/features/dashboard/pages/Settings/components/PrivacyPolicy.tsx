@@ -30,7 +30,7 @@ const updateSetting:FormEventHandler = async(e:FormEvent)=>{
 
   return (
     <div className="card">
-    <div className="card-header  bg-primary">
+    <div className="card-header  bg-secondary">
       <h4 className="card-title text-white">Privacy  and Policy</h4>
     </div>
     <div className="card-body">

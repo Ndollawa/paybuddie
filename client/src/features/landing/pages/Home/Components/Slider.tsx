@@ -103,7 +103,7 @@ switch (sliderStyle) {
                                     {slide.body}
                                     <p className="slider-one__text">{ slide?.body?.replaceAll(/<\/?[^>]+(>|$)/gi, "")}</p>
                                     <div className="slider-one__btns">
-                                        <a href={slide?.cto?.link} className="thm-btn btn-sm ">{slide?.cto?.cot_text}</a>
+                                        <a href={slide?.cto?.link} className="thm-btn">{slide?.cto?.cot_text}</a>
                                     </div>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@ switch (sliderStyle) {
                             <h2 className="slider-one__title">{slide.description}</h2>
                             <p className="slider-one__text">{ slide?.body?.replaceAll(/<\/?[^>]+(>|$)/gi, "")}</p>
                             <div className="slider-one__btns">
-                                <Link to={slide?.cto?.link} className="thm-btn thm-btn btn-sm --dark-hover">{slide?.cto?.cto_text}</Link>
+                                <Link to={slide?.cto?.link} className="thm-btn thm-btn--dark-hover">{slide?.cto?.cto_text}</Link>
                             </div>
                         </div>
                     </div>
@@ -221,7 +221,7 @@ switch (sliderStyle) {
                                 {/* <!-- /.slider-one__title --> */}
                             <p className="slider-one__text">{ slide?.body?.replaceAll(/<\/?[^>]+(>|$)/gi, "")}</p>
                             <div className="slider-one__btns">
-                                <Link to={slide?.cto?.link} className="thm-btn btn-sm ">{slide.cto.cto_text}</Link>
+                                <Link to={slide?.cto?.link} className="thm-btn">{slide.cto.cto_text}</Link>
                             </div>
                         </div>
                     </div>

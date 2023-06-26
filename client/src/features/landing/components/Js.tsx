@@ -25,7 +25,7 @@ const Js:React.FC = () => {
   return (
     <>
       {
-    useImportScript(javascript)
+    useImportScript(javascript,'javascript')
    
     }
     </>

@@ -152,7 +152,6 @@ socket.emit('activeUsers',users)
 app.use('/checkduplicate', CheckDuplicateRoutes);
 app.use('/auth',AuthRoutes);
 app.use('/slides', SlideRoutes);
-app.use('/users', UserRoutes);
 app.use('/faqs', FaqRoutes);
 app.use('/posts', PostRoutes);
 app.use('/post-comments', CommentRoutes);
@@ -172,6 +171,7 @@ app.use('/messages', MessageRoutes);
 app.use('/conversations', ConversationRoutes);
 app.use('/contacts', ContactsRoutes);
 app.use('/rooms', RoomRoutes);
+app.use('/users', UserRoutes);
 app.all('*',(req,res)=>{
     res.status(404).json({message: 'Resource not Found!'});
 });

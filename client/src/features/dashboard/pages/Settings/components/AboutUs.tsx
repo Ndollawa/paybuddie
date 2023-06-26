@@ -26,7 +26,7 @@ try {
 
   return (
     <div className="card">
-    <div className="card-header bg-primary">
+    <div className="card-header bg-secondary">
       <h4 className="card-title text-white">About Us</h4>
     </div>
     <div className="card-body">

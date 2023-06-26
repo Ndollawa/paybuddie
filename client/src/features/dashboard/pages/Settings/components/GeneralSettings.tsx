@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const GeneralSettings = () => {
 const dispatch = useDispatch();
 const {_id} = useSelector(useSettings)
-const {email,contact,zip,description,siteName,activeHours,city,state,country,address,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}} = useSelector(useCompanyDetails);
+const {email,contact,zip,description,siteName,activeHours,city,state,country,address,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}={}} = useSelector(useCompanyDetails);
 const [generalSettings,isLoading] = useGeneralSettingsMutation();
 // alert(_id)
 
@@ -55,7 +55,7 @@ try{
 dispatch(setAppGeneralSetting(data))
 showToast('success',"Settings Updated successfully!")
 } catch (error:any) {
-  showToast('error',error)
+  showToast('error',error?.message)
 }
 
 }
@@ -63,7 +63,7 @@ showToast('success',"Settings Updated successfully!")
   return (
     <>
       <div className="card">
-        <div className="card-header bg-primary">
+        <div className="card-header bg-secondary">
           <h4 className="card-title text-white">General</h4>
         </div>
         <div className="card-body">

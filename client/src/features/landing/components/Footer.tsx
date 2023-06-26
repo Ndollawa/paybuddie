@@ -1,15 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {useCompanyDetails,useSiteImages} from '../../dashboard/pages/Settings/settingsConfigSlice';
+import { settingsProps } from '../../../app/utils/props/settingsProps';
 
 
 
 const Footer = () => {
 
-  const {siteName,email,contact,description,activeHours,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}} = useSelector(useCompanyDetails);
+  const {siteName,email,contact,description,activeHours,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}={}}= useSelector(useCompanyDetails);
   const {logoDark} = useSelector(useSiteImages);
 
-
+// :settingsProps['companyDetails'] 
 
   return (
     <>
@@ -21,16 +22,23 @@ const Footer = () => {
                             <a href="/" className="footer-widget__logo">
                                 <img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logoDark} alt={siteName} width="150" height="51" />
                             </a>
-                            <p className="footer-widget__text">{description}</p>
+                            <p className="footer-widget__text s-card-7">{description}</p>
                             <ul className="list-unstyled footer-widget__info">
-                              {email && <li>
+                              { 
+                              email?.map((e:string)=>(
+                                <li key={e}>
                                     <i className="icon-email"></i>
-                                    <a href={`mailto:${email}`}>{email}</a>
-                                </li>} 
-                                {contact && <li>
+                                    <a href={`mailto:${e}`}>{e}</a>
+                                </li>
+                              )) }
+                            
+                              { contact?.map((c:string)=>(
+                                    <li key={c}>
                                     <i className="icon-telephone"></i>
-                                    <a href={`tel:${contact}`}>{contact}</a>
-                                </li>}
+                                    <a href={`tel:${c}`}>{c}</a>
+                                </li>
+                                  ))
+                                }
                             </ul>
                             {/* <!-- /.list-unstyled --> */}
                         </div>

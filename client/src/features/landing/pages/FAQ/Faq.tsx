@@ -1,153 +1,51 @@
 import React from 'react'
 import pageProps from '../../../../app/utils/props/pageProps'
 import Breadcrum from '../../components/Breadcrum'
-
+import { useGetFaqsQuery } from '../../../dashboard/pages/Faq/faqApiSlice'
+import { faqProps } from '../../../../app/utils/props/faqProps'
+import NoResult from '../../components/NoResult'
 
 const Faq:React.FC<pageProps> = ({pageData}:pageProps) => {
 
-
+    const { faqs } = useGetFaqsQuery("faqsList", {
+        selectFromResult: ({ data }) => ({
+          faqs: (data?.ids?.map((id:string)=>data?.entities[id]))?.filter((c:faqProps) => c?.status === 'active')		 
+        }),
+        }) 
+        console.log(faqs)
     return (
+
       <>
   <Breadcrum pageData={pageData}/>
 
 
-<section className="faq-grid pt-120 pb-120">
+  <section className="faq-grid pt-120 pb-120">
     <div className="container">
         <div className="row row-gutter-y-20">
+              { faqs.length ? 
+            
+            faqs?.map((f:faqProps)=>(
             <div className="col-lg-6">
-                <div className="accrodion-grp faq-one-accrodion" data-grp-name="faq-one-accrodion-1">
+                <div className={`accrodion-grp faq-${f?._id}-accrodion`} data-grp-name={`faq-one-accrodion-${f?._id}`}>
                     
-                    {/* <!--Start Faq One Single--> */}
                     <div className="accrodion  wow fadeInUp" data-wow-delay="0ms">
                         <div className="accrodion-title">
-                            <h4>Nunc dui massa, porttitor id erat et <span className="accrodion-icon"></span></h4>
+                            <h4>{f?.question}<span className="accrodion-icon"></span></h4>
                         </div>
                         <div className="accrodion-content">
                             <div className="inner">
-                                <p>There are many variations of passages the majority have suffered alteration in some
-                                    fo injected humour, or randomised words believable. Phasellus a rhoncus erat.</p>
+                                <p dangerouslySetInnerHTML={{__html:f?.response}}></p>
                             </div>
                         </div>
                     </div>
-                    
-                    {/* <!-- End Faq One Single--> */}
-                    
-                    {/* <!--Start Faq One Single--> */}
-                    <div className="accrodion active wow fadeInUp" data-wow-delay="0ms">
-                        <div className="accrodion-title">
-                            <h4>Quisque quis urna consequat, scelerisque <span className="accrodion-icon"></span></h4>
-                        </div>
-                        <div className="accrodion-content">
-                            <div className="inner">
-                                <p>There are many variations of passages the majority have suffered alteration in some
-                                    fo injected humour, or randomised words believable. Phasellus a rhoncus erat.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* <!-- End Faq One Single--> */}
-                    
-                    {/* <!--Start Faq One Single--> */}
-                    <div className="accrodion  wow fadeInUp" data-wow-delay="0ms">
-                        <div className="accrodion-title">
-                            <h4>Mauris a ipsum id libero sodales dapibus <span className="accrodion-icon"></span></h4>
-                        </div>
-                        <div className="accrodion-content">
-                            <div className="inner">
-                                <p>There are many variations of passages the majority have suffered alteration in some
-                                    fo injected humour, or randomised words believable. Phasellus a rhoncus erat.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* <!-- End Faq One Single--> */}
-                    
-                    {/* <!--Start Faq One Single--> */}
-                    <div className="accrodion  wow fadeInUp" data-wow-delay="0ms">
-                        <div className="accrodion-title">
-                            <h4>Nunc dui massa, porttitor id erat et <span className="accrodion-icon"></span></h4>
-                        </div>
-                        <div className="accrodion-content">
-                            <div className="inner">
-                                <p>There are many variations of passages the majority have suffered alteration in some
-                                    fo injected humour, or randomised words believable. Phasellus a rhoncus erat.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* <!-- End Faq One Single--> */}
+                   
                 </div>
-            </div>
-            {/* <!-- /.col-lg-6 --> */}
-            <div className="col-lg-6">
-                <div className="accrodion-grp faq-one-accrodion" data-grp-name="faq-one-accrodion-2">
+            </div> 
+            ))
                     
-                    {/* <!--Start Faq One Single--> */}
-                    <div className="accrodion active wow fadeInUp" data-wow-delay="0ms">
-                        <div className="accrodion-title">
-                            <h4>Nunc dui massa, porttitor id erat et <span className="accrodion-icon"></span></h4>
-                        </div>
-                        <div className="accrodion-content">
-                            <div className="inner">
-                                <p>There are many variations of passages the majority have suffered alteration in some
-                                    fo injected humour, or randomised words believable. Phasellus a rhoncus erat.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* <!-- End Faq One Single--> */}
-                    
-                    {/* <!--Start Faq One Single--> */}
-                    <div className="accrodion  wow fadeInUp" data-wow-delay="0ms">
-                        <div className="accrodion-title">
-                            <h4>Quisque quis urna consequat, scelerisque <span className="accrodion-icon"></span></h4>
-                        </div>
-                        <div className="accrodion-content">
-                            <div className="inner">
-                                <p>There are many variations of passages the majority have suffered alteration in some
-                                    fo injected humour, or randomised words believable. Phasellus a rhoncus erat.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* <!-- End Faq One Single--> */}
-                    
-                    {/* <!--Start Faq One Single--> */}
-                    <div className="accrodion  wow fadeInUp" data-wow-delay="0ms">
-                        <div className="accrodion-title">
-                            <h4>Mauris a ipsum id libero sodales dapibus <span className="accrodion-icon"></span></h4>
-                        </div>
-                        <div className="accrodion-content">
-                            <div className="inner">
-                                <p>There are many variations of passages the majority have suffered alteration in some
-                                    fo injected humour, or randomised words believable. Phasellus a rhoncus erat.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* <!-- End Faq One Single--> */}
-                    
-                    {/* <!--Start Faq One Single--> */}
-                    <div className="accrodion  wow fadeInUp" data-wow-delay="0ms">
-                        <div className="accrodion-title">
-                            <h4>Nunc dui massa, porttitor id erat et <span className="accrodion-icon"></span></h4>
-                        </div>
-                        <div className="accrodion-content">
-                            <div className="inner">
-                                <p>There are many variations of passages the majority have suffered alteration in some
-                                    fo injected humour, or randomised words believable. Phasellus a rhoncus erat.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* <!-- End Faq One Single--> */}
-                </div>
-            </div>
-            {/* <!-- /.col-lg-6 --> */}
+            : <NoResult/> }  
         </div>
-        {/* <!-- /.row --> */}
     </div>
-    {/* <!-- /.container --> */}
 </section>
 {/* <!-- /.faq-grid --> */}
 <section className="faq-form pt-120 pb-120">
@@ -159,8 +57,8 @@ const Faq:React.FC<pageProps> = ({pageData}:pageProps) => {
             {/* <!-- /.block-title__title --> */}
         </div>
         {/* <!-- /.block-title --> */}
-        <form action="https://thegenius.co/html/finlon_new1/assets/sendemail.php" className="form-one contact-form-validated">
-            <div className="row row-gutter-y-20 row-gutter-x-20">
+        <form className="form-one contact-form-validated">
+            <div className="row row-gutter-y-20 row-gutter-20 ">
                 <div className="col-md-6">
                     <input type="text" placeholder="Full name" name="name"/>
                 </div>

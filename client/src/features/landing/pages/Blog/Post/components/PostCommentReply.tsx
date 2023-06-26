@@ -18,7 +18,7 @@ const PostComment = ({pcr, replyComment}:{pcr:postCommentReplyProps; replyCommen
       const userImage = useUserImage(user)
 
   return (
-    <li className="comment even thread-even depth-1  " id={`comment-${pcr?._id}`} style={{height:'5rem'}}>
+    <li className="comment even thread-even depth-1  " id={`comment-${pcr?._id}`} style={{height:'5rem'}}  key={pcr?._id}>
     <div id={`div-comment-${pcr?._id}`} className="blog-comment__box"><div className="post_comment">
       <div className="post_replay_inner"><div className="comment-author-img post_reply_thumb"> 
       <img alt="" src={userImage || defaultUser2} className="avatar avatar-140 photo" height="80" width="80" loading="lazy" decoding="async"/>

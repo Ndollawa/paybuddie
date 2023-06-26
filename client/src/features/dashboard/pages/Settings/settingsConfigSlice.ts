@@ -14,6 +14,7 @@ const initialState = {
             testimonialStyle:Styles.STYLE_1,
             serviceStyle:Styles.STYLE_1,
             ourBenefitStyle:Styles.STYLE_2,
+            ourBlogStyle:Styles.STYLE_2,
             whatWeOfferStyle:Styles.STYLE_1
         },
         dashboardConfig:{
@@ -58,6 +59,7 @@ const initialState = {
             favicon:'',
             backgroundImage:'',
             aboutUsBg:'',
+            aboutVideo:'',
             pagesBg:'',
         },
         pages:{

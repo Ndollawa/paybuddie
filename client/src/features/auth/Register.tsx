@@ -184,7 +184,8 @@ const handleRegistration:FormEventHandler = async (e:FormEvent) =>{
                             <div className="col-xl-12">
                                 <div className="auth-form">
 									<div className="text-center  mb-3">
-										<Link to="index-2.html" className="brand-logo">
+										<Link to="index-2.html" className="brand-logo d-flex justify-content-center 
+ align-items-center">
 											<img src={process.env.REACT_APP_BASE_URL+"/uploads/settings/"+logo} alt={siteName} width='150' />
 										</Link>
 									</div>

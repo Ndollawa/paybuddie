@@ -44,7 +44,7 @@ console.log(team)
                     {/* <!-- /.team-card__image --> */}
                     <div className="team-card__content">
                         <div className="team-card__content__inner">
-                            <h3 className="team-card__title"><a href={`/our-team/${t._id}`}>{t?.firstName}</a></h3>
+                            <h3 className="team-card__title"><a href={`/our-team/${t._id}`}>{t?.fullName}</a></h3>
                             <p className="team-card__designation">{t?.position}</p>
                         </div>
                         {/* <!-- /.team-card__content__inner --> */}

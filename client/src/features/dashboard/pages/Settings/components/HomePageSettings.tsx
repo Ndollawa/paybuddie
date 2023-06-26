@@ -1,5 +1,5 @@
 import React,{FormEvent,FormEventHandler,useState}  from 'react';
-import {BsToggleOff ,BsToggleOn} from 'react-icons/bs';
+import {BsToggle2Off ,BsToggle2On} from 'react-icons/bs';
 import { useSelector,useDispatch } from 'react-redux';
 import { useLandingPageConfig } from '../settingsConfigSlice';
 import { useHomepageSettingsMutation } from '../settingApiSlice';
@@ -27,6 +27,7 @@ const [testimonialStyle, setTestimonialStyle, TestimonialStyleAttr] = useInput(h
 const [serviceStyle, setServiceStyle, serviceStyleAttr] = useInput(homeSettings.serviceStyle)
 const [sliderstyle, setSliderStyle, SliderStyleAttr] = useInput(homeSettings.sliderStyle)
 const [ourBenefitstyle, setOurBenefitStyle, OurBenefitStyleAttr] = useInput(homeSettings.ourBenefitStyle)
+const [ourBlogStyle, setOurBlogStyle, OurBlogStyleAttr] = useInput(homeSettings.ourBlogStyle)
 
 const styleOptions = [1,2,3].map((option, i)=><option key={i} value={option}>Style {option}</option>)
 
@@ -39,7 +40,8 @@ const data={
   testimonialStyle,
   serviceStyle,
   ourBenefitStyle:ourBenefitstyle,
-  whatWeOfferStyle:whatweOfferStyle
+  whatWeOfferStyle:whatweOfferStyle,
+  ourBlogStyle
 }
 try {
   await homepageSettings({_id,data}).unwrap()
@@ -86,7 +88,7 @@ const handleTestimonialToggle =  async()=>{
   return (
     <>
     <div className="card">
-      <div className="card-header bg-primary">
+      <div className="card-header bg-secondary">
         <h4 className="card-title text-white">Home Page</h4>
       </div>
       <div className="card-body">
@@ -96,7 +98,7 @@ const handleTestimonialToggle =  async()=>{
             <div className="my-20 col-md-12 d-flex justify-content-between">
               <div><strong>Show Affiliate Section</strong></div>
               <div className=''>
-                <label htmlFor='affiliateToggle'  className='p-10'>{affiliateToggle?<BsToggleOn className='text-primary' fontSize={'2rem'}/>:<BsToggleOff className='text-default' fontSize={'2rem'}/>}</label>
+                <label htmlFor='affiliateToggle'  className='p-10'>{affiliateToggle?<BsToggle2On className='text-primary' fontSize={'2rem'}/>:<BsToggle2Off className='text-default' fontSize={'2rem'}/>}</label>
                 <input
                 id="affiliateToggle"
                 type="checkbox"
@@ -110,12 +112,13 @@ const handleTestimonialToggle =  async()=>{
             <div className="mb-15 col-md-12 d-flex justify-content-between align-center">
               <div><strong>Show Blog Section</strong></div>
               <div>
-                <label htmlFor="blogToggle" className="p-10">{blogToggle?<BsToggleOn className='text-primary' fontSize={'2rem'}/>:<BsToggleOff className='text-default' fontSize={'2rem'}/>}</label>
+                <label htmlFor="blogToggle" className="p-10">{blogToggle?<BsToggle2On className='text-primary' fontSize={'2rem'}/>:<BsToggle2Off className='text-default' fontSize={'2rem'}/>}</label>
                 <input
                 id='blogToggle'
                 type="checkbox"
                   className="setting-checkbox d-none"
                   checked={blogToggle}
+                  readOnly
                   onClick={()=>{setBlogToggle((prev:boolean) => !prev);
                     handleBlogToggle()
                   }}
@@ -125,12 +128,13 @@ const handleTestimonialToggle =  async()=>{
             <div className="my-20 col-md-12 d-flex justify-content-between">
               <div><strong>Show Testimonial Section</strong></div>
               <div>
-                <label htmlFor='testimonialToggle' className="p-10">{testimonialToggle?<BsToggleOn className='text-primary' fontSize={'2rem'}/>:<BsToggleOff className='text-default' fontSize={'2rem'}/>}</label>
+                <label htmlFor='testimonialToggle' className="p-10">{testimonialToggle?<BsToggle2On className='text-primary' fontSize={'2rem'}/>:<BsToggle2Off className='text-default' fontSize={'2rem'}/>}</label>
                 <input
                 id='testimonialToggle'
                 type="checkbox"
                   className="setting-checkbox d-none"
                   checked={testimonialToggle}
+                  readOnly
                   onChange={()=>{setTestimonialToggle((prev:boolean)=> !prev);
                   handleTestimonialToggle()}}
                 />
@@ -139,7 +143,7 @@ const handleTestimonialToggle =  async()=>{
              <br/>
              <br/>
              <br/>
-            <div className="mb-3 col-md-4">
+            <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>Navbar Style</strong></label>
                 <select
                   className="default-select form-control wide"
@@ -152,7 +156,7 @@ const handleTestimonialToggle =  async()=>{
                 </select>
               </div>
               
-              <div className="mb-3 col-md-4">
+              <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>Slider Style</strong></label>
                 <select
                   className="default-select form-control wide"
@@ -164,7 +168,7 @@ const handleTestimonialToggle =  async()=>{
                  {styleOptions}
                 </select>
               </div>
-              <div className="mb-3 col-md-4">
+              <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>About Us Style</strong></label>
                 <select
                   className="default-select form-control wide"
@@ -178,7 +182,7 @@ const handleTestimonialToggle =  async()=>{
 
             </div>
               
-            <div className="mb-3 col-md-4">
+            <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>Service  Style</strong></label>
                 <select
                   className="default-select form-control wide"
@@ -191,7 +195,7 @@ const handleTestimonialToggle =  async()=>{
                 </select>
               </div>
               
-            <div className="mb-3 col-md-4">
+            <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>What We Offer  Style</strong></label>
                 <select
                   className="default-select form-control wide"
@@ -204,7 +208,7 @@ const handleTestimonialToggle =  async()=>{
                 </select>
               </div>
 
-              <div className="mb-3 col-md-4">
+              <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>Testimonial Style</strong></label>
                 <select
                   className="default-select form-control wide"
@@ -216,7 +220,7 @@ const handleTestimonialToggle =  async()=>{
                   {styleOptions}
                 </select>
               </div>
-              <div className="mb-3 col-md-4">
+              <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>Our Benefit Style</strong></label>
                 <select
                   className="default-select form-control wide"
@@ -229,7 +233,20 @@ const handleTestimonialToggle =  async()=>{
                 </select>
 
             </div>
-                {/*  <div className="mb-3 col-md-4">
+              <div className="mb-3 col-md-3">
+                <label className="form-label"><strong>Our Blog Style</strong></label>
+                <select
+                  className="default-select form-control wide"
+                  value={ourBlogStyle}
+                  onChange={setOurBlogStyle}
+                  {...OurBlogStyleAttr}
+                >
+                  <option value="">Choose...</option>
+                  {styleOptions}
+                </select>
+
+            </div>
+                {/*  <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>Primary Colour</strong></label>
                 <input
                   type="color"
@@ -241,7 +258,7 @@ const handleTestimonialToggle =  async()=>{
                 />
               </div>
            
-           <div className="mb-3 col-md-4">
+           <div className="mb-3 col-md-3">
                 <label className="form-label"><strong>Secondary Colour </strong></label>
                 <input
                   type="color"

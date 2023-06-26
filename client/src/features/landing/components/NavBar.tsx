@@ -90,15 +90,18 @@ const userImage = useUserImage(currentUser)
                 } 
                     {/* <!-- /.thm-btn --> */}
                     {
-                (((navStyle as Styles) === Styles.STYLE_1) || ((navStyle as Styles) === Styles.STYLE_3)) &&  <a href={`tel:${contact}`} className="main-menu__contact">
+                (((navStyle as Styles) === Styles.STYLE_1) || ((navStyle as Styles) === Styles.STYLE_3)) &&  contact?.map((c:string)=>(
+                 
+                 
+                <a href={`tel:${c}`} className="main-menu__contact">
                         <span className="main-menu__contact__icon">
                             <i className="icon-phone"></i>
                         </span>
                         {/* <!-- /.main-menu__contact__icon --> */}
-                        <span className="main-menu__contact__text"><strong>{contact}</strong>
+                        <span className="main-menu__contact__text"><strong>{c}</strong>
                             {activeHours.slice(0,28)}
                         </span>
-                    </a>}
+                    </a> ))}
                     {/* <!-- /.main-menu__contact --> */}
                 </div>
                 {/* <!-- /.main-menu__right --> */}

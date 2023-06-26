@@ -24,6 +24,9 @@ const SettingSchema =  new Schema({
         ourBenefitStyle:{
             type:Number,
             enum: {values: [1,2,3],message: '{VALUE} is not supported'},},
+        ourBlogStyle:{
+            type:Number,
+            enum: {values: [1,2,3],message: '{VALUE} is not supported'},},
         whatWeOfferStyle:{
             type:Number,
             enum: {values: [1,2,3],message: '{VALUE} is not supported'},}
@@ -74,6 +77,7 @@ const SettingSchema =  new Schema({
         backgroundImage:{type:String},
         aboutUsBg:{type:String},
         pagesBg:{type:String},
+        aboutVideo:{type:String},
     },
     pages:{
         aboutUs:{type:String},

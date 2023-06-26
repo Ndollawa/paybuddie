@@ -5,7 +5,7 @@ import useWindowSize from '../../../app/utils/hooks/useWindowSize';
 
 const MobileNav = () => {
     const {width} = useWindowSize()
-    const {siteName,email,contact,description,activeHours,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}} = useSelector(useCompanyDetails);
+    const {siteName,email,contact,description,activeHours,socialMedia:{facebookHandle,twitterHandle,instagram,whatsapp}={}} = useSelector(useCompanyDetails);
     const {logoIcon,logo} = useSelector(useSiteImages);
   return (
     <div className="mobile-nav__wrapper">
@@ -25,15 +25,21 @@ const MobileNav = () => {
         {/* <!-- /.mobile-nav__container --> */}
 
         <ul className="mobile-nav__contact list-unstyled">
-            <li>
-                <i className="icon-email"></i>
-                 
-            <a href={`mailto:${email}`}><i className="icon-email"></i> {email}</a>
-            </li>
-            <li>
-                <i className="icon-telephone"></i>  
-            <a href={`mailto:${contact}`}><i className="icon-contact"></i> {email}</a>
-            </li>
+        { 
+                              email?.map((e:string)=>(
+                                <li key={e}>
+                                    <i className="icon-email"></i>
+                                    <a href={`mailto:${e}`}>{e}</a>
+                                </li>
+                              )) }
+                            
+                              { contact?.map((c:string)=>(
+                                    <li key={c}>
+                                    <i className="icon-telephone"></i>
+                                    <a href={`tel:${c}`}>{c}</a>
+                                </li>
+                                  ))
+                                }
         </ul>
         {/* <!-- /.mobile-nav__contact --> */}
 

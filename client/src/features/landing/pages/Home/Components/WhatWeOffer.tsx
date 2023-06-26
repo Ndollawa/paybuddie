@@ -1,120 +1,135 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useLandingPageConfig } from '../../../../dashboard/pages/Settings/settingsConfigSlice';
+import {  useCompanyDetails,useLandingPageConfig } from '../../../../dashboard/pages/Settings/settingsConfigSlice';
+
+import { useGetServicesQuery } from '../../../../dashboard/pages/Service/servicesApiSlice'
+import serviceProps from '../../../../../app/utils/props/serviceProps'
+
 
 const WhatWeOffer = () => {
-const {serviceStyle} = useSelector(useLandingPageConfig)
-let WhatWeOfferSection;
-
-switch (serviceStyle) {
+const {
+    whatWeOfferStyle} = useSelector(useLandingPageConfig)
+const {siteName} = useSelector(useCompanyDetails);
+let WhatWeOfferSection,sec1;
+const { services } = useGetServicesQuery("servicesList", {
+            selectFromResult: ({ data }) => ({
+              services: data?.ids?.map((id:string)=>data?.entities[id])		 
+            }),
+            }) 
+switch (whatWeOfferStyle) {
   case 1:
-    WhatWeOfferSection =(
+    WhatWeOfferSection = sec1 =(
       <> <section className="service-two mb--120">
-    <div className="service-two__shape"></div>
-    <div className="container">
-        <div className="row row-gutter-y-30">
-            <div className="col-lg-4 col-md-12">
-                <div className="service-card-two">
-                    <div className="service-card-two__shape"></div>
-                    <div className="service-card-two__icon">
-                        <i className="icon-smartphone"></i>
-                    </div>
-                    <div className="service-card-two__content">
-                        <h3 className="service-card-two__title">
-                            <a href="services-details.html">Safe and Secure
-                                Payments</a>
-                        </h3>
-                        <p className="service-card-two__text">Duis aute irure dolor lipsum free is simply free text the
-                            local markets in reprehenderit.</p>
-                        <a href="services-details.html" className="service-card-two__link">More Detail</a>
-                        
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-4 col-md-12">
-                <div className="service-card-two">
-                    <div className="service-card-two__shape"></div>
-                    <div className="service-card-two__icon">
-                        <i className="icon-operation"></i>
-                    </div>
-                    <div className="service-card-two__content">
-                        <h3 className="service-card-two__title">
-                            <a href="services-details.html">Quick Payment
-                                Process</a>
-                        </h3>
-                        <p className="service-card-two__text">Duis aute irure dolor lipsum free is simply free text the
-                            local markets in reprehenderit.</p>
-                        <a href="services-details.html" className="service-card-two__link">More Detail</a>
-                        
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-4 col-md-12">
-                <div className="service-card-two">
-                    <div className="service-card-two__shape"></div>
-                    <div className="service-card-two__icon">
-                        <i className="icon-payment-gateway"></i>
-                    </div>
-                    <div className="service-card-two__content">
-                        <h3 className="service-card-two__title">
-                            <a href="services-details.html">No Prepayment
-                                Charges</a>
-                        </h3>
-                        <p className="service-card-two__text">Duis aute irure dolor lipsum free is simply free text the
-                            local markets in reprehenderit.</p>
-                        <a href="services-details.html" className="service-card-two__link">More Detail</a>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section className="video-one video-one--home pt-240 pb-120" style={{backgroundImage: "url('assets/images/backgrounds/video-bg-1-1.jpg')"}}>
-    <div className="video-one__shape-edge"></div>
-    <div className="rhombus"></div>
-    <div className="container">
-        <div className="row row-gutter-y-50">
-            <div className="col-lg-6">
-                <div className="video-one__content">
-                    <a href="https://www.youtube.com/watch?v=m2b9ZTBlW2k" className="video-popup video-one__btn">
-                        <i className="fa fa-play"></i>
-                        <span className="ripple"></span>
-                    </a>
-                    <h3 className="video-one__title">Hundreds of customers <br/> trust our company</h3>
-                </div>
-            </div>
-            <div className="col-lg-6">
-                <ul className="list-unstyled video-one__list">
-                    <li>
-                        <i className="icon-tick"></i>
-                        Expert & Certified
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Quality Services
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Quick Loan Order
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Status Monitor
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Status Monitor
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Easy to Use
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
+      <div className="service-two__shape"></div>
+      <div className="container">
+          <div className="row row-gutter-y-30">
+              <div className="col-lg-4 col-md-12">
+                  <div className="service-card-two">
+                      <div className="service-card-two__shape"></div>
+                      <div className="service-card-two__icon">
+                          <i className="icon-smartphone"></i>
+                      </div>
+                      <div className="service-card-two__content">
+                          <h3 className="service-card-two__title fs-18">
+                              <a href="/services">Safe and Secure
+                                  Payments</a>
+                          </h3>
+                          <p className="service-card-two__text text-justify">By offering robust escrow services, we enable buyers to confidently purchase goods and services, knowing that their funds are safeguarded until their requirements are met. Likewise, sellers can be assured that they will receive timely payment once they fulfill their obligations. </p>
+                          {/* <a href="" className="service-card-two__link">More Detail</a> */}
+                          
+                      </div>
+                  </div>
+              </div>
+              <div className="col-lg-4 col-md-12">
+                  <div className="service-card-two">
+                      <div className="service-card-two__shape"></div>
+                      <div className="service-card-two__icon">
+                          <i className="icon-operation"></i>
+                      </div>
+                      <div className="service-card-two__content">
+                          <h3 className="service-card-two__title fs-18">
+                              <a href="/services">Customer Support</a>
+                          </h3>
+                          <p className="service-card-two__text text-justify">Our dedicated customer support team is available to assist you throughout your journey with {siteName}. Whether you have questions, need guidance, or encounter any issues, we're here to help
+                          We prioritize transparency, reliability, and customer satisfaction to deliver an exceptional experience to our users. .</p>
+                          {/* <a href="/services" className="service-card-two__link">More Detail</a> */}
+                          
+                      </div>
+                  </div>
+              </div>
+              <div className="col-lg-4 col-md-12">
+                  <div className="service-card-two">
+                      <div className="service-card-two__shape"></div>
+                      <div className="service-card-two__icon">
+                          <i className="icon-payment-gateway"></i>
+                      </div>
+                      <div className="service-card-two__content">
+                          <h3 className="service-card-two__title fs-18">
+                              <a href="/services">User-Friendly Interface</a>
+                          </h3>
+                          <p className="service-card-two__text text-justify">Our platform is designed to be intuitive and user-friendly, making it easy for both experienced and first-time users to navigate and understand the process.
+                          Our mission is to facilitate smooth, worry-free transactions that benefit everyone involved.</p>
+                          {/* <a href="/services" className="service-card-two__link">More Detail</a> */}
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  <section className="video-one video-one--home pt-240 pb-120" style={{backgroundImage: "url('assets/images/backgrounds/video-bg-1-1.jpg')"}}>
+      <div className="video-one__shape-edge"></div>
+      <div className="rhombus"></div>
+      <div className="container">
+          <div className="row row-gutter-y-50">
+              <div className="col-lg-6">
+                  <div className="video-one__content">
+                      <a href="https://www.youtube.com/watch?v=m2b9ZTBlW2k" className="video-popup video-one__btn">
+                          <i className="fa fa-play"></i>
+                          <span className="ripple"></span>
+                      </a>
+                      <h3 className="video-one__title">Hundreds of customers <br/> trust our company</h3>
+                  </div>
+              </div>
+              <div className="col-lg-6">
+                  <ul className="list-unstyled video-one__list">
+                      <li>
+                          <i className="icon-tick"></i>
+                          Quality Services
+                      </li>
+                      <li>
+                          <i className="icon-tick"></i>
+                          Dispute Resolution
+                      </li>
+                      <li>
+                          <i className="icon-tick"></i>
+                          Dedicated Support
+                      </li>
+                      <li>
+                          <i className="icon-tick"></i>
+                          Easy to Use
+                      </li>
+                      <li>
+                          <i className="icon-tick"></i>
+                          Expert & Certified : Dedicated to Ensuring Smooth Transactions
+                      </li>
+                      <li>
+                          <i className="icon-tick"></i>
+                          Transparency, Reliability, and Customer Satisfaction
+                      </li>
+                      <li>
+                          <i className="icon-tick"></i>
+                          Empowering Safe and Secure Online Commerce
+                      </li>
+                      <li>
+                          <i className="icon-tick"></i>
+                          Building Trust in Online Transactions
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </section>
 </>)
     break;
   case 2:
@@ -126,64 +141,32 @@ switch (serviceStyle) {
                 <div className="col-lg-6">
                     <div className="block-title text-left">
                         <p className="block-title__tagline">What We’re Offering</p>
-                        <h2 className="block-title__title">We provide best services for your credit</h2>
+                        <h2 className="block-title__title">We provide best services for your Escrow needs</h2>
                     </div>
                 </div>
                 <div className="col-lg-6">
-                    <p className="service-five__text">Lorem ipsum dolor sit amet nsectetur cing elituspe ndisse suscipit
-                        sagitis leo sit.</p>
+                    <p className="service-five__text">Whether you're buying or selling, {siteName} is here to make your transactions smooth, convenient, and worry-free.</p>
                 </div>
             </div>
         </div>
-        <div className="row row-gutter-y-30">
-            <div className="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="000ms">
-                <div className="service-card-five">
-                    <div className="service-card-five__icon">
-                        <i className="icon-credit-cards"></i>
-                    </div>
-                    <h3 className="service-card-five__title">
-                        <a href="credit-repair.html">Credit Repair</a>
-                    </h3>
-                    
-                    <p className="service-card-five__text">Lorem ipsum is free text used by neque est qui lorem.</p>
-                    
-                </div>
-            </div>
+        <div className="row row-gutter-y-30  gap-3">
+            {
+                services?.map((service:serviceProps)=>(
             <div className="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="100ms">
                 <div className="service-card-five">
                     <div className="service-card-five__icon">
-                        <i className="icon-audit"></i>
+                        <i className={service?.icon}></i>
                     </div>
                     <h3 className="service-card-five__title">
-                        <a href="credit-repair.html">Credit Audit</a>
+                        <a href={`/services/${service._id}`}>{service?.title}</a>
                     </h3>
-                    <p className="service-card-five__text">Lorem ipsum is free text used by neque est qui lorem.</p>
+                    <p className="service-card-five__text s-card" >{service?.description}</p>
+                    <a className="readmore-link" href={`/services/${service._id}`}>Read More</a>
                     
                 </div>
             </div>
-            <div className="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="200ms">
-                <div className="service-card-five">
-                    <div className="service-card-five__icon">
-                        <i className="icon-portfolio"></i>
-                    </div>
-                    <h3 className="service-card-five__title">
-                        <a href="credit-repair.html">Business</a>
-                    </h3>
-                    <p className="service-card-five__text">Lorem ipsum is free text used by neque est qui lorem.</p>
-                    
-                </div>
-            </div>
-            <div className="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms">
-                <div className="service-card-five">
-                    <div className="service-card-five__icon">
-                        <i className="icon-education"></i>
-                    </div>
-                    <h3 className="service-card-five__title">
-                        <a href="credit-repair.html">Education</a>
-                    </h3>
-                    <p className="service-card-five__text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident aliquam tempore veniam dolorum, soluta repellendus officiis numquam, labore assumenda praesentium natus autem iusto quasi harum. Architecto fuga dignissimos quam a.</p>
-                </div>
-            </div>
+           ))
+            }
         </div>
     </div>
 </section>
@@ -198,78 +181,35 @@ switch (serviceStyle) {
       <div className="container">
           <div className="block-title text-center">
               <p className="block-title__tagline">What We’re Offering</p>
-              <h2 className="block-title__title">We provide best services <br/> For your Payments </h2>
+              <h2 className="block-title__title">We provide best services <br/> For your Escrow Payments </h2>
           </div>
-          <div className="row row-gutter-y-50">
+          <div className="row row-gutter-y-50 mt-3">
+          {
+                services?.map((service:serviceProps)=>(
               <div className="col-lg-4 col-md-12 col-sm-12">
                   <div className="service-card">
                       <div className="service-card__image">
-                          <img src="assets/images/services/services-1-1.png" alt="Auto Car Loan" />
-                          <a href="services-details.html"></a>
+                      <a href={`/services/${service._id}`}>
+                      <img src={process.env.REACT_APP_BASE_URL+"/uploads/service/"+service?.image} alt={service?.title}/>
+                          </a>
                       </div>
                       <div className="service-card__content">
                           <div className="service-card__content__inner">
                               <div className="service-card__icon">
-                                  <i className="icon-car"></i>
+                                  <i className={service?.icon}></i>
                               </div>
                               <h3 className="service-card__title">
-                                  <a href="services-details.html">Crypto Purchase</a>
+                              <a href={`/services/${service._id}`}>{service?.title}</a>
                               </h3>
-                              <p className="service-card__text">We provide low interest many variations of passages of lorem ipsum have
-                                  some.</p>
-                              <a href="services-details.html" className="service-card__link">
-                                  <i className="fa fa-angle-right"></i>
-                              </a>
+                              <p className="service-card__text s-card">{service?.description}</p>
+                              <a href={`/services/${service._id}`} className="service-card__link"><i className="fa fa-angle-right"></i></a>
+                           
                           </div>
                       </div>
                   </div>
               </div>
-              <div className="col-lg-4 col-md-12 col-sm-12">
-                  <div className="service-card">
-                      <div className="service-card__image">
-                          <img src="assets/images/services/services-1-2.png" alt="Wedding Loan" />
-                          <a href="services-details.html"></a>
-                      </div>
-                      <div className="service-card__content">
-                          <div className="service-card__content__inner">
-                              <div className="service-card__icon">
-                                  <i className="icon-diamond"></i>
-                              </div>
-                              <h3 className="service-card__title">
-                                  <a href="services-details.html">Cash Transfer</a>
-                              </h3>
-                              <p className="service-card__text">We provide low interest many variations of passages of lorem ipsum have
-                                  some.</p>
-                              <a href="services-details.html" className="service-card__link">
-                                  <i className="fa fa-angle-right"></i>
-                              </a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div className="col-lg-4 col-md-12 col-sm-12">
-                  <div className="service-card">
-                      <div className="service-card__image">
-                          <img src="assets/images/services/services-1-3.png" alt="Property Loan" />
-                          <a href="services-details.html"></a>
-                      </div>
-                      <div className="service-card__content">
-                          <div className="service-card__content__inner">
-                              <div className="service-card__icon">
-                                  <i className="icon-house"></i>
-                              </div>
-                              <h3 className="service-card__title">
-                                  <a href="services-details.html">Bil Payments</a>
-                              </h3>
-                              <p className="service-card__text">we provide low interest many variations of passages of lorem ipsum have
-                                  some.</p>
-                              <a href="services-details.html" className="service-card__link">
-                                  <i className="fa fa-angle-right"></i>
-                              </a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                ))
+                }
           </div>
       </div>
   </section>
@@ -277,114 +217,7 @@ switch (serviceStyle) {
     break;
 
   default:
-    WhatWeOfferSection =(
-      <> <section className="service-two mb--120">
-    <div className="service-two__shape"></div>
-    <div className="container">
-        <div className="row row-gutter-y-30">
-            <div className="col-lg-4 col-md-12">
-                <div className="service-card-two">
-                    <div className="service-card-two__shape"></div>
-                    <div className="service-card-two__icon">
-                        <i className="icon-smartphone"></i>
-                    </div>
-                    <div className="service-card-two__content">
-                        <h3 className="service-card-two__title">
-                            <a href="services-details.html">Safe and Secure
-                                Payments</a>
-                        </h3>
-                        <p className="service-card-two__text">Duis aute irure dolor lipsum free is simply free text the
-                            local markets in reprehenderit.</p>
-                        <a href="services-details.html" className="service-card-two__link">More Detail</a>
-                        
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-4 col-md-12">
-                <div className="service-card-two">
-                    <div className="service-card-two__shape"></div>
-                    <div className="service-card-two__icon">
-                        <i className="icon-operation"></i>
-                    </div>
-                    <div className="service-card-two__content">
-                        <h3 className="service-card-two__title">
-                            <a href="services-details.html">Quick Payment
-                                Process</a>
-                        </h3>
-                        <p className="service-card-two__text">Duis aute irure dolor lipsum free is simply free text the
-                            local markets in reprehenderit.</p>
-                        <a href="services-details.html" className="service-card-two__link">More Detail</a>
-                        
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-4 col-md-12">
-                <div className="service-card-two">
-                    <div className="service-card-two__shape"></div>
-                    <div className="service-card-two__icon">
-                        <i className="icon-payment-gateway"></i>
-                    </div>
-                    <div className="service-card-two__content">
-                        <h3 className="service-card-two__title">
-                            <a href="services-details.html">No Prepayment
-                                Charges</a>
-                        </h3>
-                        <p className="service-card-two__text">Duis aute irure dolor lipsum free is simply free text the
-                            local markets in reprehenderit.</p>
-                        <a href="services-details.html" className="service-card-two__link">More Detail</a>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section className="video-one video-one--home pt-240 pb-120" style={{backgroundImage: "url('assets/images/backgrounds/video-bg-1-1.jpg')"}}>
-    <div className="video-one__shape-edge"></div>
-    <div className="rhombus"></div>
-    <div className="container">
-        <div className="row row-gutter-y-50">
-            <div className="col-lg-6">
-                <div className="video-one__content">
-                    <a href="https://www.youtube.com/watch?v=m2b9ZTBlW2k" className="video-popup video-one__btn">
-                        <i className="fa fa-play"></i>
-                        <span className="ripple"></span>
-                    </a>
-                    <h3 className="video-one__title">Hundreds of customers <br/> trust our company</h3>
-                </div>
-            </div>
-            <div className="col-lg-6">
-                <ul className="list-unstyled video-one__list">
-                    <li>
-                        <i className="icon-tick"></i>
-                        Expert & Certified
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Quality Services
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Quick Loan Order
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Status Monitor
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Status Monitor
-                    </li>
-                    <li>
-                        <i className="icon-tick"></i>
-                        Easy to Use
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-</>)
+    WhatWeOfferSection = sec1
     break;
 }
 

@@ -13,9 +13,7 @@ const Member:React.FC<pageProps> = ({pageData}:pageProps) => {
                team: id && data?.entities[id]		 
              }),
              }) 
-             console.log(
-                team
-             )
+            
 if(!team) navigate('/error/404')
     return (
       <>

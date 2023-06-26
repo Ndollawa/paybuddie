@@ -110,23 +110,21 @@ uploads = async(req:Request, res:Response)=>{
                  }   
                     break;
             
+                case 'aboutVideo':
+                    if(result){
+                   const oldFile = result.siteImages!.aboutVideo! 
+                   if(oldFile) deleteItem(destination,oldFile)
+                    result.siteImages!.aboutVideo! = file.filename
+                    result?.save()
+                   return res.status(200).json({messsage:'success'}); 
+                 }   
+                    break;
+            
                 default:
                     return res.status(400).json({message:'Bad Request'})
                     break;
             }
-            // console.log(Object.keys(files))
-            // console.log(Object.values(files))
-            // console.log(files.upload)
-//             Object.keys(files['upload']).forEach((key:any)=>{
-//                 const {path,mimetype}= files['upload'][key]
-//    const img = fs.readFileSync(path)
-// const encode_img = img.toString('base64')
-    // console.log(encode_img)              
-// const finalImg = {
-//     ContentType:mimetype,
-//     image:Buffer.from(encode_img,'base64')
-// }     
-//     })   
+          
         } catch (error) {
         //    next(error) 
         console.log(error)
@@ -194,6 +192,14 @@ removeUploads = async(req:Request, res:Response)=>{
                 case 'aboutUsBg':
                     if(result){
                     result.siteImages!.aboutUsBg! = ''
+                    result?.save()
+                   deleteItem(destination, file)
+                   return res.status(200).json({messsage:'success'}); 
+                 }   
+                    break;
+                case 'aboutVideo':
+                    if(result){
+                    result.siteImages!.aboutVideo! = ''
                     result?.save()
                    deleteItem(destination, file)
                    return res.status(200).json({messsage:'success'}); 

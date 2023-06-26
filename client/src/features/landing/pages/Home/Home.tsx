@@ -15,30 +15,27 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
     const {siteName} = useSelector(useCompanyDetails); 
   return (
     <>
-      <Slider/>
+        <Slider/>
         <AboutUs/>
-       <WhatWeOffer/>
+        <WhatWeOffer/>
        
-       <HowItWorks/>
-     
+        <HowItWorks/>
         <section className="loan-calculator loan-calculator--has-bg pt-120">
             <div className="container">
                 <div className="loan-calculator__top">
                     <div className="row">
                         <div className="col-md-6">
                             <div className="block-title text-left">
-                                <p className="block-title__tagline">Some write ups</p>
+                                <p className="block-title__tagline">Why Choose {siteName}:</p>
                                 {/* <!-- /.block-title__tagline --> */}
-                                <h2 className="block-title__title">Heading... you?</h2>
+                                <h2 className="block-title__title"> Your Trusted Escrow Partner</h2>
                                 {/* <!-- /.block-title__title --> */}
                             </div>
                             {/* <!-- /.block-title --> */}
                         </div>
                         {/* <!-- /.col-md-6 --> */}
                         <div className="col-md-6">
-                            <p className="loan-calculator__top__text">Nullam vel nibh facilisis lectus fermentum ultrices quis non
-                                risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea
-                                dictumst.</p>
+                            <p className="loan-calculator__top__text">Choosing {siteName} as your trusted escrow partner comes with a range of benefits. We prioritize transparency, reliability, and customer satisfaction to deliver an exceptional experience to our users. Here's why you should choose {siteName}:</p>
                                 {/* <!-- /.loan-calculator__top__text --> */}
                         </div>
                         {/* <!-- /.col-md-6 --> */}
@@ -50,7 +47,75 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
                 <div className="loan-calculator__box">
                     <div className="row row-gutter-x-0">
                         <div className="col-lg-6">
-                           and  Image goes here
+                        <div className="row row-gutter-y-20 gap-3">
+                      <div className="col-md-12">
+                          <div className="about-four__feature">
+                              <div className="about-four__feature__content">
+                                  <div className="about-four__feature__icon">
+                                      <i className="icon-confirmation"></i>
+                                  </div>
+                                  <h4 className="about-four__feature__title fs-16">Security</h4>
+                                  
+                              </div>
+                              <div className="about-four__feature__text text-justify px-4 py-2">We employ advanced security measures to protect your funds and personal information. Our platform is designed with robust encryption and authentication protocols to ensure a secure environment for your transactions.
+                              </div>
+                          </div>
+                      </div>
+                      <div className="col-md-12">
+                          <div className="about-four__feature">
+                              <div className="about-four__feature__content">
+                                  <div className="about-four__feature__icon">
+                                      <i className="icon-confirmation"></i>
+                                  </div>
+                                  <h4 className="about-four__feature__title fs-16 flex-no-wrap">Dispute Resolution</h4>
+                                  
+                              </div>
+                              <div className="about-four__feature__text  text-justify px-4 py-2">In the unlikely event of a dispute, our experienced team provides fair and impartial resolution services. We work diligently to find a satisfactory outcome for all parties involved, fostering trust and confidence in the process.
+                              </div>
+                          </div>
+                      </div>
+                      <div className="col-md-12">
+                          <div className="about-four__feature">
+                              <div className="about-four__feature__content">
+                                  <div className="about-four__feature__icon">
+                                      <i className="icon-confirmation"></i>
+                                  </div>
+                                  <h4 className="about-four__feature__title fs-16 flex-no-wrap">User-Friendly Interface</h4>
+                                  
+                              </div>
+                              <div className="about-four__feature__text  text-justify px-4 py-2">Our intuitive and user-friendly interface makes it easy for both buyers and sellers to navigate the platform. With clear instructions and a straightforward layout, you can quickly initiate and manage your transactions with ease.
+                              </div>
+                          </div>
+                      </div>
+                      <div className="col-md-12">
+                          <div className="about-four__feature">
+                              <div className="about-four__feature__content">
+                                  <div className="about-four__feature__icon">
+                                      <i className="icon-confirmation"></i>
+                                  </div>
+                                  <h4 className="about-four__feature__title fs-16 flex-no-wrap">Dedicated Support</h4>
+                                  
+                              </div>
+                              <div className="about-four__feature__text  text-justify px-4 py-2">We have a dedicated customer support team available to assist you every step of the way. Whether you have questions, need guidance, or encounter any issues, our knowledgeable representatives are here to provide timely and helpful assistance.
+                              </div>
+                          </div>
+                      </div>
+                     
+                      <div className="col-md-12">
+                          <div className="about-four__feature">
+                              <div className="about-four__feature__content">
+                                  <div className="about-four__feature__icon">
+                                      <i className="icon-confirmation"></i>
+                                  </div>
+                                  <h4 className="about-four__feature__title fs-16 flex-no-wrap">Buyer and Seller Protection</h4>
+                                  
+                              </div>
+                              <div className="about-four__feature__text  text-justify px-4 py-2">We prioritize the safety and satisfaction of both buyers and sellers. By using {siteName}, buyers can be confident that their funds are protected until they receive the goods or services they paid for. Sellers, on the other hand, can rest assured that they will be paid promptly once the buyer's requirements are met.
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                
                         </div>
                         {/* <!-- /.col-lg-6 --> */}
                         <div className="col-lg-6">
@@ -143,97 +208,8 @@ const Home:React.FC<pageProps>=({pageData}:pageProps) => {
         {/* <!-- /.fact-one --> */}
        <OurBenefit/>
         {/* <!-- /.benefit-one --> */}
-        <section className="blog-one pt-120 pb-120">
-            <div className="container">
-                <div className="block-title text-center">
-                    <p className="block-title__tagline">Our Blog</p>
-                    {/* <!-- /.block-title__tagline --> */}
-                    <h2 className="block-title__title">Our latest news updates <br/> & articles</h2>
-                    {/* <!-- /.block-title__title --> */}
-                </div>
-                {/* <!-- /.block-title --> */}
-                <div className="row row-gutter-y-30">
-                    <div className="col-lg-4 col-md-12 col-sm-12">
-                        <div className="blog-card">
-                            <div className="blog-card__image">
-                                <div className="blog-card__date"><span>05</span> Mar</div>
-                                {/* <!-- /.blog-card__date --> */}
-                                <img src="assets/images/blog/blog-1-1.png" alt="Which growth strategies you should adopt" />
-                                <a href="blog-details.html"></a>
-                            </div>
-                            {/* <!-- /.blog-card__image --> */}
-                            <div className="blog-card__content">
-                                <div className="blog-card__meta">
-                                    <a href="blog-details.html"><i className="far fa-user-circle"></i> by Admin</a>
-                                    <a href="blog-details.html"><i className="far fa-comments"></i> 2 Comments</a>
-                                </div>
-                                {/* <!-- /.blog-card__meta --> */}
-                                <h3 className="blog-card__title"><a href="blog-details.html">Which growth strategies you should adopt</a></h3>
-                                <p className="blog-card__text">Duis aute irure dolor lipsum simply free text the local markets.</p>
-                                <a href="blog-details.html" className="blog-card__link">Read More</a>
-                                {/* <!-- /.blog-card__link --> */}
-                            </div>
-                            {/* <!-- /.blog-card__content --> */}
-                        </div>
-                        {/* <!-- /.blog-card --> */}
-                    </div>
-                    {/* <!-- /.col-lg-4 col-md-12 col-sm-12 --> */}
-                    <div className="col-lg-4 col-md-12 col-sm-12">
-                        <div className="blog-card">
-                            <div className="blog-card__image">
-                                <div className="blog-card__date"><span>05</span> Mar</div>
-                                {/* <!-- /.blog-card__date --> */}
-                                <img src="assets/images/blog/blog-1-2.png" alt="Which growth strategies you should adopt" />
-                                <a href="blog-details.html"></a>
-                            </div>
-                            {/* <!-- /.blog-card__image --> */}
-                            <div className="blog-card__content">
-                                <div className="blog-card__meta">
-                                    <a href="blog-details.html"><i className="far fa-user-circle"></i> by Admin</a>
-                                    <a href="blog-details.html"><i className="far fa-comments"></i> 2 Comments</a>
-                                </div>
-                                {/* <!-- /.blog-card__meta --> */}
-                                <h3 className="blog-card__title"><a href="blog-details.html">Which growth strategies you should adopt</a></h3>
-                                <p className="blog-card__text">Duis aute irure dolor lipsum simply free text the local markets.</p>
-                                <a href="blog-details.html" className="blog-card__link">Read More</a>
-                                {/* <!-- /.blog-card__link --> */}
-                            </div>
-                            {/* <!-- /.blog-card__content --> */}
-                        </div>
-                        {/* <!-- /.blog-card --> */}
-                    </div>
-                    {/* <!-- /.col-lg-4 col-md-12 col-sm-12 --> */}
-                    <div className="col-lg-4 col-md-12 col-sm-12">
-                        <div className="blog-card">
-                            <div className="blog-card__image">
-                                <div className="blog-card__date"><span>05</span> Mar</div>
-                                {/* <!-- /.blog-card__date --> */}
-                                <img src="assets/images/blog/blog-1-3.png" alt="Which growth strategies you should adopt" />
-                                <a href="blog-details.html"></a>
-                            </div>
-                            {/* <!-- /.blog-card__image --> */}
-                            <div className="blog-card__content">
-                                <div className="blog-card__meta">
-                                    <a href="blog-details.html"><i className="far fa-user-circle"></i> by Admin</a>
-                                    <a href="blog-details.html"><i className="far fa-comments"></i> 2 Comments</a>
-                                </div>
-                                {/* <!-- /.blog-card__meta --> */}
-                                <h3 className="blog-card__title"><a href="blog-details.html">Which growth strategies you should adopt</a></h3>
-                                <p className="blog-card__text">Duis aute irure dolor lipsum simply free text the local markets.</p>
-                                <a href="blog-details.html" className="blog-card__link">Read More</a>
-                                {/* <!-- /.blog-card__link --> */}
-                            </div>
-                            {/* <!-- /.blog-card__content --> */}
-                        </div>
-                        {/* <!-- /.blog-card --> */}
-                    </div>
-                    {/* <!-- /.col-lg-4 col-md-12 col-sm-12 --> */}
-                </div>
-                {/* <!-- /.row --> */}
 
-            </div>
-            {/* <!-- /.container --> */}
-        </section>
+
         <div className="client-carousel @@extraClassName">
             <div className="container">
                 <div className="thm-swiper__slider swiper-container" data-swiper-options='{"spaceBetween": 30, "slidesPerView": 5, "autoplay": { "delay": 5000 }, "breakpoints": {

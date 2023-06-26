@@ -19,7 +19,7 @@ const SiteSettings = () => {
     <div className="row jumbotron"> 
             <div className='col-md-3 col-sm-12'>
                 <div className="card">
-                    <div className="card-header bg-primary">
+                    <div className="card-header">
                         <h4 className="card-title text-white">Settings</h4>
                     </div>
                     <div className="card-body">

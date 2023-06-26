@@ -29475,4 +29475,14 @@ background: var(--secondary);
   justify-content: flex-end;
   padding: 5px;
 }
+.s-card{
+height:8rem;
+display: -webkit-box;
+-webkit-line-clamp: 5;
+/* text-align: center; */
+word-spacing: 2px;
+color: black;
+-webkit-box-orient: vertical;
+overflow: hidden;
+}
 /*# sourceMappingURL=style.css.map */

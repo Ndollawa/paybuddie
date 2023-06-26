@@ -13,6 +13,7 @@ import showToast from "../../../../../app/utils/hooks/showToast";
 import postProps from "../../../../../app/utils/props/postProps";
 import PostComment from "./components/PostComment";
 import PostSidebar from "./components/PostSidebar";
+import { filterPosts } from "../Blog";
 
 const Post = ({ pageData }: pageProps) => {
   const {id} = useParams()
@@ -341,7 +342,7 @@ setShowCommentForm(false)
                 </div>
               </div>
             </div>
-           <PostSidebar posts={posts}/>
+           <PostSidebar posts={posts} sFormA={true} filterPosts={filterPosts} />
           </div>
         </div>
       </section>

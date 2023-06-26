@@ -64,7 +64,7 @@ const PostComment = ({pc}:{pc:postCommentProps}) => {
         setComment(`@${replyTo} `)
       }
   return (
-    <li className="comment even thread-even depth-1  " id={`comment-${pc?._id}`}>
+    <li className="comment even thread-even depth-1  " id={`comment-${pc?._id}`} key={pc?._id}>
     <div id={`div-comment-${pc?._id}`} className="blog-comment__box"><div className="post_comment">
       <div className="post_replay_inner"><div className="comment-author-img post_reply_thumb"> 
       <img alt="" src={userImage || defaultUser2} className="avatar avatar-140 photo" height="80" width="80" loading="lazy" decoding="async"/>
